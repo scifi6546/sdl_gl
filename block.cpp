@@ -84,7 +84,10 @@ BlockMesh::BlockMesh(){
 std::vector<Model> BlockMesh::getModel(){
     return model;
 }
-Chunk::Chunk(){
+Chunk::Chunk(glm::vec3 root_pos){
+    if(DEBUG)
+    printf("root_pos: x:%f y:%f z:%f\n",root_pos.x,root_pos.y,root_pos.z);
+    this->root_pos=root_pos;
     cubes.reserve(chunkSize*chunkSize*chunkSize);
     for(int i =0;i<chunkSize;i++){//x
         for(int j=0;j<chunkSize;j++){//y
@@ -103,7 +106,20 @@ Chunk::Chunk(){
         }
     }
     models = initMesh(blockmesh.getModel());
-    setMeshes();
+    this->setMeshes();
+}
+Chunk::Chunk(std::vector<char> heights,glm::vec3 root_pos){
+    printf("OTHER CONSTRUCTOR STARTED!\n");
+    this->root_pos=root_pos;
+    cubes.reserve(chunkSize*chunkSize*chunkSize);
+    for(int i =0;i<chunkSize;i++){//x
+        for(int j=0;j<chunkSize;j++){//z
+            for(int k=0;k<heights[i+j*chunkSize];i++){
+                cubes.push_back(Block(glm::vec3(i,k,j),GRASS));
+            }
+
+        }
+    }
 }
 
 void Chunk::setMeshes(){
@@ -113,23 +129,35 @@ void Chunk::setMeshes(){
     for(int i =0;i<chunkSize;i+=renderChunkSize){//x
         for(int j =0;j<chunkSize;j+=renderChunkSize){//y
             for(int k=0;k<chunkSize;k+=renderChunkSize){//z
-                miniChunks.push_back(renderChunk(cubes,i,j,k));
+                //renderChunk temp = renderChunk(cubes,i,j,k,this->root_pos);
+                //miniChunks.push_back(temp);
+                miniChunks.push_back(new renderChunk(cubes,i,j,k,this->root_pos));
             }
         }
     }
 }
 void Chunk::draw(){
+    if(DEBUG)
+    printf("chunk drawed x=%f y=%f z=%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
+    
     //drawMesh(models[0],glm::vec3(0,0,0));
     for(int i =0;i<miniChunks.size();i++){
-        miniChunks[i].draw();
+        miniChunks[i]->draw();
     }
 }
-renderChunk::renderChunk(std::vector<Block> blocks,int x_start,
-            int y_start,int z_start){//root_pos is the inner lower right corner of the 
-                                                                  //render chunk  
+Chunk::~Chunk(){
+    miniChunks.clear();
+    cubes.clear();
+    std::cout<<"chunk deleted\n";
+}
+renderChunk::renderChunk(std::vector<Block> &blocks,int x_start,
+            int y_start,int z_start,glm::vec3 root_pos){//root_pos is the inner lower right corner of the 
+            
+            this->root_pos=root_pos;                                                  //render chunk  
             updateChunk(blocks,x_start,y_start,z_start);
 }
-void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,int z_start){
+void renderChunk::updateChunk(std::vector<Block> &blocks,int x_start,int y_start,int z_start){
+    printf("root_pos: x:%f, y:%f z:%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
     int x,y,z;
     Model tempmodel;
     char prohibited = 0;
@@ -205,9 +233,7 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
 
                 for(int l=0;l<6;l++){
                     if(blockBounds[l]==1){
-                        this->blocksMesh.add(blockmesh.model[l],glm::vec3(i,j,k));
-                        //this->blocks.push_back(models[l]);
-                        //this->blockLocations.push_back(glm::vec3(i,j,k));
+                        this->blocksMesh.add(blockmesh.model[l],glm::vec3(i,j,k)+this->root_pos);
                     }
                 }
 
@@ -220,7 +246,7 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
         tempRun=initMesh(temp_model);
         this->chunkModel=tempRun[0];
     } else{
-         std::vector<Model> temp_model={blocksMesh};
+        std::vector<Model> temp_model={blocksMesh};
         std::vector<RunTimeModel> tempRun;
         updateMesh(temp_model,tempRun);
         this->chunkModel=tempRun[0];
@@ -228,4 +254,28 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
 }
 void renderChunk::draw(){
     drawMesh(this->chunkModel,glm::vec3(0,0,0));
+}
+renderChunk::~renderChunk(){
+    printf("Render Chunk Deleted!\n");
+    std::vector<RunTimeModel> temp = {this->chunkModel};
+    deleteMesh(temp);
+    this->blockLocations.clear();
+}
+World::World(){
+    this->loadedChunk.reserve(4*CHUNK_RENDER_DIST*CHUNK_RENDER_DIST);
+    for(int i =0;i<CHUNK_RENDER_DIST;i++){//x
+        for(int j = 0;j<CHUNK_RENDER_DIST;j++){//z
+            //this->loadedChunk.push_back((Chunk*)calloc(1,sizeof(Chunk)));
+            //Chunk *temp =; 
+            this->loadedChunk.push_back(new Chunk(glm::vec3( i*chunkSize,0,j*chunkSize)));
+            //this->testChunk.push_back(Chunk(glm::vec3(i*chunkSize,0,j*chunkSize)));
+
+        }
+    }
+}
+void World::draw(){
+    for(int i =0;i<this->loadedChunk.size();i++){
+        this->loadedChunk[i]->draw();
+        //this->testChunk[i].draw();
+    }
 }

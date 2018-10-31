@@ -1,7 +1,7 @@
 CC=g++
 LIBS=-lSDL2 -lGLEW  -lGL
 CFLAGS=-I -w -ggdb
-main: main.cpp
+main: main.cpp game_engine.cpp
 	$(CC) -c $(CFLAGS) main.cpp -o main.o
 	$(MAKE) game_engine
 	$(MAKE) shader

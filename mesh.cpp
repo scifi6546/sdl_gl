@@ -73,18 +73,20 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
         runmodels.push_back(RunTimeModel(vertex_array_object,i,numindicies,vertex_array_buffer));
         
     }
+    glError=glGetError();
     return runmodels;
+     
 }
 void drawMesh(RunTimeModel model,glm::vec3 position){
 
     //std::cout<<model.printString();
     glBindVertexArray(model.meshNum);
-     //glError=glGetError();
+    glError=glGetError();//gl invalid operation
     glm::mat4 trans = glm::mat4(1.0f);
     
     sendTranslate(glm::translate(trans,position));
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);
-
+//Error Line
     glError=glGetError();
 }
 void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update){
@@ -130,4 +132,7 @@ void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update){
         
         to_update[i].numIndicies=models[i].indices.size();
     }
+}
+void deleteMesh(std::vector<RunTimeModel> &models){
+    glDeleteVertexArrays(models.size(),&models[0].meshNum);
 }

@@ -30,7 +30,7 @@ int init(){
     
 
     shaderInit();
-    initCam(60.0,display_width,display_height,.01,500);\
+    initCam(60.0,display_width,display_height,.01,500);
 
     std::vector<std::string> textures;
     textures.push_back("./textures/grass.png");
@@ -39,7 +39,8 @@ int init(){
     clearDisplay(0.0,.1,.6,1.0);
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
-    Chunk temp_chunk = Chunk();
+    //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
+    World world = World();
     //drawMeshCopies(cube_pos);
 
     while(!isclosed()){
@@ -47,7 +48,8 @@ int init(){
         translateCam(temp_trans);
         clearDisplay(0.0,.1,.6,1.0);
         bindTexture(0);
-        temp_chunk.draw();
+        world.draw();
+        //temp_chunk.draw();
         updateDisplay();
         resetMouse(display_width,display_height);
         //temp_trans = glm::vec3(0.0f,0.0f,0.0f);

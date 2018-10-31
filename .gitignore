@@ -1,0 +1,11 @@
+*.o
+*.trace
+cachegrind*
+callgrind*
+*.
+out
+core
+.gdb*
+.project
+.vscode
+*.out
