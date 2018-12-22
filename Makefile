@@ -16,7 +16,7 @@ main: main.cpp game_engine.cpp
 	$(CC) $(CFLAGS) main.o game_engine.o shader.o loadfile.o display.o mesh.o texture.o stb_image.o camera.o event.o block.o -o out $(LIBS)
 run:
 	$(MAKE) main
-	optirun ./out
+	./out
 game_engine: game_engine.cpp
 	$(CC) -c $(CFLAGS) game_engine.cpp -o game_engine.o
 shader: shader.cpp

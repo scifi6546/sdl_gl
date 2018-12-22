@@ -60,7 +60,7 @@ void rotate_cam(float x_rot, float y_rot){
     INT_look();
 }
 void translateCam(glm::vec3 trans){
-    cam_pos+=trans;
+    cam_pos=trans;
     INT_look();
 }
 void INT_look(){

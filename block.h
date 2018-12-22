@@ -70,6 +70,15 @@ class World{
         std::vector<Chunk> testChunk;
         void draw();
         World();
+        void tick(glm::vec3 player_pos);
+        void shiftXp();//shifts chunk towards positive x
+        void shiftXm();//shifts x towards negative x
+        void shiftZp();
+        void shiftZm();
+    private:
+        int rootx=0;
+        int rootz=0;
+
 };
 
 #endif
