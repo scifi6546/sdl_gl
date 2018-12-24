@@ -85,20 +85,28 @@ std::vector<Model> BlockMesh::getModel(){
     return model;
 }
 Chunk::Chunk(glm::vec3 root_pos){
-    if(DEBUG)
-    printf("root_pos: x:%f y:%f z:%f\n",root_pos.x,root_pos.y,root_pos.z);
     this->root_pos=root_pos;
     cubes.reserve(chunkSize*chunkSize*chunkSize);
     for(int i =0;i<chunkSize;i++){//x
         for(int j=0;j<chunkSize;j++){//y
             for(int k=0;k<chunkSize;k++){//z
-                int temps =(k)%6;
-                if(temps>=3)
-                    temps=0;
-                else    
-                    temps =1;
-
-                BLOCK_TYPES temp = static_cast<BLOCK_TYPES>(temps);
+                BLOCK_TYPES temp=AIR;
+                //printf("temps: %i",temps);
+                
+                if(j<10){
+                    temp=ROCK;
+                }else if(j<11){
+                    temp=GRASS;
+                }
+                if(j==0){
+                    temp=AIR;
+                }
+                if(i==8){
+                    temp=GRASS;
+                }
+                if(k==8){
+                    temp=GRASS;
+                }
                 //std::cout<<"temp: "<<temp<<"\n";
                 cubes.push_back(Block(glm::vec3(i,j,k),temp));
                 //cubes.push_back(Block(glm::vec3(i,j,k),AIR));
@@ -114,7 +122,8 @@ Chunk::Chunk(std::vector<char> heights,glm::vec3 root_pos){
     cubes.reserve(chunkSize*chunkSize*chunkSize);
     for(int i =0;i<chunkSize;i++){//x
         for(int j=0;j<chunkSize;j++){//z
-            for(int k=0;k<heights[i+j*chunkSize];i++){
+            for(int k=0;k<heights[i+j*chunkSize];k++){
+                
                 cubes.push_back(Block(glm::vec3(i,k,j),GRASS));
             }
 
@@ -131,7 +140,8 @@ void Chunk::setMeshes(){
             for(int k=0;k<chunkSize;k+=renderChunkSize){//z
                 //renderChunk temp = renderChunk(cubes,i,j,k,this->root_pos);
                 //miniChunks.push_back(temp);
-                miniChunks.push_back(new renderChunk(cubes,i,j,k,this->root_pos));
+                std::vector<Block> temp(cubes);
+                miniChunks.push_back(new renderChunk(temp,i,j,k,this->root_pos));
             }
         }
     }
@@ -150,22 +160,21 @@ Chunk::~Chunk(){
     cubes.clear();
     std::cout<<"chunk deleted\n";
 }
-renderChunk::renderChunk(std::vector<Block> &blocks,int x_start,
+renderChunk::renderChunk(std::vector<Block> blocks,int x_start,
             int y_start,int z_start,glm::vec3 root_pos){//root_pos is the inner lower right corner of the 
             
             this->root_pos=root_pos;                                                  //render chunk  
             updateChunk(blocks,x_start,y_start,z_start);
 }
-void renderChunk::updateChunk(std::vector<Block> &blocks,int x_start,int y_start,int z_start){
-    printf("root_pos: x:%f, y:%f z:%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
+void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,int z_start){
+    //printf("root_pos: x:%f, y:%f z:%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
     int x,y,z;
     Model tempmodel;
-    char prohibited = 0;
-    char blockBoundries=0;
     int blockBounds[6];
-    for(int i =x_start;i<renderChunkSize+x_start;i++){//x
-        for(int j=y_start;j<renderChunkSize+y_start;j++){//y
-            for(int k=z_start;k<renderChunkSize+z_start;k++){//z
+    int i,j,k;
+    for(i =x_start;i<renderChunkSize+x_start;i++){//x
+        for(j=y_start;j<renderChunkSize+y_start;j++){//y
+            for(k=z_start;k<renderChunkSize+z_start;k++){//z
                 x = i*chunkSize*chunkSize;
                 y = j*chunkSize;
                 z = k;
@@ -175,7 +184,7 @@ void renderChunk::updateChunk(std::vector<Block> &blocks,int x_start,int y_start
                     blockBounds[l]=0;
                 }
                 if(k!=0){//cheching face 0;
-                    if(blocks[x+y+z-1].blockType==AIR&&blocks[x+y+z].blockType!=AIR){
+                    if(blocks[x+y+z-1].blockType==AIR &&blocks[x+y+z].blockType!=AIR){
                         blockBounds[0]=1;
                     }
                 } else if(blocks[x+y+z].blockType!=AIR){
@@ -195,6 +204,7 @@ void renderChunk::updateChunk(std::vector<Block> &blocks,int x_start,int y_start
                     if(blocks[x+y+z+1].blockType == AIR
                         && blocks[x+y+z].blockType!=AIR){
                         blockBounds[2]=1;
+                        printf("air found! (2)");
                     }
                 }else if(blocks[x+y+z].blockType!=AIR){
                     blockBounds[2]=1;
@@ -226,16 +236,45 @@ void renderChunk::updateChunk(std::vector<Block> &blocks,int x_start,int y_start
                     if(blocks[x+(j-1)*chunkSize+z].blockType==AIR
                     &&blocks[x+y+z].blockType!=AIR){
                         blockBounds[5]=1;
+                        printf("air found! (5)");
                     }
                 }else if(blocks[x+y+z].blockType!=AIR){
                     blockBounds[5]=1;
                 }
-
+                
+               
                 for(int l=0;l<6;l++){
+                    //debug
+                    /*
+                    if(blockBounds[l]==0 && j<11 && (i==0 || k==0)){
+                        printf("bug found\n");
+                        printf("x:%i y:%i z:%i i:%i j:%i k:%i\n",x,y,z,i,j,k);
+                    }
+                    */
+                    //end debug
                     if(blockBounds[l]==1){
-                        this->blocksMesh.add(blockmesh.model[l],glm::vec3(i,j,k)+this->root_pos);
+                        Model temp = blockmesh.model[l];
+                        float lf = l;
+                        float x0=lf/6.0;
+                        float x1=lf/6.0+1.0/6.0;
+
+                        float y0=((float) (blocks[x+y+z].blockType-1))/(float) NUM_BLOCKS;
+                        float y1=((float)blocks[x+y+z].blockType-1)/NUM_BLOCKS+1.0/(float)NUM_BLOCKS;
+                        temp.texCoord[0]=glm::vec2(x0,y0);
+                        temp.texCoord[1]=glm::vec2(x1,y0);
+                        temp.texCoord[2]=glm::vec2(x1,y1);
+                        temp.texCoord[3]=glm::vec2(x0,y1);
+
+                    
+                        this->blocksMesh.add(temp,glm::vec3(i,j,k)+this->root_pos);
+                    }else if(l==5 && j<1){
+                        printf("bug found\n");
+                        printf("x:%i y:%i z:%i i:%i j:%i k:%i\n",x,y,z,i,j,k);
                     }
                 }
+
+                //setting the texture correctly
+
 
             }
         }

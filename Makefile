@@ -25,6 +25,6 @@ loadfile: loadfile.cpp
 	$(CC) -c $(CFLAGS) loadfile.cpp -o loadfile.o
 debug:
 	$(MAKE) main
-	optirun gdb out
+	gdb out
 all:
 	$(MAKE) main
