@@ -40,7 +40,7 @@ const int CHUNK_RENDER_DIST=5;
 class Chunk{
     public:
         Chunk(glm::vec3 root_pos);
-        Chunk(std::vector<char> heights,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows
+        Chunk(std::vector<Block*> blocks,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows
         /*
         Array Example
          XXXXXXXX
@@ -67,7 +67,7 @@ class Chunk{
 };
 class World{
     public:
-        std::vector<Chunk*> loadedChunk;
+        std::vector<std::vector<Chunk*>> loadedChunk;//outer vector is layers of inner layer
         std::vector<Chunk> testChunk;
         void draw();
         World();
