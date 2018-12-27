@@ -7,7 +7,7 @@ std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chu
     out.reserve(chunkSize*chunkSize*chunkSize);
     for(int i=x;i<chunkSize+x;i++){//x
         for(int j=y;j<chunkSize+y;j++){//y
-            for(int k=z;k<chunkSize+z;z++){//z
+            for(int k=z;k<chunkSize+z;k++){//z
                 if(j<20){
                     out.push_back(new Block(glm::vec3(i,j,k),ROCK));
                 }else if(j<22){

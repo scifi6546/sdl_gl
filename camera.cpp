@@ -16,6 +16,7 @@ float PI=3.14159265358979323846264338327;
 
 void INT_look();
 
+//converts glm::mat4 to std::string inorder to make printing easier
 std::string makeString(glm::mat4 in){
     float* mat = glm::value_ptr(in);
     float mat_arr[16];

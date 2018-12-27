@@ -43,6 +43,7 @@ int init(){
     World world = World();
     //drawMeshCopies(cube_pos);
 
+    // game loop
     while(!isclosed()){
         event();
         translateCam(player_pos);
