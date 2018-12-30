@@ -8,6 +8,12 @@
 namespace world_gen{
     void init_gen();//initilizes world generator
     std::vector<Block*> getChunk(int x,int y, int z);//gets blocks of chunk
+    std::vector<int>  getHeights(int x,int z);//gets heights of blocks
     float prng(int x,int y);//returns number between 1 and -1;
+    
+    float lerp(float x1,float x2,float x_needed,
+    float z1,float z2,float y_needed,
+    float ya,float yb,float yc, float yd);
+    //linear interpolation
 }
 #endif

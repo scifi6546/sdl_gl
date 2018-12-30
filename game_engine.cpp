@@ -34,7 +34,7 @@ int init(){
     initCam(60.0,display_width,display_height,.01,500);
 
     std::vector<std::string> textures;
-    textures.push_back("./textures/total_test.png");
+    textures.push_back("./textures/total.png");
     genTexture(textures);
     clearDisplay(0.0,.1,.6,1.0);
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);

@@ -39,7 +39,6 @@ const int renderChunkSize = chunkSize;//renderChunkSize has to equal chunk size 
 const int CHUNK_RENDER_DIST=5;
 class Chunk{
     public:
-        Chunk(glm::vec3 root_pos);
         Chunk(std::vector<Block*> blocks,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows
         /*
         Array Example

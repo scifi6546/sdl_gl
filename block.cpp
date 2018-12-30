@@ -85,38 +85,6 @@ BlockMesh::BlockMesh(){
 std::vector<Model> BlockMesh::getModel(){
     return model;
 }
-Chunk::Chunk(glm::vec3 root_pos){
-    this->root_pos=root_pos;
-    cubes.reserve(chunkSize*chunkSize*chunkSize);
-    for(int i =0;i<chunkSize;i++){//x
-        for(int j=0;j<chunkSize;j++){//y
-            for(int k=0;k<chunkSize;k++){//z
-                BLOCK_TYPES temp=AIR;
-                //printf("temps: %i",temps);
-                
-                if(j<10){
-                    temp=ROCK;
-                }else if(j<11){
-                    temp=GRASS;
-                }
-                if(j==0){
-                    temp=AIR;
-                }
-                if(i==8){
-                    temp=GRASS;
-                }
-                if(k==8){
-                    temp=GRASS;
-                }
-                //std::cout<<"temp: "<<temp<<"\n";
-                cubes.push_back(Block(glm::vec3(i,j,k),temp));
-                //cubes.push_back(Block(glm::vec3(i,j,k),AIR));
-            }
-        }
-    }
-    models = initMesh(blockmesh.getModel());
-    this->setMeshes();
-}
 Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
     printf("OTHER CONSTRUCTOR STARTED!\n");
     this->root_pos=root_pos;
@@ -242,14 +210,6 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
                 
                
                 for(int l=0;l<6;l++){
-                    //debug
-                    /*
-                    if(blockBounds[l]==0 && j<11 && (i==0 || k==0)){
-                        printf("bug found\n");
-                        printf("x:%i y:%i z:%i i:%i j:%i k:%i\n",x,y,z,i,j,k);
-                    }
-                    */
-                    //end debug
                     if(blockBounds[l]==1){
                         Model temp = blockmesh.model[l];
                         float lf = l;
@@ -305,7 +265,7 @@ World::World(){
             for(int k = -CHUNK_RENDER_DIST;k<=CHUNK_RENDER_DIST;k++){//z
             //this->loadedChunk.push_back((Chunk*)calloc(1,sizeof(Chunk)));
             //Chunk *temp =; 
-            std::vector<Block*> tempBlocks = world_gen::getChunk(j,i,k);
+            std::vector<Block*> tempBlocks = world_gen::getChunk(j*chunkSize,i*chunkSize,k*chunkSize);
                 this->loadedChunk[i].push_back(new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
             //this->testChunk.push_back(Chunk(glm::vec3(i*chunkSize,0,j*chunkSize)));
 
@@ -346,7 +306,8 @@ void World::shiftXp(){
         this->loadedChunk[i].erase(this->loadedChunk[i].begin(),
         this->loadedChunk[i].begin()+2*CHUNK_RENDER_DIST+1);
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){
-            this->loadedChunk[i].push_back(new Chunk(glm::vec3(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize)));
+            std::vector<Block*> temp=world_gen::getChunk(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize);
+            this->loadedChunk[i].push_back(new Chunk(temp,glm::vec3(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize)));
         }
     }
     
@@ -359,8 +320,9 @@ void World::shiftXm(){
     for(int i=0;i<loadedChunk.size();i++){
         this->loadedChunk[i].erase(this->loadedChunk[i].end()-(2*CHUNK_RENDER_DIST+1),this->loadedChunk[i].end());
         for(int j =CHUNK_RENDER_DIST;j>=-1*CHUNK_RENDER_DIST;j--){
+            std::vector<Block*> temp=world_gen::getChunk(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize);
             this->loadedChunk[i].insert(this->loadedChunk[i].begin(),
-                new Chunk(glm::vec3(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize)));
+                new Chunk(temp,glm::vec3(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize)));
     }
     }
     
@@ -374,8 +336,12 @@ void World::shiftZp(){
             int erase_index = (j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1);
             this->loadedChunk[i].erase(this->loadedChunk[i].begin()+erase_index);
             int insert_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1)+2*CHUNK_RENDER_DIST;
+
+            std::vector<Block*> temp=world_gen::getChunk(rootx+j*chunkSize,i*chunkSize,
+                rootz+(CHUNK_RENDER_DIST)*chunkSize);
+                        
             this->loadedChunk[i].insert(this->loadedChunk[i].begin()+insert_index,
-                new Chunk(glm::vec3(rootx+j*chunkSize,i*chunkSize,
+                new Chunk(temp,glm::vec3(rootx+j*chunkSize,i*chunkSize,
                 rootz+(CHUNK_RENDER_DIST)*chunkSize)));
         }
     }
@@ -389,8 +355,11 @@ void World::shiftZm(){
             int erase_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1)+2*CHUNK_RENDER_DIST;
             this->loadedChunk[i].erase(this->loadedChunk[i].begin()+erase_index);
             int insert_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1);
+            std::vector<Block*> temp=world_gen::getChunk(rootx+j*chunkSize,
+                i*chunkSize,rootz-CHUNK_RENDER_DIST*chunkSize);
+
             this->loadedChunk[i].insert(this->loadedChunk[i].begin()+insert_index,
-                new Chunk(glm::vec3(rootx+j*chunkSize,i*chunkSize,rootz-CHUNK_RENDER_DIST*chunkSize)));
+                new Chunk(temp,glm::vec3(rootx+j*chunkSize,i*chunkSize,rootz-CHUNK_RENDER_DIST*chunkSize)));
         }
     }
     
