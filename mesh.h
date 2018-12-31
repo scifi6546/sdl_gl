@@ -3,21 +3,23 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <vector>
-const int numBuffers=3;
-enum Buffers{POSITION,TEXCOORD,INDEX};
+const int numBuffers=4;
+enum Buffers{POSITION,TEXCOORD,INDEX,NORMAL};
 class Model{
     
     public:
         std::vector<glm::vec3> pos;//position
         std::vector<glm::vec2> texCoord;//texture chordinates
         std::vector<unsigned int> indices;
+        std::vector<glm::vec3> normal;
              
         Model(std::vector<glm::vec3> pos,//position
             std::vector<glm::vec2> texCoord,//texture chordinates
-            std::vector<unsigned int> indices){
+            std::vector<unsigned int> indices,std::vector<glm::vec3> normal){
                 this->pos = pos;
                 this->texCoord=texCoord;
                 this->indices=indices;
+                this->normal=normal;
                 
                 
         }

@@ -14,4 +14,6 @@ void sendCamera(glm::mat4 cam);
 void sendTranslate(glm::mat4 trans);
 void sendLook(glm::mat4 look);
 void setTexture(int unit);
+void sendAmbient(glm::vec3 color,GLfloat intensity,
+    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
 #endif
