@@ -19,6 +19,9 @@ void Model::add(Model to_add,glm::vec3 pos){
     for(int i =0;i<to_add.indices.size();i++){
         this->indices.push_back(to_add.indices[i]+size);
     }
+    for(int i =0;i<to_add.normal.size();i++){
+        this->normal.push_back(to_add.normal[i]);
+    }
 }
 std::vector<unsigned int> numIndicies;
 std::vector<RunTimeModel> initMesh(std::vector<Model> models){
@@ -69,12 +72,28 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
         sizeof(models[i].indices[0])*models[i].indices.size(),
         &models[i].indices[0],GL_STATIC_DRAW);
 
+        //buffering Normal
+        
+        glBindBuffer(GL_ARRAY_BUFFER,vertex_array_buffer[NORMAL]);
+        glBufferData(GL_ARRAY_BUFFER,
+            sizeof(models[i].normal[0])*models[i].normal.size(),
+            &models[i].normal[0],GL_STATIC_DRAW);
+        
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,0,0);
+        
+
         glError=glGetError();
+        if(glError!=0){
+            printf("error: %i\n\n\n",glError);
+        }
         runmodels.push_back(RunTimeModel(vertex_array_object,i,numindicies,vertex_array_buffer));
+
         
     }
     glError=glGetError();
     return runmodels;
+    
      
 }
 void drawMesh(RunTimeModel model,glm::vec3 position){
@@ -85,6 +104,7 @@ void drawMesh(RunTimeModel model,glm::vec3 position){
     glm::mat4 trans = glm::mat4(1.0f);
     
     sendTranslate(glm::translate(trans,position));
+    glError=glGetError();
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);
 //Error Line
     glError=glGetError();

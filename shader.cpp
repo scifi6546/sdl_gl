@@ -11,6 +11,12 @@ GLuint camera_uni_pos;
 GLuint translate_uni_pos;
 GLuint look_uni_pos;
 GLuint image_uni_pos;
+GLuint ambient_c_pos;
+GLuint ambient_i_pos;
+
+GLuint sun_pos_pos;
+GLuint sun_intensity_pos;
+GLuint sun_c_pos;
 int shaderInit(){
     std::string filename = "./shaders/shader";
     program=glCreateProgram();
@@ -41,6 +47,13 @@ int shaderInit(){
     translate_uni_pos =  glGetUniformLocation(program,"translate");
     look_uni_pos =  glGetUniformLocation(program,"look");
     image_uni_pos = glGetUniformLocation(program,"diffuse");
+    ambient_c_pos = glGetUniformLocation(program,"ambient_color");
+    ambient_i_pos = glGetUniformLocation(program,"ambient_intensity");
+
+    sun_intensity_pos = glGetUniformLocation(program,"sun_intensity");
+    sun_pos_pos = glGetUniformLocation(program,"sun_pos");
+    sun_c_pos = glGetUniformLocation(program,"sun_color");
+
     glError=glGetError();
     printf("camera_uni_pos = %i\n",camera_uni_pos);
     printf("translate_uni_pos = %i\n",translate_uni_pos);
@@ -97,12 +110,20 @@ void sendLook(glm::mat4 look){
     //finding uniform in shaderinit()
     glUniformMatrix4fv(look_uni_pos,1,GL_FALSE,glm::value_ptr(look));
 }
+void sendAmbient(glm::vec3 color,GLfloat intensity,glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color){
+    glUniform3f(ambient_c_pos,color.x,color.y,color.z);
+    glUniform1f(ambient_i_pos,intensity);
+
+    glUniform1f(sun_intensity_pos,sun_intensity);
+    glUniform3f(sun_pos_pos,sun_pos.x,sun_pos.y,sun_pos.z);
+    glUniform3f(sun_c_pos,sun_color.x,sun_color.y,sun_color.z);
+}
 void setTexture(int unit){
     //printf("unit = %i\n",unit);
     glUniform1i(image_uni_pos,unit);
-    int error = glGetError();
-    if(error!=0){
-        printf("error %i\n",error);
+    glError = glGetError();
+    if(glError!=0){
+        printf("error %i\n",glError);
     }
 }
 

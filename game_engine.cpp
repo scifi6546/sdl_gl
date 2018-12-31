@@ -11,6 +11,7 @@
 #include "event.h"
 #include "block.h"
 #include "error.h"
+#include "game_const.h"
 #include <unistd.h>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
@@ -41,15 +42,22 @@ int init(){
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     World world = World();
+    sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
+    sun_color);
+    glError = glGetError();
     //drawMeshCopies(cube_pos);
 
     // game loop
     while(!isclosed()){
         event();
         translateCam(player_pos);
+        glError = glGetError();
         clearDisplay(0.0,.1,.6,1.0);
+         glError = glGetError();
         bindTexture(0);
+        glError = glGetError();
         world.tick(player_pos);
+        glError = glGetError();
         world.draw();
         //temp_chunk.draw();
         updateDisplay();

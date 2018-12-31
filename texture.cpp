@@ -61,7 +61,9 @@ void bindTexture(unsigned int unit)
     //printf("unit = %i",unit);
     //assert(unit >= 0 && unit <= 31);
     glActiveTexture(GL_TEXTURE0 + unit);
+    glError= glGetError();
     glBindTexture(GL_TEXTURE_2D, texture[unit]);
+    glError= glGetError();
     setTexture(unit);
     glError= glGetError();
     if (glError != 0)
