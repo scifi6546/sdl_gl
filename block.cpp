@@ -290,7 +290,7 @@ renderChunk::~renderChunk(){
 World::World(){
     
     this->loadedChunk.reserve(CHUNK_RENDER_DIST*CHUNK_RENDER_DIST);
-    for(int i=0;i<4;i++){//y
+    for(int i=0;i<numVertChunks;i++){//y
         std::vector<Chunk*> t;
         this->loadedChunk.push_back(t);
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){//x

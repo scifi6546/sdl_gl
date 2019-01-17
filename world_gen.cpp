@@ -41,25 +41,12 @@ std::vector<int> world_gen::getHeights(int x, int z){
     out.reserve(chunkSize*chunkSize);
     for(int i=x;i<x+chunkSize;i++){//x
         for(int j=z;j<z+chunkSize;j++){//z
-            float ya,yb,yc,yd;
+            int height = 0;
+            for(int scale = 5; scale<=45;scale+=10){
+                height+=getNoise(i,j,scale);
+            }
 
-            float x1,x2;
-            float z1,z2;
-            x1=floor(i/40.0);
-            x2=x1+1;
-            
-            z1=floor(j/40.0);
-            z2=z1+1;
-
-            ya=prng(x1,z1)*80.0;
-            yb=prng(x2,z1)*80.0;
-            yc=prng(x2,z2)*80.0;
-            yd=prng(x1,z2)*80.0;
-            float i_f=i;
-            float j_f = j;
-            float rel=lerp(x1,x2,i_f/40.0,
-                z1,z2,j_f/40.0,ya,yb,yc,yd);
-            out.push_back(rel);
+            out.push_back(height);
         }
     }
     return out;
@@ -84,5 +71,26 @@ float world_gen::prng(int x,int y){
     float mod=(abs(a*x*y+y*x*c+187692+x+y-a*x*c*123))%m;
     return mod/mf;
     //return .5;
+}
+int world_gen::getNoise(int x, int z, float scale){
+    float ya,yb,yc,yd;
+
+            float x1,x2;
+            float z1,z2;
+            x1=floor(x/scale);
+            x2=x1+1;
+            
+            z1=floor(z/scale);
+            z2=z1+1;
+
+            ya=prng(x1,z1)*scale*2.0;
+            yb=prng(x2,z1)*scale*2.0;
+            yc=prng(x2,z2)*scale*2.0;
+            yd=prng(x1,z2)*scale*2.0;
+            float i_f= x;
+            float j_f = z;
+            float rel=lerp(x1,x2,i_f/scale,
+                z1,z2,j_f/scale,ya,yb,yc,yd);
+    return rel;
 }
 

@@ -37,6 +37,7 @@ extern std::vector<RunTimeModel>models;
 const int chunkSize=32;
 const int renderChunkSize = chunkSize;//renderChunkSize has to equal chunk size I do not know why
 const int CHUNK_RENDER_DIST=5;
+const int numVertChunks = 6;//height of vertical chunks
 class Chunk{
     public:
         Chunk(std::vector<Block*> blocks,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows

@@ -9,6 +9,7 @@ namespace world_gen{
     void init_gen();//initilizes world generator
     std::vector<Block*> getChunk(int x,int y, int z);//gets blocks of chunk
     std::vector<int>  getHeights(int x,int z);//gets heights of blocks
+    int getNoise(int x,int z,float scale);//gets noise at a point
     float prng(int x,int y);//returns number between 1 and -1;
     
     float lerp(float x1,float x2,float x_needed,

@@ -10,26 +10,26 @@ void event(){
     int y_rel;
     while(SDL_PollEvent(&e)){
         if(e.type==SDL_KEYDOWN){
-            printf("key down: %i\n",e.key.keysym.sym);
+            //printf("key down: %i\n",e.key.keysym.sym);
             //key_down=e.key.keysym.;
             key_down=e.key.keysym.sym;
             engineKeyboardEvent(key_down,true);
         }
         if(e.type==SDL_KEYUP){
-            printf("key down: %i\n",e.key.keysym.sym);
+            //printf("key down: %i\n",e.key.keysym.sym);
             //key_down=e.key.keysym.;
             key_down=e.key.keysym.sym;
             engineKeyboardEvent(key_down,false);
         }
         if(e.type==SDL_QUIT){
             INT_closed=true;
-            printf("closed\n");
+            //printf("closed\n");
             break;
         }
         if(e.type==SDL_MOUSEMOTION){
             x_rel = e.motion.xrel;
             y_rel=e.motion.yrel;
-            printf("mouse_moved x_rel = %i y_rel = %i",x_rel,y_rel);
+            //printf("mouse_moved x_rel = %i y_rel = %i",x_rel,y_rel);
             engineMouseEvent(x_rel,y_rel);
         }
     }
