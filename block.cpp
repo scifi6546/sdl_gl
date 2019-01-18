@@ -289,18 +289,15 @@ renderChunk::~renderChunk(){
 }
 World::World(){
     
-    this->loadedChunk.reserve(CHUNK_RENDER_DIST*CHUNK_RENDER_DIST);
+    this->loadedChunk.reserve(numVertChunks);
     for(int i=0;i<numVertChunks;i++){//y
         std::vector<Chunk*> t;
         this->loadedChunk.push_back(t);
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){//x
             for(int k = -CHUNK_RENDER_DIST;k<=CHUNK_RENDER_DIST;k++){//z
-            //this->loadedChunk.push_back((Chunk*)calloc(1,sizeof(Chunk)));
-            //Chunk *temp =; 
             std::vector<Block*> tempBlocks = world_gen::getChunk(j*chunkSize,i*chunkSize,k*chunkSize);
-                this->loadedChunk[i].push_back(new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
-            //this->testChunk.push_back(Chunk(glm::vec3(i*chunkSize,0,j*chunkSize)));
-
+                this->loadedChunk[i].push_back(
+                    new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
             }
         }
     }
@@ -395,4 +392,7 @@ void World::shiftZm(){
         }
     }
     
+}
+BLOCK_TYPES World::getBlock(int x, int y, int z){
+
 }

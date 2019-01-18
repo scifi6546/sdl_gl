@@ -17,7 +17,7 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 glm::vec3 temp_trans;
-float walk_speed = .002f;
+float walk_speed = .02f;
 SDL_Thread* input;
 float mouse_move_speed = 0.005f;
 std::vector<char> keys_pressed;
@@ -26,6 +26,7 @@ int display_width = 1000;
 int glError=0;
 glm::vec3 player_pos;
 World *GameWorld;
+int lastTime = 0;
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0,0,0);
@@ -50,6 +51,7 @@ int init(){
     //drawMeshCopies(cube_pos);
 
     // game loop
+    lastTime=SDL_GetTicks();
     while(!isclosed()){
         event();
         GameWorld->tick(player_pos);
@@ -99,9 +101,11 @@ void engineKeyboardEvent(char key,bool is_down){
         }
     }
     //temp_trans.x*SDL_GetTicks()/1000;
-    player_pos.x+=temp_trans.x*SDL_GetTicks()/1000;
-    player_pos.y+=temp_trans.y*SDL_GetTicks()/1000;
-    player_pos.z+=temp_trans.z*SDL_GetTicks()/1000;
+    int tickTime = SDL_GetTicks();
+    player_pos.x+=temp_trans.x*(tickTime-lastTime)/1000;
+    player_pos.y+=temp_trans.y*(tickTime-lastTime)/1000;
+    player_pos.z+=temp_trans.z*(tickTime-lastTime)/1000;
+    lastTime=tickTime;
 }
 
 void engineMouseEvent(int x_rel, int y_rel){

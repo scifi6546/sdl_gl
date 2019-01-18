@@ -27,9 +27,6 @@ The chunk object that stores block information the size is determined by chunkSi
 Methods
 -------
 
-Chunk::Chunk(glm::vec3 root_pos)
->constructor depricated used in World::shift* need to change to Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos)
-
 Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos)
 >New constructor used to generate world. Layout of blocks in memory does not matter.
 
@@ -41,3 +38,44 @@ void Chunk::draw()
 
 Chunk::~Chunk()
 >Just a deconstructor.
+
+World Object
+============
+Stores information about the world
+
+Layout of chunks in memory
+--------------------------
+
+Chunks stored in this->loadedChunk which is a vector<vector<Chunk*>>
+The outer most vector stores layers 
+World Layout
+```
+|----Layer 1----------|     y+
+|_____________________|     /\
+|                     |     |
+|----Layer 0 ---------|     |
+|      /\             |     |
+|       |             |     |
+|     ChunkSize       |     |
+|       |             |     |
+|      \/             |     |
+|_____________________|     |
+```
+Top down view
+```
+z+
+/\               Root Pos + Chunk_RENDER_DIST -1
+|
+|
+|
+| Root Pos - CHUNK_RENDER_DIST
+_________________> x+
+```
+Inner Vector Memory Layout
+choridinate system: (x,z)
+
+```
+-------------------------------------------------------------
+| (X,Z)  |  (X,Z+1)  | (X,Z+2) | .... |(X+1,Z) | (X+1,Z+1)  |
+-------------------------------------------------------------
+```

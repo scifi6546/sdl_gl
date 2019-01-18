@@ -76,6 +76,7 @@ class World{
         void shiftXm();//shifts x towards negative x
         void shiftZp();
         void shiftZm();
+        BLOCK_TYPES getBlock(int x, int y, int z);//gets a block at x y z 
     private:
         int rootx=0;
         int rootz=0;
