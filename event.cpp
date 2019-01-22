@@ -2,37 +2,33 @@
 #include "game_engine.h"
 bool INT_closed;
 SDL_Event e;
-void event(){
+glm::vec3 event(){
     char key_down;
     INT_closed = false;
     
     int x_rel;
     int y_rel;
+    glm::vec3 out = glm::vec3(0.0f,0.0f,0.0f);
     while(SDL_PollEvent(&e)){
         if(e.type==SDL_KEYDOWN){
-            //printf("key down: %i\n",e.key.keysym.sym);
-            //key_down=e.key.keysym.;
             key_down=e.key.keysym.sym;
-            engineKeyboardEvent(key_down,true);
+            out += engineKeyboardEvent(key_down,true);
         }
         if(e.type==SDL_KEYUP){
-            //printf("key down: %i\n",e.key.keysym.sym);
-            //key_down=e.key.keysym.;
             key_down=e.key.keysym.sym;
-            engineKeyboardEvent(key_down,false);
+            out+= engineKeyboardEvent(key_down,false);
         }
         if(e.type==SDL_QUIT){
             INT_closed=true;
-            //printf("closed\n");
             break;
         }
         if(e.type==SDL_MOUSEMOTION){
             x_rel = e.motion.xrel;
             y_rel=e.motion.yrel;
-            //printf("mouse_moved x_rel = %i y_rel = %i",x_rel,y_rel);
             engineMouseEvent(x_rel,y_rel);
         }
     }
+    return out;
 }
 bool isclosed(){
     return INT_closed;

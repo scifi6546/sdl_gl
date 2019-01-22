@@ -52,7 +52,11 @@ class Chunk{
         */
         void setMeshes();
         void draw();
+        BLOCK_TYPES getBlock(int x, int y, int z);
         ~Chunk();
+        glm::vec3 getRoot(){
+            return this->root_pos;
+        }
     private:
         std::vector<renderChunk*> miniChunks;
         std::vector<Block> cubes;
@@ -70,14 +74,16 @@ class World{
         std::vector<std::vector<Chunk*>> loadedChunk;//outer vector is layers of inner layer
         std::vector<Chunk> testChunk;
         void draw();
-        World();
-        void tick(glm::vec3 player_pos);
+        World(glm::vec3 pos_in);
+        glm::vec3 tick(glm::vec3 input_move,float delta_time);//delta time measured in seconds
         void shiftXp();//shifts chunk towards positive x
         void shiftXm();//shifts x towards negative x
         void shiftZp();
         void shiftZm();
         BLOCK_TYPES getBlock(int x, int y, int z);//gets a block at x y z 
+        void printChunkPos();
     private:
+        glm::vec3 player_pos;
         int rootx=0;
         int rootz=0;
 

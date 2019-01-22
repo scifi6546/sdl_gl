@@ -28,7 +28,12 @@ Methods
 -------
 
 Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos)
->New constructor used to generate world. Layout of blocks in memory does not matter.
+>New constructor used to generate world. Layout:
+```
+---------------------------------------------------------
+|(X,Y,Z)|(X,Y,Z+1)|(X,Y,Z+2)|...|(X,Y+1,Z)|...|(X+1,Y,Z)|
+---------------------------------------------------------
+```
 
 void Chunk::setMeshes()
 >Used to setup mesh used to draw chunk. Creates render chunks and tells then to setup mesh.
@@ -50,10 +55,10 @@ Chunks stored in this->loadedChunk which is a vector<vector<Chunk*>>
 The outer most vector stores layers 
 World Layout
 ```
-|----Layer 1----------|     y+
+|----Element 1 -------|     y+
 |_____________________|     /\
 |                     |     |
-|----Layer 0 ---------|     |
+|----Element 0 -------|     |
 |      /\             |     |
 |       |             |     |
 |     ChunkSize       |     |
@@ -64,15 +69,16 @@ World Layout
 Top down view
 ```
 z+
-/\               Root Pos + Chunk_RENDER_DIST -1
-|
-|
-|
+/\ 
+|--------- Root Pos + Chunk_RENDER_DIST -1
+|                 |
+|                 |
+|                 |
 | Root Pos - CHUNK_RENDER_DIST
 _________________> x+
 ```
 Inner Vector Memory Layout
-choridinate system: (x,z)
+cooridinate system: (x,z)
 
 ```
 -------------------------------------------------------------

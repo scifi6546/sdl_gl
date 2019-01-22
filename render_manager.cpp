@@ -17,4 +17,7 @@ void rManager::init(){
 }
 void rManager::drawFrame(){
     draw();
+    GLenum error = glGetError();
+    if(error)
+        printf("ERROR!\n\n\n");
 }

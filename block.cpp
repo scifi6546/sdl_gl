@@ -1,5 +1,6 @@
 #include "block.h"
 #include "texture.h"
+#include "physics.h"
 #include "world_gen.h"
 #include <stdlib.h> 
 #include <iostream>
@@ -118,7 +119,7 @@ std::vector<Model> BlockMesh::getModel(){
     return model;
 }
 Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
-    printf("OTHER CONSTRUCTOR STARTED!\n");
+    //printf("%f,%f,%f\n",root_pos.x,root_pos.y,root_pos.z);
     this->root_pos=root_pos;
 
     cubes.reserve(blocks.size());
@@ -145,13 +146,30 @@ void Chunk::setMeshes(){
     }
 }
 void Chunk::draw(){
-    if(DEBUG)
-    printf("chunk drawed x=%f y=%f z=%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
+    //if(DEBUG)
+    //printf("chunk drawed x=%f y=%f z=%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
     
     //drawMesh(models[0],glm::vec3(0,0,0));
     for(int i =0;i<miniChunks.size();i++){
         miniChunks[i]->draw();
     }
+}
+BLOCK_TYPES Chunk::getBlock(int x, int y, int z){
+    int root_x = round(this->root_pos.x);
+    int root_y = round(this->root_pos.y);
+    int root_z = round(this->root_pos.z);
+
+    int x_index = (x-root_x)*chunkSize*chunkSize;
+    int y_index = (y-root_y)*chunkSize;
+    int z_index = (z-root_z);
+    Block temp = this->cubes[x_index+y_index+z_index];
+    if(round(temp.pos.x)==x && round(temp.pos.y)==y && round(temp.pos.z)==z){
+        return temp.blockType;
+    }
+    printf("ERROR WRONG POS!!!\n");
+    printf("POS NEEDED: x: %i y: %i z: %i POS GOT: %i\n",x,y,z,round(temp.pos.x));
+    printf("root x: %i root y: %i root z: %i\n",root_x,root_y,root_z);
+    return AIR;
 }
 Chunk::~Chunk(){
     miniChunks.clear();
@@ -287,8 +305,8 @@ renderChunk::~renderChunk(){
     deleteMesh(temp);
     this->blockLocations.clear();
 }
-World::World(){
-    
+World::World(glm::vec3 player_pos){
+    this->player_pos=player_pos;
     this->loadedChunk.reserve(numVertChunks);
     for(int i=0;i<numVertChunks;i++){//y
         std::vector<Chunk*> t;
@@ -296,6 +314,7 @@ World::World(){
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){//x
             for(int k = -CHUNK_RENDER_DIST;k<=CHUNK_RENDER_DIST;k++){//z
             std::vector<Block*> tempBlocks = world_gen::getChunk(j*chunkSize,i*chunkSize,k*chunkSize);
+                //printf("x: %i y: %i z: %i\n",j,i,k);
                 this->loadedChunk[i].push_back(
                     new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
             }
@@ -304,15 +323,18 @@ World::World(){
     
 }
 void World::draw(){
+    //printf("drawn!!\n");
     for(int i=0;i<loadedChunk.size();i++){
-        for(int j =0;j< this->loadedChunk[i].size();j++){
+        for(int j =0;j<this->loadedChunk[i].size();j++){
+            //printf("i: %i, j: %i\n",i,j);
             this->loadedChunk[i][j]->draw();
             //this->testChunk[i].draw();
         }
     }
     
 }
-void World::tick(glm::vec3 player_pos){
+glm::vec3 World::tick(glm::vec3 input_move, float delta_time){
+    player_pos = physics::runFrame(player_pos,input_move,this,delta_time); 
     if(player_pos.x-rootx>=chunkSize){
         this->shiftXp();
     }
@@ -325,6 +347,7 @@ void World::tick(glm::vec3 player_pos){
     if(player_pos.z-rootz<=-1*chunkSize){
         this->shiftZm();
     }
+    return player_pos;
 }
 void World::shiftXp(){
     printf("shifted X Plus");
@@ -352,13 +375,13 @@ void World::shiftXm(){
             std::vector<Block*> temp=world_gen::getChunk(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize);
             this->loadedChunk[i].insert(this->loadedChunk[i].begin(),
                 new Chunk(temp,glm::vec3(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize)));
-    }
+        }
     }
     
     
 }
 void World::shiftZp(){
-    
+    printf("shifted z plus\n"); 
     rootz+=chunkSize;
     for(int i=0;i<loadedChunk.size();i++){
         for(int j =-1*CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){
@@ -378,6 +401,7 @@ void World::shiftZp(){
     
 }
 void World::shiftZm(){
+    printf("shifted zm\n");
     rootz-=chunkSize;
     for(int i =0;i<loadedChunk.size();i++){
         for(int j =-1*CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){
@@ -393,6 +417,30 @@ void World::shiftZm(){
     }
     
 }
+void World::printChunkPos(){
+    printf("x,y,z\n");
+    glm::vec3 tempPos;
+    for(int i=0;i<this->loadedChunk.size();i++){
+        for(int j=0;j<this->loadedChunk[i].size();j++){
+            Chunk* tempC = this->loadedChunk[i][j];
+            tempPos=tempC->getRoot(); 
+            printf("%f,%f,%f\n",tempPos.x,tempPos.y,tempPos.z);
+        }
+    }
+}
 BLOCK_TYPES World::getBlock(int x, int y, int z){
+    int y_index = floor(y/chunkSize);
 
+    float temp = x-rootx;
+    float tempCSize = chunkSize;
+
+    int x_index = floor(temp/tempCSize)+CHUNK_RENDER_DIST; 
+    x_index=x_index*(2*CHUNK_RENDER_DIST+1);
+
+    float tempz = z-rootz;
+    int z_index = floor((tempz)/tempCSize)+CHUNK_RENDER_DIST;
+
+    Chunk* needed = 
+        this->loadedChunk[y_index][x_index+z_index];
+    return needed->getBlock(x,y,z);
 }
