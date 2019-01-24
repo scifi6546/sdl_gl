@@ -18,7 +18,6 @@
 #include <unistd.h>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
-#include <random>
 glm::vec3 temp_trans;
 float walk_speed = 1.0f;
 SDL_Thread* input;
@@ -32,7 +31,7 @@ World *GameWorld;
 int lastTime = 0;
 int init(){
     float dist = 10.0f;
-    player_pos=glm::vec3(0,0,0);
+    player_pos=glm::vec3(0.1f,150.0f,0.1f);
     initDisplay(display_width,display_height,"temp_title");
 
     
@@ -55,11 +54,14 @@ int init(){
 
     // game loop
     lastTime=SDL_GetTicks();
-    srand(10);
     while(!isclosed()){
         glm::vec3 temp_move = event();
         int current_time = SDL_GetTicks();
-        float deltaT = current_time/1000.0 - lastTime/1000.0;
+        float deltaT = current_time - lastTime;
+        deltaT/=1000.0f;
+        if(current_time%40==0){
+            printf("frame rate: %f FPS\n",1.0f/deltaT);
+        }
         lastTime=current_time;
 
         player_pos = GameWorld->tick(temp_move,deltaT);
@@ -89,32 +91,27 @@ void draw(){
        
 }
 glm::vec3 engineKeyboardEvent(char key,bool is_down){
-    glm::vec3 temp_trans;
+    glm::vec3 temp_trans=glm::vec3(0.0f,0.0f,0.0f);
     if(key==27){
         stopGame();
     }
     if(is_down){
         if(key=='w'){
-            temp_trans.z=walk_speed;
+            temp_trans.z=1.0f;
             //printf("w pressed\n");
         }
         if(key=='a')
-            temp_trans.x=-walk_speed;
+            temp_trans.x=-1.0f;
         if(key=='s')
-            temp_trans.z=-walk_speed;
+            temp_trans.z=-1.0f;
         if(key=='d')
-            temp_trans.x=walk_speed;
+            temp_trans.x=1.0f;
         if(key==32){
-            temp_trans.y=walk_speed;
+            temp_trans.y=1.0f;
         }
     }
     return temp_trans;
     //temp_trans.x*SDL_GetTicks()/1000;
-    int tickTime = SDL_GetTicks();
-    player_pos.x+=temp_trans.x*(tickTime-lastTime)/1000;
-    player_pos.y+=temp_trans.y*(tickTime-lastTime)/1000;
-    player_pos.z+=temp_trans.z*(tickTime-lastTime)/1000;
-    lastTime=tickTime;
 }
 
 void engineMouseEvent(int x_rel, int y_rel){

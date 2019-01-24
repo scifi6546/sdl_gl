@@ -20,6 +20,9 @@ main: main.cpp game_engine.cpp
 run:
 	$(MAKE) main
 	./out
+gpu:
+	$(MAKE) main
+	optirun ./out
 game_engine: game_engine.cpp
 	$(CC) -c $(CFLAGS) game_engine.cpp -o game_engine.o
 shader: shader.cpp
