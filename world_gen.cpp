@@ -2,6 +2,7 @@
 void world_gen::init_gen(){
 
 }
+int WATER_LEVEL=130;
 std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chunk
     std::vector<Block*> out;
     std::vector<int> height = getHeights(x,z);
@@ -19,7 +20,11 @@ std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chu
                 }else if(j<=t_h){
                     out.push_back(new Block(glm::vec3(i,j,k),GRASS));
                 }else{
-                    out.push_back(new Block(glm::vec3(i,j,k),AIR));
+                    if(j<=WATER_LEVEL){
+                        out.push_back(new Block(glm::vec3(i,j,k),WATER));
+                    }else{
+                        out.push_back(new Block(glm::vec3(i,j,k),AIR));
+                    }
                 }
             }
         }

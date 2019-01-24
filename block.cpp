@@ -430,6 +430,9 @@ void World::printChunkPos(){
 }
 BLOCK_TYPES World::getBlock(int x, int y, int z){
     int y_index = floor(y/chunkSize);
+    if(y>=chunkSize*numVertChunks||y<0){
+        return AIR;
+    }
 
     float temp = x-rootx;
     float tempCSize = chunkSize;
