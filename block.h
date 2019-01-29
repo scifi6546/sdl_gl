@@ -11,8 +11,8 @@ class BlockMesh{
         std::vector<Model> getModel();
         std::vector<Model> model;
 };
-enum BLOCK_TYPES{AIR,GRASS,ROCK,WATER};
-const int NUM_BLOCKS=3;
+enum BLOCK_TYPES{AIR,GRASS,ROCK,WATER,SNOW};
+const int NUM_BLOCKS=4;
 class Block{
     public:
         Block(glm::vec3 pos,BLOCK_TYPES blocktype);
@@ -61,7 +61,7 @@ class Chunk{
         std::vector<renderChunk*> miniChunks;
         std::vector<Block> cubes;
         glm::vec3 root_pos;
-
+        int isBlock = 0;//checks if there is any air in block if there is then int >=1
 
         
         //std::vector<RunTimeModel> renderedBlocks;

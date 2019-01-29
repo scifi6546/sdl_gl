@@ -55,7 +55,7 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
     bool XCol = pX!=p2X;
     bool YCol = pY!=p2Y;
     bool ZCol = pZ!=p2Z;
-    printf("Stored Velocity: x: %f y: %f z: %f\n",stored_velocity.x,stored_velocity.y,stored_velocity.z);
+    //printf("Stored Velocity: x: %f y: %f z: %f\n",stored_velocity.x,stored_velocity.y,stored_velocity.z);
     if(XCol || YCol || ZCol){
         BLOCK_TYPES temp = gameWorld->getBlock(p2X,p2Y,p2Z);
         if(temp!=AIR){
@@ -66,8 +66,8 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
                     player_pos.x = (float) p2X-collideDist;
                 }
                 stored_velocity.x=0.0f;
-                stored_velocity.y/=2.0f;
-                stored_velocity.z/=2.0f;
+                stored_velocity.y/=slideConst/deltaT;
+                stored_velocity.z/=slideConst/deltaT;
             }
             if(YCol){
                 if(pY>p2Y){
@@ -77,8 +77,8 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
                 }
                 stored_velocity.y = 0.0f;
 
-                stored_velocity.x/=2.0f;
-                stored_velocity.z/=2.0f;
+                stored_velocity.x/=slideConst/deltaT;
+                stored_velocity.z/=slideConst/deltaT;
             }
             if(ZCol){
                 if(pZ>p2Z){
@@ -89,10 +89,10 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
                 }
                 stored_velocity.z = 0.0f;
 
-                stored_velocity.x/=2.0f;
-                stored_velocity.y/=2.0f;
+                stored_velocity.x/=slideConst/deltaT;
+                stored_velocity.y/=slideConst/deltaT;
             }
-            printf("COLLIDED\n");
+            //printf("COLLIDED\n");
         }
     }
     return player_pos;

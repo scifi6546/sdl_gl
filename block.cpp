@@ -124,6 +124,7 @@ Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
 
     cubes.reserve(blocks.size());
     for(int i=0;i<blocks.size();i++){
+        this->isBlock+=blocks[i]->blockType;
         cubes.push_back(*blocks[i]);
     }
     models = initMesh(blockmesh.getModel());
@@ -131,6 +132,9 @@ Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
 }
 
 void Chunk::setMeshes(){
+    if(this->isBlock==0){
+        return;
+    }
     miniChunks.reserve((chunkSize/renderChunkSize)*
     (chunkSize/renderChunkSize)*(chunkSize/renderChunkSize));
 
@@ -146,6 +150,9 @@ void Chunk::setMeshes(){
     }
 }
 void Chunk::draw(){
+    if(this->isBlock==0){
+        return;
+    }
     //if(DEBUG)
     //printf("chunk drawed x=%f y=%f z=%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
     
@@ -155,6 +162,9 @@ void Chunk::draw(){
     }
 }
 BLOCK_TYPES Chunk::getBlock(int x, int y, int z){
+    if(this->isBlock==0){
+        return AIR;
+    }
     int root_x = round(this->root_pos.x);
     int root_y = round(this->root_pos.y);
     int root_z = round(this->root_pos.z);
