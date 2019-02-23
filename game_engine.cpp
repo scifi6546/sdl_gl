@@ -41,6 +41,7 @@ int init(){
 
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
+    textures.push_back("./textures/water.png");
     genTexture(textures);
     clearDisplay(0.0,.1,.6,1.0);
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);
@@ -66,6 +67,7 @@ int init(){
 
         player_pos = GameWorld->tick(temp_move,deltaT);
 
+        GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
     }
     delDisplay();
@@ -77,12 +79,13 @@ void draw(){
         glError = glGetError();
         clearDisplay(0.0,.1,.6,1.0);
          glError = glGetError();
-        bindTexture(0);
+        
         glError = glGetError();
        
         GameWorld->draw();
         updateDisplay();
         glError=glGetError();
+        
         if(glError!=0){
             printf("Error %i\n",glError);
         }

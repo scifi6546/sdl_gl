@@ -27,11 +27,7 @@ std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chu
                     
                 }else{
                     //fill lower heights with water
-                    if(j<=WATER_LEVEL){
-                        out.push_back(new Block(glm::vec3(i,j,k),WATER));
-                    }else{
-                        out.push_back(new Block(glm::vec3(i,j,k),AIR));
-                    }
+                    out.push_back(new Block(glm::vec3(i,j,k),AIR));
                 }
             }
         }

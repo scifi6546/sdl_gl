@@ -53,6 +53,8 @@ class Chunk{
         void setMeshes();
         void draw();
         BLOCK_TYPES getBlock(int x, int y, int z);
+        //sets block in chunk
+        void setBlock(int x, int y, int z, BLOCK_TYPES block);
         ~Chunk();
         glm::vec3 getRoot(){
             return this->root_pos;
@@ -74,6 +76,7 @@ class World{
         std::vector<std::vector<Chunk*>> loadedChunk;//outer vector is layers of inner layer
         std::vector<Chunk> testChunk;
         void draw();
+        void drawWater();
         World(glm::vec3 pos_in);
         glm::vec3 tick(glm::vec3 input_move,float delta_time);//delta time measured in seconds
         void shiftXp();//shifts chunk towards positive x
@@ -81,7 +84,10 @@ class World{
         void shiftZp();
         void shiftZm();
         BLOCK_TYPES getBlock(int x, int y, int z);//gets a block at x y z 
+        //sets the block at x,y,z to block
+        void setBlock(int x, int y, int z, BLOCK_TYPES block);
         void printChunkPos();
+
     private:
         glm::vec3 player_pos;
         int rootx=0;

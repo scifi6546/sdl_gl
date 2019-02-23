@@ -132,6 +132,9 @@ Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
 }
 
 void Chunk::setMeshes(){
+    if(miniChunks.size()>0){
+        miniChunks.clear();
+    }
     if(this->isBlock==0){
         return;
     }
@@ -180,6 +183,21 @@ BLOCK_TYPES Chunk::getBlock(int x, int y, int z){
     printf("POS NEEDED: x: %i y: %i z: %i POS GOT: %i\n",x,y,z,round(temp.pos.x));
     printf("root x: %i root y: %i root z: %i\n",root_x,root_y,root_z);
     return AIR;
+}
+void Chunk::setBlock(int x, int y, int z, BLOCK_TYPES block){
+    if(this->isBlock==0){
+        return;
+    }
+    int root_x = round(this->root_pos.x);
+    int root_y = round(this->root_pos.y);
+    int root_z = round(this->root_pos.z);
+
+    int x_index = (x-root_x)*chunkSize*chunkSize;
+    int y_index = (y-root_y)*chunkSize;
+    int z_index = (z-root_z);
+
+    this->cubes[x_index+y_index+z_index] =  Block(glm::vec3(x,y,z),block);
+    this->setMeshes();
 }
 Chunk::~Chunk(){
     miniChunks.clear();
@@ -334,6 +352,7 @@ World::World(glm::vec3 player_pos){
 }
 void World::draw(){
     //printf("drawn!!\n");
+    bindTexture(0);
     for(int i=0;i<loadedChunk.size();i++){
         for(int j =0;j<this->loadedChunk[i].size();j++){
             //printf("i: %i, j: %i\n",i,j);
@@ -341,7 +360,34 @@ void World::draw(){
             //this->testChunk[i].draw();
         }
     }
+    drawWater();
     
+}
+void World::drawWater(){
+    bindTexture(1);
+    Model waterModel;
+    waterModel.pos=std::vector<glm::vec3>(4);
+    waterModel.pos[0]=glm::vec3(-1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootx,
+        world_gen::WATER_LEVEL-0.01f,
+        -1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootz);
+    waterModel.pos[1]=glm::vec3(1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootx,
+        world_gen::WATER_LEVEL-0.01f,
+        -1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootz);
+    waterModel.pos[2]=glm::vec3(1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootx,
+        world_gen::WATER_LEVEL-0.01f,
+        1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootz);
+    waterModel.pos[3]=glm::vec3(-1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootx,
+        world_gen::WATER_LEVEL-0.01f,
+        1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootz);
+
+    
+    waterModel.indices={0,1,2,0,3,2};
+    waterModel.texCoord={glm::vec2(-1.0f,-1.0f),glm::vec2(1.0f,-1.0f),glm::vec2(1.0f,1.0f),glm::vec2(-1.0f,1.0f)};
+    waterModel.normal={glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f)};
+    std::vector<Model> temp={waterModel};
+    std::vector<RunTimeModel> tempRun = initMesh(temp);
+    drawMesh(tempRun[0],glm::vec3(0.0,0.0,0.0));
+   
 }
 glm::vec3 World::tick(glm::vec3 input_move, float delta_time){
     player_pos = physics::runFrame(player_pos,input_move,this,delta_time); 
@@ -456,4 +502,23 @@ BLOCK_TYPES World::getBlock(int x, int y, int z){
     Chunk* needed = 
         this->loadedChunk[y_index][x_index+z_index];
     return needed->getBlock(x,y,z);
+}
+void World::setBlock(int x, int y, int z, BLOCK_TYPES block){
+    int y_index = floor(y/chunkSize);
+    if(y>=chunkSize*numVertChunks||y<0){
+        return;
+    }
+
+    float temp = x-rootx;
+    float tempCSize = chunkSize;
+
+    int x_index = floor(temp/tempCSize)+CHUNK_RENDER_DIST; 
+    x_index=x_index*(2*CHUNK_RENDER_DIST+1);
+
+    float tempz = z-rootz;
+    int z_index = floor((tempz)/tempCSize)+CHUNK_RENDER_DIST;
+
+    Chunk* needed = 
+        this->loadedChunk[y_index][x_index+z_index];
+    needed->setBlock(x,y,z,block);
 }

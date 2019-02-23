@@ -11,11 +11,12 @@
 void Model::add(Model to_add,glm::vec3 pos){
     this->pos.reserve(this->pos.size()+to_add.pos.size());
     this->texCoord.reserve(this->texCoord.size()+to_add.texCoord.size());
+    int size = this->pos.size();
     for(int i =0;i<to_add.pos.size();i++){
         this->pos.push_back(to_add.pos[i]+pos);
         this->texCoord.push_back(to_add.texCoord[i]);
     }
-    int size = this->pos.size();
+
     for(int i =0;i<to_add.indices.size();i++){
         this->indices.push_back(to_add.indices[i]+size);
     }
