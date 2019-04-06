@@ -394,8 +394,8 @@ void World::drawWater(){
     drawMesh(tempRun[0],glm::vec3(0.0,0.0,0.0));
    
 }
-glm::vec3 World::tick(glm::vec3 input_move, float delta_time){
-    player_pos = physics::runFrame(player_pos,input_move,this,delta_time); 
+glm::vec3 World::tick(eventPacket eventin, float delta_time){
+    player_pos = physics::runFrame(player_pos,eventin.player_move,this,delta_time); 
     if(player_pos.x-rootx>=chunkSize){
         this->shiftXp();
     }
@@ -408,7 +408,23 @@ glm::vec3 World::tick(glm::vec3 input_move, float delta_time){
     if(player_pos.z-rootz<=-1*chunkSize){
         this->shiftZm();
     }
+    this->handleMouse(eventin);
     return player_pos;
+}
+void World::handleMouse(eventPacket in){
+    if(in.mouse==LEFT){
+        printf("clicked!\n");
+        std::vector<intVec3> look = physics::getLookPos(player_pos,in.thetaX,in.thetaY);
+        for(int i=0;i<look.size();i++){
+            BLOCK_TYPES block = this->getBlock(look[i]);
+            if(block!=AIR){
+                printf("block set\n");
+                setBlock(look[i],AIR);
+                return;
+            }
+        }
+    }
+    
 }
 void World::shiftXp(){
     printf("shifted X Plus");
@@ -508,6 +524,9 @@ BLOCK_TYPES World::getBlock(int x, int y, int z){
         this->loadedChunk[y_index][x_index+z_index];
     return needed->getBlock(x,y,z);
 }
+BLOCK_TYPES World::getBlock(intVec3 in){
+    return this->getBlock(in.x,in.y,in.z);
+}
 void World::setBlock(int x, int y, int z, BLOCK_TYPES block){
     int y_index = floor(y/chunkSize);
     if(y>=chunkSize*numVertChunks||y<0){
@@ -526,4 +545,7 @@ void World::setBlock(int x, int y, int z, BLOCK_TYPES block){
     Chunk* needed = 
         this->loadedChunk[y_index][x_index+z_index];
     needed->setBlock(x,y,z,block);
+}
+void World::setBlock(intVec3 in,BLOCK_TYPES block){
+    this->setBlock(in.x,in.y,in.z,block);
 }

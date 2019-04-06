@@ -80,3 +80,9 @@ void INT_look(){
     look_at=glm::lookAt(cam_pos,cam_pos+direction,glm::vec3(0.0f,1.0f,0.0f));
     sendLook(look_at);
 }
+float getThetaX(){
+    return thetax;
+}
+float getThetaY(){
+    return thetay;
+}

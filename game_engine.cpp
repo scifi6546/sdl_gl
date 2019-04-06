@@ -56,7 +56,7 @@ int init(){
     // game loop
     lastTime=SDL_GetTicks();
     while(!isclosed()){
-        glm::vec3 temp_move = event();
+        eventPacket frameEvent=event();
         int current_time = SDL_GetTicks();
         float deltaT = current_time - lastTime;
         deltaT/=1000.0f;
@@ -65,7 +65,7 @@ int init(){
         }
         lastTime=current_time;
 
-        player_pos = GameWorld->tick(temp_move,deltaT);
+        player_pos = GameWorld->tick(frameEvent,deltaT);
 
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();

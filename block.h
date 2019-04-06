@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "mesh.h"
+#include "event.h"
+#include "int_vec.h"
 const bool DEBUG=false;
 class BlockMesh{
     public:
@@ -78,17 +80,20 @@ class World{
         void draw();
         void drawWater();
         World(glm::vec3 pos_in);
-        glm::vec3 tick(glm::vec3 input_move,float delta_time);//delta time measured in seconds
+        glm::vec3 tick(eventPacket eventin,float delta_time);//delta time measured in seconds
         void shiftXp();//shifts chunk towards positive x
         void shiftXm();//shifts x towards negative x
         void shiftZp();
         void shiftZm();
         BLOCK_TYPES getBlock(int x, int y, int z);//gets a block at x y z 
+        BLOCK_TYPES getBlock(intVec3 in);
         //sets the block at x,y,z to block
         void setBlock(int x, int y, int z, BLOCK_TYPES block);
+        void setBlock(intVec3 in,BLOCK_TYPES block);
         void printChunkPos();
 
     private:
+        void handleMouse(eventPacket in);
         glm::vec3 player_pos;
         int rootx=0;
         int rootz=0;

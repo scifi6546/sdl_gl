@@ -7,4 +7,6 @@
 void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat far);
 void rotate_cam(float x_rot, float y_rot);
 void translateCam(glm::vec3 trans);
+float getThetaX();
+float getThetaY();
 #endif
