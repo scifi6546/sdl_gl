@@ -67,7 +67,7 @@ int init(){
 
         player_pos = GameWorld->tick(temp_move,deltaT);
 
-        GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
+        //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
     }
     delDisplay();

@@ -345,6 +345,11 @@ World::World(glm::vec3 player_pos){
                 //printf("x: %i y: %i z: %i\n",j,i,k);
                 this->loadedChunk[i].push_back(
                     new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
+                
+                for(int i=0;i<tempBlocks.size();i++){
+                    free(tempBlocks[i]);
+                }
+                
             }
         }
     }

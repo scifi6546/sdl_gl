@@ -21,6 +21,6 @@ void main(){
 
     //color=vec4(Pos,1.0);
     //color=texture(diffuse,texcoord0);
-    color=texture(diffuse,texcoord0)*vec4(color_light,1.0);
+    color=texture(diffuse,texcoord0)*vec4(color_light,1.0)*min(1/z_depth,1);
    // color=texture(diffuse,texcoord0);
 }

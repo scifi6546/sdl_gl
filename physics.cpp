@@ -97,3 +97,41 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
     }
     return player_pos;
 }
+intVec3 physics::getLookPos(glm::vec3 player_pos,float thetaX,float thetaY){
+    for(int i=0;i<look_dist;i++){
+        //calculating six planes
+        float x0;
+        float x1;
+
+        float y0;
+        float y1;
+        
+        float z0;
+        float z1;
+
+        float t;
+        //plane 0
+        t=(((float)-i +floor(player_pos.y))-player_pos.y)/sin(thetaX);
+        y0=sin(thetaX)*t+player_pos.y;
+        //plane 1
+        t=(((float)i+1+floor(player_pos.y))-player_pos.y)/sin(thetaX);
+        y1=sin(thetaX)*t+player_pos.y;
+
+        //plane 2
+        t=(((float)-i +floor(player_pos.x))-player_pos.x)/cos(thetaY);
+        x0=cos(thetaY)*t+player_pos.x;
+
+        //plane 3
+        t=(((float)i+1+floor(player_pos.x))-player_pos.x)/cos(thetaY);
+        x1=cos(thetaY)*t+player_pos.x;
+
+        //plane 4
+        t=(((float)-i +floor(player_pos.z))-player_pos.z)/sin(thetaY);
+        z0=sin(thetaY)*t+player_pos.z;
+
+        //plane 5
+        t=(((float)i+1+floor(player_pos.z))-player_pos.z)/sin(thetaY);
+        x1=sin(thetaY)*t+player_pos.z;
+        
+    }
+}
