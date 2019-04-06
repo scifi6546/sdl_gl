@@ -1,12 +1,12 @@
 #ifndef INTVEC
 #define INTVEC
 struct intVec2{
-    int x;
-    int y;
+    int x=0;
+    int y=0;
 };
 struct intVec3{
-    int x;
-    int y;
-    int z;
+    int x=0;
+    int y=0;
+    int z=0;
 };
 #endif

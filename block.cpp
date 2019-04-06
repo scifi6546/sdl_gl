@@ -420,7 +420,6 @@ void World::handleMouse(eventPacket in){
             if(block!=AIR){
                 printf("block set\n");
                 setBlock(look[i],AIR);
-                return;
             }
         }
     }

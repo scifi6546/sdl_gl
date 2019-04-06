@@ -97,6 +97,17 @@ glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * ga
     }
     return player_pos;
 }
+glm::vec3 camVector(float thetay,float thetax,glm::vec3 player_pos,float t){
+    glm::vec3 out;
+    out.x=-cos(thetay)*t + player_pos.x;
+    out.y=-sin(thetax)*t+player_pos.y;
+    out.z=-sin(thetay)*t+player_pos.z;
+    printf("t: %f\n",t);
+    printf("thetaX: %f thetay: %f\n",thetax,thetax);
+    printf("player_pos: x:%f y:%f z:%f\n",player_pos.x,player_pos.y,player_pos.z);
+    printf("out x:%f y:%f z:%f\n",out.x,out.y,out.z);
+    return out;
+}
 std::vector<intVec3> physics::getLookPos(glm::vec3 player_pos,float thetaX,float thetaY){
     std::vector<intVec3>out;
     out.reserve(look_dist);
@@ -104,44 +115,87 @@ std::vector<intVec3> physics::getLookPos(glm::vec3 player_pos,float thetaX,float
         intVec3 temp;
         out.push_back(temp);
         //calculating six planes
-        float x0;
-        float x1;
-
-        float y0;
-        float y1;
-        
-        float z0;
-        float z1;
-
         float t;
         //plane 0
-        t=(((float)-i +floor(player_pos.y))-player_pos.y)/-sin(thetaX);
-        if(t>0)
-            out[i].y=round(-sin(thetaX)*t+player_pos.y);
+        t=(((float)-i) +floor(player_pos.y)-player_pos.y)/-sin(thetaX);
+        printf("plane 0 t: %f\n",t);
+        if(t>0){
+            //out[i].y=round(-sin(thetaX)*t+player_pos.y);
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+             printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.x-player_pos.x)<(float)i+1.0f && abs(temp.z-player_pos.z)<(float)i+1.0f){
+                out[i].x=int(floor(temp.x));
+                out[i].y=int(floor(temp.y));
+                out[i].z=int(floor(temp.z));
+            }
+        }
+        
         //plane 1
-        t=(((float)i+1+floor(player_pos.y))-player_pos.y)/-sin(thetaX);
-        if(t>0)
-            out[i].y=round(-sin(thetaX)*t+player_pos.y);
-
+        t=(((float)i)+1.0f+floor(player_pos.y)-player_pos.y)/-sin(thetaX);
+        printf("plane 1 t: %f\n",t);
+        if(t>0){
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+            printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.x-player_pos.x)<(float)i+1.0f && abs(temp.z-player_pos.z)<(float)i+1.0f){
+                out[i].x=int(floor(temp.x));
+                out[i].y=int(floor(temp.y));
+                out[i].z=int(floor(temp.z));
+            }
+        }
+      
         //plane 2
-        t=(((float)-i +floor(player_pos.x))-player_pos.x)/-cos(thetaY);
-        if(t>0)
-            out[i].x=round(-cos(thetaY)*t+player_pos.x);
-
+        t=(((float)-i) +floor(player_pos.x)-player_pos.x)/-cos(thetaY);
+        printf("plane 2 t: %f\n",t);
+        if(t>0){
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+            printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.y-player_pos.y)<(float)i+1.0f && abs(temp.z-player_pos.z)<(float) i +1.0f){
+                out[i].x=int(floor(temp.x));
+                out[i].y=int(floor(temp.y));
+                out[i].z=int(floor(temp.z)); 
+            }
+        }
+     
         //plane 3
-        t=(((float)i+1+floor(player_pos.x))-player_pos.x)/-cos(thetaY);
-        if(t>0)
-            out[i].x=round(-cos(thetaY)*t+player_pos.x);
+        t=(((float)i)+1.0f+floor(player_pos.x)-player_pos.x)/-cos(thetaY);
+        printf("plane 3 t: %f\n",t);
+        if(t>0){
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+            printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.y-player_pos.y)<(float)i+1.0f && abs(temp.z-player_pos.z)<(float) i +1.0f){
+                out[i].x=int(floor(temp.x));
+                out[i].y=int(floor(temp.y));
+                out[i].z=int(floor(temp.z)); 
+            }
+        }
+           
 
         //plane 4
-        t=(((float)-i +floor(player_pos.z))-player_pos.z)/-sin(thetaY);
-        if(t>0)
-            out[i].z=round(-sin(thetaY)*t+player_pos.z);
+        t=(((float)-i) +floor(player_pos.z)-player_pos.z)/-sin(thetaY);
+        printf("plane 4 t: %f\n",t);
+        if(t>0){
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+            printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.x-player_pos.x)<(float)i+1.0f && abs(temp.y-player_pos.y)<(float) i +1.0f){
+                out[i].x=int(floor(temp.x));
+                out[i].y=int(floor(temp.y));
+                out[i].z=int(floor(temp.z)); 
+            }
+        }
 
         //plane 5
-        t=(((float)i+1+floor(player_pos.z))-player_pos.z)/-sin(thetaY);
-        if(t>0)
-            out[i].z=round(-sin(thetaY)*t+player_pos.z);
+        t=(((float)i)+1.0f+floor(player_pos.z)-player_pos.z)/-sin(thetaY);
+        printf("plane 5 t: %f\n",t);
+        if(t>0){
+            glm::vec3 temp = camVector(thetaY,thetaX,player_pos,t);
+            printf("temp x:%f y:%f z:%f\n",temp.x,temp.y,temp.z);
+            if(abs(temp.x-player_pos.x)<(float)i+1.0f && abs(temp.y-player_pos.y)<(float) i +1.0f){
+                out[i].x=(int) floor(temp.x);
+                out[i].y=(int) floor(temp.y);
+                out[i].z=(int) floor(temp.z); 
+            }
+        }
+        printf("out[%i] x:%i, y:%i, z: %i\n",i,out[i].x,out[i].y,out[i].z);
     }
     return out;
 }
