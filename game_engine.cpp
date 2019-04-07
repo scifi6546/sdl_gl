@@ -13,7 +13,7 @@
 #include "error.h"
 #include "game_const.h"
 #include "physics.h"
-        
+#include "entity.h"
 #include "render_manager.h"
 #include <unistd.h>
 #include <vector>
@@ -29,6 +29,7 @@ int glError=0;
 glm::vec3 player_pos;
 World *GameWorld;
 int lastTime = 0;
+Entity entity;
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
@@ -48,6 +49,7 @@ int init(){
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos);
+    entity=Entity(player_pos,GameWorld);
     sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     sun_color);
     glError = glGetError();
@@ -66,7 +68,7 @@ int init(){
         lastTime=current_time;
 
         player_pos = GameWorld->tick(frameEvent,deltaT);
-
+        entity.tick(deltaT);
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
     }
@@ -79,7 +81,7 @@ void draw(){
         glError = glGetError();
         clearDisplay(0.0,.1,.6,1.0);
          glError = glGetError();
-        
+        entity.draw();
         glError = glGetError();
        
         GameWorld->draw();

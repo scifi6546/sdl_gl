@@ -1,4 +1,5 @@
 #include "physics.h"
+using namespace physics;
 glm::vec3 stored_velocity=glm::vec3(0.0f,0.0f,0.0f);
 glm::vec3 physics::runFrame(glm::vec3 player_pos, glm::vec3 player_v, World * gameWorld, float deltaT){
     stored_velocity += player_v*playerMoveSpeed+physics::gravity;
@@ -198,4 +199,107 @@ std::vector<intVec3> physics::getLookPos(glm::vec3 player_pos,float thetaX,float
         printf("out[%i] x:%i, y:%i, z: %i\n",i,out[i].x,out[i].y,out[i].z);
     }
     return out;
+}
+physicsObj::physicsObj(){
+    printf("wrong physiscs constructor used\n");
+}
+physicsObj::physicsObj(World *in,glm::vec3 pos_in){
+    this->gameWorld=in;
+    this->pos = pos_in;
+}
+glm::vec3 physicsObj::tick(glm::vec3 accel,float deltaT){
+    this->storedVel+= accel+gravity;
+    //limits velocity
+    glm::vec3 tempmove = this->storedVel*deltaT;
+
+    if(tempmove.x>1){
+        this->storedVel.x=0.9/deltaT;
+    }
+    if(tempmove.x<-1){
+        this->storedVel.x=-0.9/deltaT;
+    }
+
+    if(tempmove.y>1){
+        this->storedVel.y=0.9/deltaT;
+    }
+    if(tempmove.y<-1){
+        this->storedVel.y=-0.9/deltaT;
+    }
+
+    if(tempmove.z>1){
+        this->storedVel.z=0.9/deltaT;
+    }
+    if(tempmove.z<-1){
+        this->storedVel.z=-0.9/deltaT;
+    }
+    int pX = floor(this->pos.x);
+    int pY = floor(this->pos.y);
+    int pZ = floor(this->pos.z);
+    float p2Xf,p2Yf,p2Zf;
+
+    this->pos = this->pos+this->storedVel*deltaT;
+
+    if(stored_velocity.x>0){
+        p2Xf = this->pos.x+this->storedVel.x*deltaT+collideDist;
+    }else{
+        p2Xf = this->pos.x+this->storedVel.x*deltaT-collideDist;
+    }
+    if(stored_velocity.y>0){
+        p2Yf=this->pos.y+this->storedVel.y*deltaT+collideDist;
+    }else{
+        p2Yf=this->pos.y+this->storedVel.y*deltaT-collideDist;
+    }
+    if(stored_velocity.z>0){
+        p2Zf=this->pos.z+this->storedVel.z*deltaT+collideDist;
+    }else{
+        p2Zf=this->pos.z+this->storedVel.z*deltaT-collideDist;
+    }
+
+    int p2X = floor(p2Xf);
+    int p2Y = floor(p2Yf);
+    int p2Z = floor(p2Zf);
+
+    bool XCol = pX!=p2X;
+    bool YCol = pY!=p2Y;
+    bool ZCol = pZ!=p2Z;
+    //printf("Stored Velocity: x: %f y: %f z: %f\n",stored_velocity.x,stored_velocity.y,stored_velocity.z);
+    if(XCol || YCol || ZCol){
+        BLOCK_TYPES temp = gameWorld->getBlock(p2X,p2Y,p2Z);
+        if(temp!=AIR){
+            if(XCol){
+                if(pX>p2X){
+                    this->pos.x = (float) pX+collideDist; 
+                }else{
+                    this->pos.x = (float) p2X-collideDist;
+                }
+                this->storedVel.x=0.0f;
+                this->storedVel.y/=slideConst/deltaT;
+                this->storedVel.z/=slideConst/deltaT;
+            }
+            if(YCol){
+                if(pY>p2Y){
+                    this->pos.y = (float) pY+collideDist;
+                }else{
+                    this->pos.y = (float) p2Y-collideDist;
+                }
+                this->storedVel.y = 0.0f;
+
+                this->storedVel.x/=slideConst/deltaT;
+                this->storedVel.z/=slideConst/deltaT;
+            }
+            if(ZCol){
+                if(pZ>p2Z){
+                    this->pos.z = (float) pZ+collideDist;
+                }
+                else{
+                    this->pos.z = (float) p2Z-collideDist;
+                }
+                this->storedVel.z = 0.0f;
+                this->storedVel.x/=slideConst/deltaT;
+                this->storedVel.y/=slideConst/deltaT;
+            }
+            //printf("COLLIDED\n");
+        }
+    }
+    return this->pos;
 }

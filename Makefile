@@ -9,6 +9,7 @@ main: main.cpp game_engine.cpp
 	$(MAKE) world_gen
 	$(MAKE) render_manager
 	$(MAKE) physics
+	$(MAKE) entity
 	$(CC) -c $(CFLAGS) display.cpp -o display.o
 	$(CC) -c $(CFLAGS) texture.cpp -o texture.o
 	$(CC) -c $(CFLAGS) mesh.cpp -o mesh.o
@@ -16,7 +17,7 @@ main: main.cpp game_engine.cpp
 	$(CC) -c $(CFLAGS) camera.cpp -o camera.o
 	$(CC) -c $(CFLAGS) event.cpp -o event.o
 	$(CC) -c $(CFLAGS) block.cpp -o block.o
-	$(CC) $(CFLAGS) main.o game_engine.o shader.o loadfile.o display.o mesh.o texture.o stb_image.o camera.o event.o block.o world_gen.o render_manager.o physics.o -o out $(LIBS)
+	$(CC) $(CFLAGS) main.o game_engine.o shader.o entity.o loadfile.o display.o mesh.o texture.o stb_image.o camera.o event.o block.o world_gen.o render_manager.o physics.o -o out $(LIBS)
 run:
 	$(MAKE) main
 	./out
@@ -35,6 +36,8 @@ render_manager:
 	$(CC) -c $(CFLAGS) render_manager.cpp -o render_manager.o
 physics:
 	$(CC) -c $(CFLAGS) physics.cpp -o physics.o
+entity:
+	$(CC) -c $(CFLAGS) entity.cpp -o entity.o
 debug:
 	$(MAKE) main
 	gdb out
