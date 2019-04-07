@@ -23,6 +23,7 @@ class Model{
                 
                 
         }
+        Model(std::string in);
         void add(Model to_add,glm::vec3 pos);
         Model(){
 
