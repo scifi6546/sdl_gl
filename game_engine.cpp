@@ -51,7 +51,7 @@ int init(){
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos);
-    entity=Entity(player_pos,GameWorld);
+    entity=Entity(glm::vec3(0.1f,120.0f,0.1f),GameWorld);
     player = Player(player_pos,GameWorld);
     sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     sun_color);

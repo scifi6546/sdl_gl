@@ -37,10 +37,10 @@ class renderChunk{
 };
 extern BlockMesh blockmesh; //mesh containing all faces of block
 extern std::vector<RunTimeModel>models;
-const int chunkSize=64;
-const int renderChunkSize = chunkSize/4;//renderChunkSize has to equal chunk size I do not know why
-const int CHUNK_RENDER_DIST=2;
-const int numVertChunks = 4;//height of vertical chunks
+const int chunkSize=16;
+const int renderChunkSize = chunkSize;//renderChunkSize has to equal chunk size I do not know why
+const int CHUNK_RENDER_DIST=16;
+const int numVertChunks = 6;//height of vertical chunks
 class Chunk{
     public:
         Chunk(std::vector<Block*> blocks,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows
