@@ -353,6 +353,7 @@ World::World(glm::vec3 player_pos){
             }
         }
     }
+    //phyObj=physics::physicsObj(this,player_pos);
     
 }
 void World::draw(){
@@ -395,7 +396,8 @@ void World::drawWater(){
    
 }
 glm::vec3 World::tick(eventPacket eventin, float delta_time){
-    player_pos = physics::runFrame(player_pos,eventin.player_move,this,delta_time); 
+    //player_pos=this->phyObj.tick(eventin.player_move,delta_time);
+    //player_pos = physics::runFrame(player_pos,eventin.player_move,this,delta_time); 
     if(player_pos.x-rootx>=chunkSize){
         this->shiftXp();
     }
@@ -408,8 +410,9 @@ glm::vec3 World::tick(eventPacket eventin, float delta_time){
     if(player_pos.z-rootz<=-1*chunkSize){
         this->shiftZm();
     }
-    this->handleMouse(eventin);
-    return player_pos;
+    //this->handleMouse(eventin);
+    return glm::vec3(0.0f,0.0f,0.0f);
+    //return player_pos;
 }
 void World::handleMouse(eventPacket in){
     if(in.mouse==LEFT){

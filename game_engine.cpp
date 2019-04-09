@@ -14,6 +14,7 @@
 #include "game_const.h"
 #include "physics.h"
 #include "entity.h"
+#include "player.h"
 #include "render_manager.h"
 #include <unistd.h>
 #include <vector>
@@ -30,6 +31,7 @@ glm::vec3 player_pos;
 World *GameWorld;
 int lastTime = 0;
 Entity entity;
+Player player;
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
@@ -50,6 +52,7 @@ int init(){
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos);
     entity=Entity(player_pos,GameWorld);
+    player = Player(player_pos,GameWorld);
     sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     sun_color);
     glError = glGetError();
@@ -66,8 +69,8 @@ int init(){
             printf("frame rate: %f FPS\n",1.0f/deltaT);
         }
         lastTime=current_time;
-
-        player_pos = GameWorld->tick(frameEvent,deltaT);
+        player_pos=player.tick(deltaT,frameEvent);
+        GameWorld->tick(frameEvent,deltaT);
         entity.tick(deltaT);
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
