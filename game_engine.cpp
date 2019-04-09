@@ -70,7 +70,7 @@ int init(){
         }
         lastTime=current_time;
         player_pos=player.tick(deltaT,frameEvent);
-        GameWorld->tick(frameEvent,deltaT);
+        GameWorld->tick(frameEvent,deltaT,player_pos);
         entity.tick(deltaT);
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();

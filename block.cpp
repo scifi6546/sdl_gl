@@ -24,92 +24,115 @@ BlockMesh::BlockMesh(){
     std::vector<glm::vec3> normal;
     normal.reserve(6);
 //face 0
-    pos.push_back(glm::vec3(0,0,0));
-    pos.push_back(glm::vec3(1,0,0));
-    pos.push_back(glm::vec3(1,1,0));
-    pos.push_back(glm::vec3(0,1,0));
+    pos={
+        glm::vec3(0,0,0),
+        glm::vec3(1,0,0),
+        glm::vec3(1,1,0),
+        glm::vec3(0,1,0)};
 
-    texcoord.push_back(glm::vec2(0,0));
-    texcoord.push_back(glm::vec2(1,0));
-    texcoord.push_back(glm::vec2(1,1));
-    texcoord.push_back(glm::vec2(0,1));
-
-    normal.push_back(glm::vec3(0,0,-1));
-    normal.push_back(glm::vec3(0,0,-1));
-    normal.push_back(glm::vec3(0,0,-1));
-    normal.push_back(glm::vec3(0,0,-1));
+    texcoord={
+        glm::vec2(0,0),
+        glm::vec2(1,0),
+        glm::vec2(1,1),
+        glm::vec2(0,1)};
+    normal={
+        glm::vec3(0,0,-1),
+        glm::vec3(0,0,-1),
+        glm::vec3(0,0,-1),
+        glm::vec3(0,0,-1)};
 
     indicies={0,1,2,0,3,2};
     model.push_back(Model(pos,texcoord,indicies,normal));
-
+    
     //face 1
-    pos[0]=glm::vec3(1,0,0);
-    pos[1]=glm::vec3(1,0,1);
-    pos[2]=glm::vec3(1,1,1);
-    pos[3]=glm::vec3(1,1,0);
-
-    normal[0]=glm::vec3(1,0,0);
-    normal[1]=glm::vec3(1,0,0);
-    normal[2]=glm::vec3(1,0,0);
-    normal[3]=glm::vec3(1,0,0);
+    pos={
+        glm::vec3(1,0,0),
+        glm::vec3(1,0,1),
+        glm::vec3(1,1,1),
+        glm::vec3(1,1,0) 
+    };
+    
+    normal={
+        glm::vec3(1,0,0),
+        glm::vec3(1,0,0),
+        glm::vec3(1,0,0),
+        glm::vec3(1,0,0)
+    };
     
 
     indicies={0,1,2,0,3,2};
     model.push_back(Model(pos,texcoord,indicies,normal));
 
     //face 2
-    pos[0]=glm::vec3(1,0,1);
-    pos[1]=glm::vec3(0,0,1);
-    pos[2]=glm::vec3(0,1,1);
-    pos[3]=glm::vec3(1,1,1);
-
+    pos={
+        glm::vec3(1,0,1),
+        glm::vec3(0,0,1),
+        glm::vec3(0,1,1),
+        glm::vec3(1,1,1) 
+    };
+    normal={
+        glm::vec3(0,0,1),
+        glm::vec3(0,0,1),
+        glm::vec3(0,0,1),
+        glm::vec3(0,0,1)
+    };
     indicies={0,1,2,0,3,2};
-    normal[0]=glm::vec3(0,0,1);
-    normal[1]=glm::vec3(0,0,1);
-    normal[2]=glm::vec3(0,0,1);
-    normal[3]=glm::vec3(0,0,1);
+    
 
     model.push_back(Model(pos,texcoord,indicies,normal));
 
     //face 3
-    pos[0]=glm::vec3(0,0,1);
-    pos[1]=glm::vec3(0,0,0);
-    pos[2]=glm::vec3(0,1,0);
-    pos[3]=glm::vec3(0,1,1);
-
+    pos={
+        glm::vec3(0,0,1),
+        glm::vec3(0,0,0),
+        glm::vec3(0,1,0),
+        glm::vec3(0,1,1)
+    };
+    normal={
+        glm::vec3(-1,0,0),
+        glm::vec3(-1,0,0),
+        glm::vec3(-1,0,0),
+        glm::vec3(-1,0,0)
+    };
     indicies={0,1,2,0,3,2};
-    normal[0]=glm::vec3(-1,0,0);
-    normal[1]=glm::vec3(-1,0,0);
-    normal[2]=glm::vec3(-1,0,0);
-    normal[3]=glm::vec3(-1,0,0);
+
     model.push_back(Model(pos,texcoord,indicies,normal));
 
     //face 4
-    pos[0]=glm::vec3(1,1,0);
-    pos[1]=glm::vec3(1,1,1);
-    pos[2]=glm::vec3(0,1,1);
-    pos[3]=glm::vec3(0,1,0);
+    pos={
+        glm::vec3(1,1,0),
+        glm::vec3(1,1,1),
+        glm::vec3(0,1,1),
+        glm::vec3(0,1,0)
+    };
 
+    normal={
+        glm::vec3(0,1,0),
+        glm::vec3(0,1,0),
+        glm::vec3(0,1,0),
+        glm::vec3(0,1,0)
+    };
     indicies={0,1,2,0,3,2};
 
-    normal[0]=glm::vec3(0,1,0);
-    normal[1]=glm::vec3(0,1,0);
-    normal[2]=glm::vec3(0,1,0);
-    normal[3]=glm::vec3(0,1,0);
+
     model.push_back(Model(pos,texcoord,indicies,normal));
 
     //face 5
-    pos[0]=glm::vec3(1,0,0);
-    pos[1]=glm::vec3(1,0,1);
-    pos[2]=glm::vec3(0,0,1);
-    pos[3]=glm::vec3(0,0,0);
-
+    pos={
+        glm::vec3(1,0,0),
+        glm::vec3(1,0,1),
+        glm::vec3(0,0,1),
+        glm::vec3(0,0,0)
+    };
+    normal={
+        glm::vec3(0,-1,0),
+        glm::vec3(0,-1,0),
+        glm::vec3(0,-1,0),
+        glm::vec3(0,-1,0)
+    };
     indicies={0,1,2,0,3,2};
 
-    normal[0]=glm::vec3(0,-1,0);
-    normal[1]=glm::vec3(0,-1,0);
-    normal[2]=glm::vec3(0,-1,0);
-    normal[3]=glm::vec3(0,-1,0);
+
     model.push_back(Model(pos,texcoord,indicies,normal));
     
 
@@ -395,7 +418,8 @@ void World::drawWater(){
     drawMesh(tempRun[0],glm::vec3(0.0,0.0,0.0));
    
 }
-glm::vec3 World::tick(eventPacket eventin, float delta_time){
+void World::tick(eventPacket eventin, float delta_time,glm::vec3 player_pos){
+    this->player_pos=player_pos;
     //player_pos=this->phyObj.tick(eventin.player_move,delta_time);
     //player_pos = physics::runFrame(player_pos,eventin.player_move,this,delta_time); 
     if(player_pos.x-rootx>=chunkSize){
@@ -410,10 +434,8 @@ glm::vec3 World::tick(eventPacket eventin, float delta_time){
     if(player_pos.z-rootz<=-1*chunkSize){
         this->shiftZm();
     }
-    //this->handleMouse(eventin);
-    return glm::vec3(0.0f,0.0f,0.0f);
-    //return player_pos;
 }
+/*
 void World::handleMouse(eventPacket in){
     if(in.mouse==LEFT){
         printf("clicked!\n");
@@ -428,6 +450,7 @@ void World::handleMouse(eventPacket in){
     }
     
 }
+*/
 void World::shiftXp(){
     printf("shifted X Plus");
     rootx+=chunkSize;

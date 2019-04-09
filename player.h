@@ -9,7 +9,9 @@ class Player{
         Player(glm::vec3 pos_in,World *world_in);
         glm::vec3 tick(float deltaT,eventPacket e);
         glm::vec3 getPos();
+
     private:
+        void handleMouse(eventPacket in);
         glm::vec3 pos;
         World *world;
         physics::physicsObj physObj;

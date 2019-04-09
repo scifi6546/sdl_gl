@@ -81,7 +81,7 @@ class World{
         void draw();
         void drawWater();
         World(glm::vec3 pos_in);
-        glm::vec3 tick(eventPacket eventin,float delta_time);//delta time measured in seconds
+        void tick(eventPacket eventin,float delta_time,glm::vec3 player_pos);//delta time measured in seconds
         void shiftXp();//shifts chunk towards positive x
         void shiftXm();//shifts x towards negative x
         void shiftZp();
@@ -94,7 +94,7 @@ class World{
         void printChunkPos();
 
     private:
-        void handleMouse(eventPacket in);
+        //void handleMouse(eventPacket in);
         glm::vec3 player_pos;
         int rootx=0;
         int rootz=0;
