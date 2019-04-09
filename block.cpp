@@ -8,11 +8,6 @@
 
 std::vector<RunTimeModel>models;
 BlockMesh blockmesh;
-
-Block::Block(glm::vec3 pos,BLOCK_TYPES blocktype){
-    this->pos = pos;
-    this->blockType = blocktype;
-}
 BlockMesh::BlockMesh(){
     model.reserve(1);
     std::vector<glm::vec3> pos;
@@ -141,14 +136,13 @@ BlockMesh::BlockMesh(){
 std::vector<Model> BlockMesh::getModel(){
     return model;
 }
-Chunk::Chunk(std::vector<Block*> blocks,glm::vec3 root_pos){
+Chunk::Chunk(std::vector<BLOCK_TYPES> &blocks,glm::vec3 root_pos){
     //printf("%f,%f,%f\n",root_pos.x,root_pos.y,root_pos.z);
     this->root_pos=root_pos;
-
     cubes.reserve(blocks.size());
+    this->cubes = std::vector<BLOCK_TYPES>(blocks);
     for(int i=0;i<blocks.size();i++){
-        this->isBlock+=blocks[i]->blockType;
-        cubes.push_back(*blocks[i]);
+        this->isBlock+=(int) blocks[i];
     }
     models = initMesh(blockmesh.getModel());
     this->setMeshes();
@@ -169,8 +163,7 @@ void Chunk::setMeshes(){
             for(int k=0;k<chunkSize;k+=renderChunkSize){//z
                 //renderChunk temp = renderChunk(cubes,i,j,k,this->root_pos);
                 //miniChunks.push_back(temp);
-                std::vector<Block> temp(cubes);
-                miniChunks.push_back(new renderChunk(temp,i,j,k,this->root_pos));
+                miniChunks.push_back(new renderChunk((&this->cubes),i,j,k,this->root_pos));
             }
         }
     }
@@ -198,14 +191,7 @@ BLOCK_TYPES Chunk::getBlock(int x, int y, int z){
     int x_index = (x-root_x)*chunkSize*chunkSize;
     int y_index = (y-root_y)*chunkSize;
     int z_index = (z-root_z);
-    Block temp = this->cubes[x_index+y_index+z_index];
-    if(round(temp.pos.x)==x && round(temp.pos.y)==y && round(temp.pos.z)==z){
-        return temp.blockType;
-    }
-    printf("ERROR WRONG POS!!!\n");
-    printf("POS NEEDED: x: %i y: %i z: %i POS GOT: %i\n",x,y,z,round(temp.pos.x));
-    printf("root x: %i root y: %i root z: %i\n",root_x,root_y,root_z);
-    return AIR;
+    return  this->cubes[x_index+y_index+z_index];
 }
 void Chunk::setBlock(int x, int y, int z, BLOCK_TYPES block){
     if(this->isBlock==0){
@@ -219,21 +205,23 @@ void Chunk::setBlock(int x, int y, int z, BLOCK_TYPES block){
     int y_index = (y-root_y)*chunkSize;
     int z_index = (z-root_z);
 
-    this->cubes[x_index+y_index+z_index] =  Block(glm::vec3(x,y,z),block);
+    this->cubes[x_index+y_index+z_index] = block;
     this->setMeshes();
 }
 Chunk::~Chunk(){
-    miniChunks.clear();
+    for(int i =0;i<miniChunks.size();i++){
+        delete miniChunks[i];
+    }
     cubes.clear();
     std::cout<<"chunk deleted\n";
 }
-renderChunk::renderChunk(std::vector<Block> blocks,int x_start,
+renderChunk::renderChunk(std::vector<BLOCK_TYPES> *blocks,int x_start,
             int y_start,int z_start,glm::vec3 root_pos){//root_pos is the inner lower right corner of the 
             
             this->root_pos=root_pos;                                                  //render chunk  
             updateChunk(blocks,x_start,y_start,z_start);
 }
-void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,int z_start){
+void renderChunk::updateChunk(std::vector<BLOCK_TYPES> *blocks,int x_start,int y_start,int z_start){
     //printf("root_pos: x:%f, y:%f z:%f\n",this->root_pos.x,this->root_pos.y,this->root_pos.z);
     int x,y,z;
     Model tempmodel;
@@ -251,61 +239,61 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
                     blockBounds[l]=0;
                 }
                 if(k!=0){//cheching face 0;
-                    if(blocks[x+y+z-1].blockType==AIR &&blocks[x+y+z].blockType!=AIR){
+                    if((*blocks)[x+y+z-1]==AIR &&(*blocks)[x+y+z]!=AIR){
                         blockBounds[0]=1;
                     }
-                } else if(blocks[x+y+z].blockType!=AIR){
+                } else if((*blocks)[x+y+z]!=AIR){
                         blockBounds[0]=1;
                 }               
 
                 if(i<chunkSize-1){ //checking face 1
-                    if(blocks[(i+1)*chunkSize*chunkSize+y+z]
-                        .blockType ==AIR && blocks[x+y+z].blockType!=AIR)
+                    if((*blocks)[(i+1)*chunkSize*chunkSize+y+z] ==AIR 
+                    && (*blocks)[x+y+z]!=AIR)
                         blockBounds[1]=1;
-                }else if(blocks[x+y+z].blockType!=AIR){
+                }else if((*blocks)[x+y+z]!=AIR){
                     blockBounds[1]=1;
                 }
                     
                     //checking face 2
                 if(k!=chunkSize-1){
-                    if(blocks[x+y+z+1].blockType == AIR
-                        && blocks[x+y+z].blockType!=AIR){
+                    if((*blocks)[x+y+z+1] == AIR
+                        && (*blocks)[x+y+z]!=AIR){
                         blockBounds[2]=1;
                     
                     }
-                }else if(blocks[x+y+z].blockType!=AIR){
+                }else if((*blocks)[x+y+z]!=AIR){
                     blockBounds[2]=1;
                 }
 
                     //checking face 3
                 if(i!=0){
-                    if(blocks[(i-1)*chunkSize*
-                        chunkSize+y+z].blockType==AIR
-                        &&blocks[x+y+z].blockType!=AIR){
+                    if((*blocks)[(i-1)*chunkSize*
+                        chunkSize+y+z]==AIR
+                        &&(*blocks)[x+y+z]!=AIR){
                         blockBounds[3]=1;
                     }
-                }else if(blocks[x+y+z].blockType!=AIR){
+                }else if((*blocks)[x+y+z]!=AIR){
                     blockBounds[3]=1;
                 }
 
                 //checking face 4
                 if(j<chunkSize-1){
-                    if(blocks[x+(j+1)*chunkSize+z].blockType==AIR
-                    && blocks[x+y+z].blockType!=AIR){
+                    if((*blocks)[x+(j+1)*chunkSize+z]==AIR
+                    && (*blocks)[x+y+z]!=AIR){
                         blockBounds[4]=1;
                     }
-                }else if(blocks[x+y+z].blockType!=AIR){
+                }else if((*blocks)[x+y+z]!=AIR){
                     blockBounds[4]=1;
                 }
 
                     //checking face 5
                 if(j>0){
-                    if(blocks[x+(j-1)*chunkSize+z].blockType==AIR
-                    &&blocks[x+y+z].blockType!=AIR){
+                    if((*blocks)[x+(j-1)*chunkSize+z]==AIR
+                    &&(*blocks)[x+y+z]!=AIR){
                         blockBounds[5]=1;
                         
                     }
-                }else if(blocks[x+y+z].blockType!=AIR){
+                }else if((*blocks)[x+y+z]!=AIR){
                     blockBounds[5]=1;
                 }
                 
@@ -317,8 +305,8 @@ void renderChunk::updateChunk(std::vector<Block> blocks,int x_start,int y_start,
                         float x0=lf/6.0;
                         float x1=lf/6.0+1.0/6.0;
 
-                        float y0=((float) (blocks[x+y+z].blockType-1))/(float) NUM_BLOCKS;
-                        float y1=((float)blocks[x+y+z].blockType-1)/NUM_BLOCKS+1.0/(float)NUM_BLOCKS;
+                        float y0=((float) ((*blocks)[x+y+z]-1))/(float) NUM_BLOCKS;
+                        float y1=((float)((*blocks)[x+y+z]-1))/NUM_BLOCKS+1.0/(float)NUM_BLOCKS;
                         temp.texCoord[0]=glm::vec2(x0,y0);
                         temp.texCoord[1]=glm::vec2(x1,y0);
                         temp.texCoord[2]=glm::vec2(x1,y1);
@@ -354,7 +342,6 @@ renderChunk::~renderChunk(){
     printf("Render Chunk Deleted!\n");
     std::vector<RunTimeModel> temp = {this->chunkModel};
     deleteMesh(temp);
-    this->blockLocations.clear();
 }
 World::World(glm::vec3 player_pos){
     this->player_pos=player_pos;
@@ -364,14 +351,11 @@ World::World(glm::vec3 player_pos){
         this->loadedChunk.push_back(t);
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){//x
             for(int k = -CHUNK_RENDER_DIST;k<=CHUNK_RENDER_DIST;k++){//z
-            std::vector<Block*> tempBlocks = world_gen::getChunk(j*chunkSize,i*chunkSize,k*chunkSize);
+            std::vector<BLOCK_TYPES> tempBlocks = world_gen::getChunk(j*chunkSize,i*chunkSize,k*chunkSize);
                 //printf("x: %i y: %i z: %i\n",j,i,k);
                 this->loadedChunk[i].push_back(
                     new Chunk(tempBlocks,glm::vec3( j*chunkSize,i*chunkSize,k*chunkSize)));
                 
-                for(int i=0;i<tempBlocks.size();i++){
-                    free(tempBlocks[i]);
-                }
                 
             }
         }
@@ -460,7 +444,7 @@ void World::shiftXp(){
         this->loadedChunk[i].erase(this->loadedChunk[i].begin(),
         this->loadedChunk[i].begin()+2*CHUNK_RENDER_DIST+1);
         for(int j =-CHUNK_RENDER_DIST;j<=CHUNK_RENDER_DIST;j++){
-            std::vector<Block*> temp=world_gen::getChunk(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize);
+            std::vector<BLOCK_TYPES> temp=world_gen::getChunk(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize);
             this->loadedChunk[i].push_back(new Chunk(temp,glm::vec3(rootx+(CHUNK_RENDER_DIST)*chunkSize,i*chunkSize,rootz+j*chunkSize)));
         }
     }
@@ -474,7 +458,7 @@ void World::shiftXm(){
     for(int i=0;i<loadedChunk.size();i++){
         this->loadedChunk[i].erase(this->loadedChunk[i].end()-(2*CHUNK_RENDER_DIST+1),this->loadedChunk[i].end());
         for(int j =CHUNK_RENDER_DIST;j>=-1*CHUNK_RENDER_DIST;j--){
-            std::vector<Block*> temp=world_gen::getChunk(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize);
+            std::vector<BLOCK_TYPES> temp=world_gen::getChunk(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize);
             this->loadedChunk[i].insert(this->loadedChunk[i].begin(),
                 new Chunk(temp,glm::vec3(rootx-CHUNK_RENDER_DIST*chunkSize,i*chunkSize,rootz+j*chunkSize)));
         }
@@ -491,7 +475,7 @@ void World::shiftZp(){
             this->loadedChunk[i].erase(this->loadedChunk[i].begin()+erase_index);
             int insert_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1)+2*CHUNK_RENDER_DIST;
 
-            std::vector<Block*> temp=world_gen::getChunk(rootx+j*chunkSize,i*chunkSize,
+            std::vector<BLOCK_TYPES> temp=world_gen::getChunk(rootx+j*chunkSize,i*chunkSize,
                 rootz+(CHUNK_RENDER_DIST)*chunkSize);
                         
             this->loadedChunk[i].insert(this->loadedChunk[i].begin()+insert_index,
@@ -510,7 +494,7 @@ void World::shiftZm(){
             int erase_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1)+2*CHUNK_RENDER_DIST;
             this->loadedChunk[i].erase(this->loadedChunk[i].begin()+erase_index);
             int insert_index=(j+CHUNK_RENDER_DIST)*(2*CHUNK_RENDER_DIST+1);
-            std::vector<Block*> temp=world_gen::getChunk(rootx+j*chunkSize,
+            std::vector<BLOCK_TYPES> temp=world_gen::getChunk(rootx+j*chunkSize,
                 i*chunkSize,rootz-CHUNK_RENDER_DIST*chunkSize);
 
             this->loadedChunk[i].insert(this->loadedChunk[i].begin()+insert_index,

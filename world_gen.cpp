@@ -2,8 +2,8 @@
 void world_gen::init_gen(){
 
 }
-std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chunk
-    std::vector<Block*> out;
+std::vector<BLOCK_TYPES> world_gen::getChunk(int x,int y, int z){//gets blocks of chunk
+    std::vector<BLOCK_TYPES> out;
     std::vector<int> height = getHeights(x,z);
     out.reserve(chunkSize*chunkSize*chunkSize);
     float temp;
@@ -15,19 +15,19 @@ std::vector<Block*> world_gen::getChunk(int x,int y, int z){//gets blocks of chu
             int t_h=temp;
            // printf("temp: %f t_h: %i \n",temp,t_h);
                 if(j<=t_h-2){
-                    out.push_back(new Block(glm::vec3(i,j,k),ROCK));
+                    out.push_back(ROCK);
                 }else if(j<=t_h){
                     //decide whether ot not to place grass or snow
                     if(j<SNOW_LEVEL)
-                        out.push_back(new Block(glm::vec3(i,j,k),GRASS));
+                        out.push_back(GRASS);
                     else
                     {
-                        out.push_back(new Block(glm::vec3(i,j,k),SNOW));
+                        out.push_back(SNOW);
                     }
                     
                 }else{
                     //fill lower heights with water
-                    out.push_back(new Block(glm::vec3(i,j,k),AIR));
+                    out.push_back(AIR);
                 }
             }
         }

@@ -9,7 +9,7 @@ namespace world_gen{
     const int WATER_LEVEL=130;
     const int SNOW_LEVEL=160;
     void init_gen();//initilizes world generator
-    std::vector<Block*> getChunk(int x,int y, int z);//gets blocks of chunk
+    std::vector<BLOCK_TYPES> getChunk(int x,int y, int z);//gets blocks of chunk
     std::vector<int>  getHeights(int x,int z);//gets heights of blocks
     int getNoise(int x,int z,float scale);//gets noise at a point
     float prng(int x,int y);//returns number between 1 and -1;

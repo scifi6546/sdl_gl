@@ -16,7 +16,6 @@ glm::vec3 Player::tick(float deltaT,eventPacket e){
     temp_move.z*=0.2f;
     this->pos=physObj.tick(temp_move,deltaT);
     this->handleMouse(e);
-    printf("this->pos: %f,%f,%f\n",this->pos.x,this->pos.y,this->pos.z);
     return this->pos;
 }
 glm::vec3 Player::getPos(){
