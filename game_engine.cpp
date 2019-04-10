@@ -30,8 +30,8 @@ int glError=0;
 glm::vec3 player_pos;
 World *GameWorld;
 int lastTime = 0;
-Entity entity;
 Player player;
+std::vector<Entity> entitys;
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
@@ -51,7 +51,11 @@ int init(){
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos);
-    entity=Entity(glm::vec3(0.1f,120.0f,0.1f),GameWorld);
+    entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld));
+    entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld));
+    entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld));
+    entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld));
+    
     player = Player(player_pos,GameWorld);
     sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     sun_color);
@@ -71,7 +75,9 @@ int init(){
         lastTime=current_time;
         player_pos=player.tick(deltaT,frameEvent);
         GameWorld->tick(frameEvent,deltaT,player_pos);
-        entity.tick(deltaT);
+        for(int i =0;i<entitys.size();i++){
+            entitys[i].tick(deltaT);
+        }
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
     }
@@ -84,7 +90,9 @@ void draw(){
         glError = glGetError();
         clearDisplay(0.0,.1,.6,1.0);
          glError = glGetError();
-        entity.draw();
+        for(int i =0;i<entitys.size();i++){
+        entitys[i].draw();
+        }
         glError = glGetError();
        
         GameWorld->draw();

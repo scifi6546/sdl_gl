@@ -13,6 +13,7 @@ out vec4 color;
 uniform mat4 camera;
 //out vec4 color;
 void main(){
+    vec3 sky_color=vec3(0.8,0.8,0.8);
     vec3 lightDir = normalize(sun_pos-Pos);
     float diff = dot(Normal,lightDir);
     vec3 diffuse_light=diff*sun_color*sun_intensity;
@@ -21,6 +22,6 @@ void main(){
 
     //color=vec4(Pos,1.0);
     //color=texture(diffuse,texcoord0);
-    color=texture(diffuse,texcoord0)*vec4(color_light,1.0);
+    color=texture(diffuse,texcoord0)*vec4(color_light,1.0)*min(50/(z_depth),1)*vec4(sky_color,1.0);
    // color=texture(diffuse,texcoord0);
 }

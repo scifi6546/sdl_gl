@@ -14,8 +14,8 @@ class BlockMesh{
         std::vector<Model> getModel();
         std::vector<Model> model;
 };
-enum BLOCK_TYPES{AIR,GRASS,ROCK,WATER,SNOW};
-const int NUM_BLOCKS=4;
+enum BLOCK_TYPES: unsigned short{AIR,GRASS,ROCK,WATER,SNOW,TEMP_NUM_BLOCKS};
+const int NUM_BLOCKS=TEMP_NUM_BLOCKS-1;
 class Block{
     public:
         Block(glm::vec3 pos,BLOCK_TYPES blocktype);
