@@ -14,6 +14,14 @@ float thetax;
 float thetay;
 float PI=3.14159265358979323846264338327;
 
+//camera constants
+
+GLfloat game_cam_fov;//game field of vision
+GLfloat game_cam_width;//game screen width
+GLfloat game_cam_height;//game screen height
+GLfloat game_cam_near;//game neear clipping plane
+GLfloat game_cam_far;//game far clipping plane
+
 void INT_look();
 
 //converts glm::mat4 to std::string inorder to make printing easier
@@ -29,12 +37,20 @@ std::string makeString(glm::mat4 in){
 }
 
 void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat far){
+    game_cam_fov=fov;
+    game_cam_width=width;
+    game_cam_height=height;
+    game_cam_near=near;
+    game_cam_far=far;
+
     thetax=0.0f;
     thetay=PI/2.0;
     translate=glm::mat4(1.0f);
     look_at=glm::mat4(1.0f);
     cam_pos = glm::vec3(0.0f,0.0f,0.0f);
     printf("fov = %f , width = %f, height = %f, near = %f, far = %f\n",fov,width,height,near,far);
+    useGameCam();
+    /*
     projection=glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(fov),width/height,near,far);
 
@@ -46,7 +62,7 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
 
     INT_look();
     printf("look at = \n%s",makeString(look_at).c_str());
-
+    */
 }
 void rotate_cam(float x_rot, float y_rot){
     thetax+=x_rot;
@@ -85,4 +101,24 @@ float getThetaX(){
 }
 float getThetaY(){
     return thetay;
+}
+void useGameCam(){
+      projection=glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(game_cam_fov),
+        game_cam_width/game_cam_height,game_cam_near,game_cam_far);
+
+    printf("projection \n%s",makeString(projection).c_str());
+    sendCamera(projection);
+    translate = glm::translate(translate,glm::vec3(0.0f,0.0f,0.0f));
+    printf("translate \n%s",makeString(translate).c_str());
+    sendTranslate(translate);
+
+    INT_look();
+    printf("look at = \n%s",makeString(look_at).c_str());
+}
+void useFrameCam(){
+    glm::mat4 projection = glm::mat4(1.0f);
+
+    projection = glm::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+    
 }

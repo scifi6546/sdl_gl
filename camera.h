@@ -9,4 +9,11 @@ void rotate_cam(float x_rot, float y_rot);
 void translateCam(glm::vec3 trans);
 float getThetaX();
 float getThetaY();
+
+
+void useGameCam();//use game world camera
+
+//Not Implelented:
+void useFrameCam();//use frame buffer camera
+
 #endif

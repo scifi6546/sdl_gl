@@ -4,6 +4,7 @@
 #include "mesh.h"
 #include "event.h"
 #include "texture.h"
+#include "camera.h"
 unsigned int frameBufferFBO;
 unsigned int frameBufferTex;//depth map texture
 unsigned int mainBufferFBO;
@@ -82,7 +83,7 @@ void rManager::init(){
 }
 void rManager::drawFrame(){
     
-    rManager::bindFBO(gameWorld);
+    //rManager::bindFBO(gameWorld);
     error = glGetError();
   
     //clearDisplay(0.0,.1,.6,1.0);

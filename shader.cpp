@@ -17,7 +17,12 @@ GLuint ambient_i_pos;
 GLuint sun_pos_pos;
 GLuint sun_intensity_pos;
 GLuint sun_c_pos;
+int initGameShader();
+int initBufferShader();
 int shaderInit(){
+    return initGameShader();
+}
+int initGameShader(){
     std::string filename = "./shaders/shader";
     program=glCreateProgram();
     glError = glGetError();
@@ -59,8 +64,6 @@ int shaderInit(){
     printf("translate_uni_pos = %i\n",translate_uni_pos);
     printf("look_uni_pos = %i\n",look_uni_pos);
     printf("program:%i\n",shaders[0]);
-
-    return 0;
 }
 int checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage){
         GLint success = 0;
