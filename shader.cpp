@@ -21,11 +21,18 @@ namespace gameShader{
     GLuint sun_c_pos;
 }
 namespace bufferShader{
-
+    static const unsigned int NUM_SHADERS=2;
+    GLuint program;
+    GLuint shaders[NUM_SHADERS];
+    GLuint cameraMat_pos;
 }
 
 int initGameShader();
 int initBufferShader();
+
+void deleteGameShader();
+void deleteBufferShader();
+
 int shaderInit(){
     return initGameShader();
 }
@@ -52,7 +59,7 @@ int initGameShader(){
     status = checkShaderError(gameShader::program,GL_VALIDATE_STATUS,true,"program failed to validate");
     if(status!=0)
         return status;
-    bind();
+    deleteGameShader();
     glError=glGetError();  
     //setting uniforms
     gameShader::camera_uni_pos =  glGetUniformLocation(gameShader::program,"camera");
@@ -71,7 +78,37 @@ int initGameShader(){
     printf("look_uni_pos = %i\n",gameShader::look_uni_pos);
     printf("program:%i\n",gameShader::shaders[0]);
 }
+int initBufferShader(){
+    std::string filename = "./shaders/buffer_shader";
+    bufferShader::program=glCreateProgram();
+    glError = glGetError();
+    std::string file = loadFile(filename + ".vs");
+    bufferShader::shaders[0] = createShader(file,GL_VERTEX_SHADER);
+    file = loadFile(filename + ".fs");
+    bufferShader::shaders[1] = createShader(file,GL_FRAGMENT_SHADER);
+    for(unsigned int i=0;i<bufferShader::NUM_SHADERS;i++){
+        glAttachShader(bufferShader::program,bufferShader::shaders[i]);
+    }
+    glBindAttribLocation(bufferShader::program,0,"position");
+    glBindAttribLocation(bufferShader::program,1,"texcoord");
+    glLinkProgram(bufferShader::program);
+    int status;
+    status = checkShaderError(bufferShader::program,GL_LINK_STATUS,true,"Error: Program failed to link");
+    if(status!=0)
+        return status;
 
+    glValidateProgram(bufferShader::program);
+    status = checkShaderError(bufferShader::program,GL_VALIDATE_STATUS,true,"program failed to validate");
+    if(status!=0)
+        return status;
+    deleteBufferShader();
+    glError=glGetError();  
+    //setting uniforms
+    bufferShader::cameraMat_pos=glGetUniformLocation(bufferShader::program,"camera");
+
+    glError=glGetError();
+    printf("program:%i\n",gameShader::shaders[0]);
+}
 int checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage){
         GLint success = 0;
     GLchar error[1024] = { 0 };
@@ -136,8 +173,14 @@ void setTexture(int unit){
         printf("error %i\n",glError);
     }
 }
-
-void bind(){
+void deleteBufferShader(){
+    for(unsigned int i=0;i<bufferShader::NUM_SHADERS;i++){
+        glDetachShader(bufferShader::program,bufferShader::shaders[i]);
+        glDeleteShader(bufferShader::shaders[i]);
+    }
+     glUseProgram(bufferShader::program);
+}
+void deleteGameShader(){
     for(unsigned int i=0;i<gameShader::NUM_SHADERS;i++){
         glDetachShader(gameShader::program,gameShader::shaders[i]);
         glDeleteShader(gameShader::shaders[i]);
