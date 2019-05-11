@@ -32,6 +32,12 @@ World *GameWorld;
 int lastTime = 0;
 Player player;
 std::vector<Entity> entitys;
+int getHeight(){
+    return display_height;
+}
+int getWidth(){
+    return display_width;
+}
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
@@ -41,7 +47,7 @@ int init(){
 
     shaderInit();
     initCam(60.0,display_width,display_height,.01,500);
-
+    rManager::init();
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
@@ -63,8 +69,10 @@ int init(){
     //drawMeshCopies(cube_pos);
 
     // game loop
-    lastTime=SDL_GetTicks();
+    lastTime=SDL_GetTicks();//glError right here ?? does not make any sense
+    glError=glGetError();
     while(!isclosed()){
+        glError=glGetError();
         eventPacket frameEvent=event();
         int current_time = SDL_GetTicks();
         float deltaT = current_time - lastTime;
@@ -73,6 +81,8 @@ int init(){
             printf("frame rate: %f FPS\n",1.0f/deltaT);
         }
         lastTime=current_time;
+
+        glError=glGetError();
         player_pos=player.tick(deltaT,frameEvent);
         GameWorld->tick(frameEvent,deltaT,player_pos);
         for(int i =0;i<entitys.size();i++){
@@ -80,6 +90,8 @@ int init(){
         }
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         rManager::drawFrame();
+        glError = glGetError();
+        printf("at end??\n");
     }
     delDisplay();
     return 0;
@@ -88,23 +100,26 @@ void draw(){
 	
     translateCam(player_pos);
         glError = glGetError();
-        clearDisplay(0.0,.1,.6,1.0);
-         glError = glGetError();
+        
         for(int i =0;i<entitys.size();i++){
         entitys[i].draw();
         }
-        glError = glGetError();
        
         GameWorld->draw();
-        updateDisplay();
+        
         glError=glGetError();
         
         if(glError!=0){
             printf("Error %i\n",glError);
         }
-        resetMouse(display_width,display_height);
+        
         //temp_chunk.draw();
        
+}
+void draw_temps(){
+    for(int i =0;i<entitys.size();i++){
+        entitys[i].draw();
+    }
 }
 glm::vec3 engineKeyboardEvent(char key,bool is_down){
     glm::vec3 temp_trans=glm::vec3(0.0f,0.0f,0.0f);

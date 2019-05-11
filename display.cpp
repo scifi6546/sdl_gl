@@ -16,17 +16,17 @@ int initDisplay(int width, int height,std::string title){
     SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,32);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
 
+
     win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
     SDL_WINDOWPOS_CENTERED,width,height,SDL_WINDOW_OPENGL);
     context=SDL_GL_CreateContext(win);
     const char* error;
-    //error = SDL_GetError();
-    /*
+    error = SDL_GetError();
+    
     if(error!=NULL)
         printf("SDL INIT error: %s", error);
     else
         printf("no error: %s",error);
-        */
     SDL_Init(SDL_INIT_EVERYTHING);
 
     GLenum status = glewInit();
