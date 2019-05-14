@@ -5,6 +5,7 @@
 #include "event.h"
 #include "texture.h"
 #include "camera.h"
+#include "shader.h"
 unsigned int frameBufferFBO;
 unsigned int frameBufferTex;//depth map texture
 unsigned int mainBufferFBO;
@@ -83,7 +84,8 @@ void rManager::init(){
 }
 void rManager::drawFrame(){
     
-    //rManager::bindFBO(gameWorld);
+    rManager::bindFBO(gameWorld);
+    useGameShader();
     error = glGetError();
   
     //clearDisplay(0.0,.1,.6,1.0);
@@ -92,11 +94,14 @@ void rManager::drawFrame(){
     draw();
     //glGetIntegerv(GL_FRAMEBUFFER_BINDING,&temp);
     //printf("bound buffer (after rendering): %i\n",temp);
+    
     error = glGetError();
     if(error)
         printf("ERROR!\n\n\n");
     
     glBindFramebuffer(GL_FRAMEBUFFER,0);
+    useBufferShader();
+    useFrameCam();
     bindTexture(gameWorld.COLOR_MAP);
     drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
     resetMouse(getWidth(),getHeight());

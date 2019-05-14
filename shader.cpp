@@ -34,6 +34,7 @@ void deleteGameShader();
 void deleteBufferShader();
 
 int shaderInit(){
+    initBufferShader();
     return initGameShader();
 }
 int initGameShader(){
@@ -109,6 +110,12 @@ int initBufferShader(){
     glError=glGetError();
     printf("program:%i\n",gameShader::shaders[0]);
 }
+void useGameShader(){
+    glUseProgram(gameShader::program);
+}
+void useBufferShader(){
+    glUseProgram(bufferShader::program);
+}
 int checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage){
         GLint success = 0;
     GLchar error[1024] = { 0 };
@@ -164,6 +171,9 @@ void sendAmbient(glm::vec3 color,GLfloat intensity,glm::vec3 sun_pos,GLfloat sun
     glUniform1f(gameShader::sun_intensity_pos,sun_intensity);
     glUniform3f(gameShader::sun_pos_pos,sun_pos.x,sun_pos.y,sun_pos.z);
     glUniform3f(gameShader::sun_c_pos,sun_color.x,sun_color.y,sun_color.z);
+}
+void sendCamMatBuffer(glm::mat4 in){
+    glUniformMatrix4fv(bufferShader::cameraMat_pos,1,GL_FALSE,glm::value_ptr(in));
 }
 void setTexture(int unit){
     //printf("unit = %i\n",unit);
