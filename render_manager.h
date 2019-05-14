@@ -8,9 +8,9 @@
 namespace rManager{
     const unsigned int shadow_width = 1024, shadow_height=1024;
     //initilizes frame buffer object
-    FBO makeFBO();
+    render_target makeFBO();
     //binds a frame buffer object struct
-    void bindFBO(FBO in);
+    void bindFBO(render_target in);
     //initilizes render manager
     void init();
     //draws frame called every frame draw
