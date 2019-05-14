@@ -103,7 +103,7 @@ void rManager::drawFrame(){
     useBufferShader();
     useFrameCam();
     bindTexture(gameWorld.COLOR_MAP);
-    drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
+    drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
     resetMouse(getWidth(),getHeight());
     updateDisplay();
     error=glGetError();

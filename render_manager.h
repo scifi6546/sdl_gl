@@ -2,14 +2,9 @@
 #define RENDER_MANAGER_H
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-/*
-    Struct that stores frame buffer object info
-*/
-struct FBO{
-    unsigned int FBO_OJECT=0;
-    unsigned int DEPTH_MAP=0;
-    unsigned int COLOR_MAP=0;
-};
+#include "render_target.h"
+
+
 namespace rManager{
     const unsigned int shadow_width = 1024, shadow_height=1024;
     //initilizes frame buffer object
