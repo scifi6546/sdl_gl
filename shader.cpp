@@ -3,7 +3,7 @@
 #include "error.h"
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-
+const GLsizei uni_name_size=16;
 namespace gameShader{
     static const unsigned int NUM_SHADERS=2;
     GLuint program;
@@ -32,7 +32,60 @@ int initBufferShader();
 
 void deleteGameShader();
 void deleteBufferShader();
+enum SHADER_TYPE{VERTEX_SHADER,FRAGMENT_SHADER};
+void createShaderT(std::vector<std::string> file_names,render_target &target){
+    std::vector<GLuint> shaders;
+    target.program=glCreateProgram();
+    for(int i =0;i<file_names.size();i++){
+        std::string shader_text=loadFile(file_names[i]);
+        GLuint temp_shader;
+        if(i==VERTEX_SHADER){
+            temp_shader=createShader(shader_text,GL_VERTEX_SHADER);
+        }else if(i==FRAGMENT_SHADER){
+            temp_shader=createShader(shader_text,GL_FRAGMENT_SHADER);
+        }
+        glAttachShader(target.program,temp_shader);
 
+        
+    }
+
+    glLinkProgram(target.program);
+
+    glValidateProgram(gameShader::program);
+    
+    int status = checkShaderError(gameShader::program,GL_VALIDATE_STATUS,true,"program failed to validate");
+
+    //getting attributes
+    GLchar name[uni_name_size];
+    GLint num_attrs=0;
+    glGetProgramiv(target.program,GL_ACTIVE_ATTRIBUTES,&num_attrs);
+    for(int i=0;i<num_attrs;i++){
+        GLsizei name_length;//length of name
+        GLint size;//size of variable
+        GLenum type;//type of variable
+        glGetActiveAttrib(target.program,(GLuint) i,uni_name_size,&name_length,&size,&type,name);
+        struct attribute attr_temp;
+        attr_temp.name = std::string(name,name_length);
+        attr_temp.location=glGetAttribLocation(target.program,attr_temp.name.c_str());
+        attr_temp.type=type;
+        target.Attributes.push_back(attr_temp);
+    }
+
+    GLint num_unis=0;
+    //getting uniforms
+    glGetProgramiv(target.program,GL_ACTIVE_UNIFORMS,&num_unis);
+    for(int i=0;i<num_unis;i++){
+        GLsizei name_length;//length of name
+        GLint size;//size of variable
+        GLenum type;//type of variable
+        glGetActiveUniform(target.program,(GLuint) i,uni_name_size,&name_length,&size,&type,name);
+        struct uniform uni_temp;
+        uni_temp.name = std::string(name,name_length);
+        uni_temp.location=glGetUniformLocation(target.program,uni_temp.name.c_str());
+        uni_temp.type=type;
+        target.Unis.push_back(uni_temp);
+    }
+}
 int shaderInit(){
     initBufferShader();
     return initGameShader();
