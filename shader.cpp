@@ -86,6 +86,29 @@ void createShaderT(std::vector<std::string> file_names,render_target &target){
         target.Unis.push_back(uni_temp);
     }
 }
+
+void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
+    for(int i =0;i<program.Unis.size();i++){
+        if(name.compare(program.Unis[i].name)){
+            glUniformMatrix4fv(program.Unis[i].location,1,GL_FALSE,glm::value_ptr(mat_in));
+        }
+    }
+}
+void sendVec3(const std::string name,const glm::vec3 vec3_in,const render_target program){
+    for(int i =0;i<program.Unis.size();i++){
+        if(name.compare(program.Unis[i].name)){
+            glUniform3f(program.Unis[i].location,vec3_in.x,vec3_in.y,vec3_in.z);
+        }
+    }
+}
+void sendGLfloat(const std::string name,const GLfloat float_in,const render_target program){
+    for(int i =0;i<program.Unis.size();i++){
+        if(name.compare(program.Unis[i].name)){
+            glUniform1f(program.Unis[i].location,float_in);
+        }
+    }
+}
+
 int shaderInit(){
     initBufferShader();
     return initGameShader();

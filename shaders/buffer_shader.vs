@@ -7,7 +7,7 @@ out vec2 texcoord0;
 out vec3 Normal;
 out vec3 Pos;
 uniform mat4 camera;
-
+uniform mat4 translate;
 void main(){
     gl_Position=camera*translate*vec4(position,1.0);
     Pos = position;
