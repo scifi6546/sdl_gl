@@ -253,7 +253,7 @@ void sendCamMatBuffer(glm::mat4 in){
 }
 void setTexture(int unit){
     //printf("unit = %i\n",unit);
-    //glUniform1i(gameShader::image_uni_pos,unit);
+    glUniform1i(gameShader::image_uni_pos,unit);
     glError = glGetError();
     if(glError!=0){
         printf("error %i\n",glError);

@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "error.h"
 #include <vector>
+#include "render_target.h"
 GLuint *texture;
 int num_textures;
 void genTexture(std::vector<std::string> filename)
@@ -60,9 +61,9 @@ void bindTexture(unsigned int unit)
 {
     //printf("unit = %i",unit);
     //assert(unit >= 0 && unit <= 31);
-    glActiveTexture(GL_TEXTURE0 + unit);
+    glActiveTexture(GL_TEXTURE0);
     glError= glGetError();
-    glBindTexture(GL_TEXTURE_2D, texture[unit]);
+    glBindTexture(GL_TEXTURE_2D, unit);
     glError= glGetError();
     setTexture(unit);
     glError= glGetError();
