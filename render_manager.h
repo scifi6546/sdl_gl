@@ -8,9 +8,18 @@
 void initRender();
 //draws frame called every frame draw
 void drawFrame();
+/*
+NOT TESTED OR IMPLEMENTED
+sends the camera position (world coordinates) to the rendering engine 
+*/
+void sendCameraPos(glm::vec3 position);
+
+/*
+NOT TESTED OR IMPLEMENTED
+Sends the camera look to the rendering engine
+*/
+void sendCameraLook(float thetax,float thetay);
 //private functions
-
-
 namespace rManager{
     const unsigned int shadow_width = 1024, shadow_height=1024;
     //initilizes frame buffer object and modifies in
