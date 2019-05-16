@@ -3,19 +3,21 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "render_target.h"
+const int display_height = 800;
+const int display_width = 1000;
 //public functions
 //initilizes render manager
 void initRender();
 //draws frame called every frame draw
 void drawFrame();
 /*
-NOT TESTED OR IMPLEMENTED
+NOT TESTED
 sends the camera position (world coordinates) to the rendering engine 
 */
 void sendCameraPos(glm::vec3 position);
 
 /*
-NOT TESTED OR IMPLEMENTED
+NOT TESTED
 Sends the camera look to the rendering engine
 */
 void sendCameraLook(float thetax,float thetay);

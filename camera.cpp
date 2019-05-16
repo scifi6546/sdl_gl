@@ -65,7 +65,22 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     */
 }
 void rotate_cam(float x_rot, float y_rot){
-    thetax+=x_rot;
+    glm::vec3 direction;
+    direction.x = -cos(y_rot);
+    direction.y = -sin(x_rot);
+    direction.z = -sin(y_rot);
+    /*
+    float x = -cos(thetay);
+    float y = -sin(thetax);
+    float z = -sin(thetay);
+    */
+    
+    //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
+    //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
+    look_at=glm::lookAt(cam_pos,cam_pos+direction,glm::vec3(0.0f,1.0f,0.0f));
+    sendLook(look_at);
+    return;
+    /*thetax+=x_rot;
     thetay+=y_rot;
     if(thetay>=2*PI){
         thetay-=2*PI;
@@ -74,9 +89,10 @@ void rotate_cam(float x_rot, float y_rot){
     }if(thetax<=-PI/2){
         thetax=-PI/2;
     }
-    INT_look();
+    INT_look();*/
 }
 void translateCam(glm::vec3 trans){
+
     cam_pos=trans;
     INT_look();
 }

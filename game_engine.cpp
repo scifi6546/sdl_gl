@@ -16,6 +16,7 @@
 #include "entity.h"
 #include "player.h"
 #include "render_manager.h"
+#include "camera_out.h"
 #include <unistd.h>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,14 +25,14 @@ float walk_speed = 1.0f;
 SDL_Thread* input;
 float mouse_move_speed = 0.005f;
 std::vector<char> keys_pressed;
-int display_height = 800;
-int display_width = 1000;
+
 int glError=0;
 glm::vec3 player_pos;
 World *GameWorld;
 int lastTime = 0;
 Player player;
 std::vector<Entity> entitys;
+Camera gameCam=Camera(glm::vec3(0.0,0.0,0.0),0.0,0.0);
 int getHeight(){
     return display_height;
 }
@@ -41,13 +42,7 @@ int getWidth(){
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
-    initDisplay(display_width,display_height,"temp_title");
-
     
-
-    shaderInit();
-    initCam(60.0,display_width,display_height,.01,500);
-    initRender();
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
@@ -97,23 +92,23 @@ int init(){
     return 0;
 }
 void draw(){
-	
-    translateCam(player_pos);
-        glError = glGetError();
-        
-        for(int i =0;i<entitys.size();i++){
-        entitys[i].draw();
-        }
-       
-        GameWorld->draw();
-        
-        glError=glGetError();
-        
-        if(glError!=0){
-            printf("Error %i\n",glError);
-        }
-        
-        //temp_chunk.draw();
+	sendCameraPos(player_pos);
+
+    glError = glGetError();
+    
+    for(int i =0;i<entitys.size();i++){
+    entitys[i].draw();
+    }
+   
+    GameWorld->draw();
+    
+    glError=glGetError();
+    
+    if(glError!=0){
+        printf("Error %i\n",glError);
+    }
+    
+    //temp_chunk.draw();
        
 }
 void draw_temps(){

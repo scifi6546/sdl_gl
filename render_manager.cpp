@@ -76,6 +76,14 @@ render_target bufferWorld;//Buffer shader
 void initRender(){
     //unsigned int *inFBO = new unsigned int[2];
     //glGenFramebuffers(2,inFBO);
+    initDisplay(display_width,display_height,"temp_title");
+
+    
+
+    shaderInit();
+    initCam(60.0,display_width,display_height,.01,500);
+    initRender();
+    
     createShaderT({"shaders/shader.vs","shaders/shader.fs"},gameWorld);
     createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},bufferWorld);
     rManager::makeFBO(gameWorld);
@@ -111,4 +119,10 @@ void drawFrame(){
     resetMouse(getWidth(),getHeight());
     updateDisplay();
     error=glGetError();
+}
+void sendCameraPos(glm::vec3 position){
+    translateCam(position);
+}
+void sendCameraLook(float thetax,float thetay){
+    rotate_cam(thetax,thetay);
 }
