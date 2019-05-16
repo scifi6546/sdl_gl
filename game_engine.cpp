@@ -42,7 +42,7 @@ int getWidth(){
 int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
-    
+    gameCam.setPos(player_pos);
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
@@ -79,6 +79,7 @@ int init(){
 
         glError=glGetError();
         player_pos=player.tick(deltaT,frameEvent);
+        gameCam.setPos(player_pos);
         GameWorld->tick(frameEvent,deltaT,player_pos);
         for(int i =0;i<entitys.size();i++){
             entitys[i].tick(deltaT);
@@ -92,7 +93,7 @@ int init(){
     return 0;
 }
 void draw(){
-	sendCameraPos(player_pos);
+    gameCam.sendToRender();
 
     glError = glGetError();
     
@@ -141,5 +142,5 @@ glm::vec3 engineKeyboardEvent(char key,bool is_down){
 }
 
 void engineMouseEvent(int x_rel, int y_rel){
-    rotate_cam(y_rel*mouse_move_speed,x_rel*mouse_move_speed);
+    gameCam.moveCam(x_rel,y_rel);
 }
