@@ -26,14 +26,14 @@ Sends mat4 to uniform specified by name. Uses program in render_target
 void sendMat4(const std::string name, glm::mat4 mat_in,
     render_target program);
 /*
-NOT IMPLEMENTED OR TESTED
+NOT TESTED
 sends vec3 to uniform specified by name. Uses program in render_target
 */
 void sendVec3(const std::string name,const glm::vec3 vec3_in,
     const render_target in);
 
 /*
-NOT IMPLEMENTED OR TESTED
+NOT TESTED
 sends GLfloat to uniform specified by name. uses program in render_target
 */
 void sendGLfloat(const std::string name,const GLfloat float_in,
