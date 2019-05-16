@@ -72,22 +72,25 @@ void rManager::bindFBO(render_target in){
     //printf("bound buffer (after binding): %i ",in);
 }
 render_target gameWorld;//game world will be rendered to here
-void rManager::init(){
+render_target bufferWorld;//Buffer shader
+void initRender(){
     //unsigned int *inFBO = new unsigned int[2];
     //glGenFramebuffers(2,inFBO);
-    createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},gameWorld);
+    createShaderT({"shaders/shader.vs","shaders/shader.fs"},gameWorld);
+    createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},bufferWorld);
     rManager::makeFBO(gameWorld);
     std::vector<RunTimeModel> in = initMesh({buffer});
     buffer_model=in[0];
     error = glGetError();
     
 }
-void rManager::drawFrame(){
+void drawFrame(){
     
     rManager::bindFBO(gameWorld);
-    useGameShader();
+    //useGameShader();
     error = glGetError();
   
+    useShader(gameWorld);
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
@@ -100,7 +103,8 @@ void rManager::drawFrame(){
         printf("ERROR!\n\n\n");
     
     glBindFramebuffer(GL_FRAMEBUFFER,0);
-    useBufferShader();
+    useShader(bufferWorld);
+    //useBufferShader();
     useFrameCam();
     bindTexture(gameWorld.bufer_object.COLOR_MAP);
     drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));

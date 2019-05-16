@@ -47,10 +47,10 @@ void sendAmbient(glm::vec3 color,GLfloat intensity,
     glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
 void sendCamMatBuffer(glm::mat4 in);
 
-void useGameShader();//uses the game world shaders
+//void useGameShader();//uses the game world shaders
 void useBufferShader();//activates the frame buffer shaders
 
-//NOT IMPLEMENTED OR TESTED!!!!!
+//NOT TESTED!!!!!
 void useShader(render_target target);//uses shader specified in render_target
 void bindGameShader();
 void bindBufferShader();
