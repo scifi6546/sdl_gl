@@ -86,7 +86,9 @@ void createShaderT(std::vector<std::string> file_names,render_target &target){
         target.Unis.push_back(uni_temp);
     }
 }
-
+void useShader(render_target target){
+    glUseProgram(target.program);
+}
 void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
     for(int i =0;i<program.Unis.size();i++){
         if(name.compare(program.Unis[i].name)){

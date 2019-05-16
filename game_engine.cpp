@@ -47,7 +47,7 @@ int init(){
 
     shaderInit();
     initCam(60.0,display_width,display_height,.01,500);
-    rManager::init();
+    initRender();
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
@@ -89,7 +89,7 @@ int init(){
             entitys[i].tick(deltaT);
         }
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
-        rManager::drawFrame();
+        drawFrame();
         glError = glGetError();
         printf("at end??\n");
     }

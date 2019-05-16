@@ -3,6 +3,12 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "render_target.h"
+//public functions
+//initilizes render manager
+void initRender();
+//draws frame called every frame draw
+void drawFrame();
+//private functions
 
 
 namespace rManager{
@@ -11,9 +17,5 @@ namespace rManager{
     void makeFBO(render_target &in);
     //binds a frame buffer object struct
     void bindFBO(render_target in);
-    //initilizes render manager
-    void init();
-    //draws frame called every frame draw
-    void drawFrame();
 }
 #endif
