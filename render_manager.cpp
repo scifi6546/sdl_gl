@@ -82,7 +82,6 @@ void initRender(){
 
     shaderInit();
     initCam(60.0,display_width,display_height,.01,500);
-    initRender();
     
     createShaderT({"shaders/shader.vs","shaders/shader.fs"},gameWorld);
     createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},bufferWorld);
@@ -114,7 +113,9 @@ void drawFrame(){
     useShader(bufferWorld);
     //useBufferShader();
     useFrameCam();
-    bindTexture(gameWorld.bufer_object.COLOR_MAP);
+    //bindTexture(0,gameWorld,"diffuse");
+    bindTexture(gameWorld.bufer_object.COLOR_MAP,gameWorld,"diffuse");
+    //bindTexture(gameWorld.bufer_object.COLOR_MAP);
     drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
     resetMouse(getWidth(),getHeight());
     updateDisplay();

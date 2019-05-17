@@ -40,6 +40,7 @@ int getWidth(){
     return display_width;
 }
 int init(){
+    initRender();
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
     gameCam.setPos(player_pos);
