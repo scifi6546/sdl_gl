@@ -137,18 +137,6 @@ void bindTexture(unsigned int unit)
         printf("glError %i\n", glError);
     }
 }
-void bindTexture(const unsigned int texture,
-    const render_target buffer,
-    const std::string image_sampler_name){
-        GLuint location = glGetUniformLocation(buffer.program,
-            image_sampler_name.c_str());
-        glActiveTexture(GL_TEXTURE0+location);
-
-        //binds texture
-        glBindTexture(GL_TEXTURE_2D,texture);
-        glError = glGetError();
-}
-
 void bindTexture(const Texture to_bind,
     const render_target buffer,
     const std::string sampler_name){
