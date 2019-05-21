@@ -1,5 +1,5 @@
 CC=g++
-LIBS=-lSDL2 -lGLEW  -lGL
+LIBS=-lSDL2 -lGLEW  -lOpenGL
 CFLAGS=-I -w -ggdb
 main: main.cpp game_engine.cpp
 	$(CC) -c $(CFLAGS) main.cpp -o main.o
