@@ -21,6 +21,10 @@ struct attribute{
     GLuint location=0;//location of uniform
     GLenum type;//type of inuform (float vec3 etc)
 };
+struct Texture{
+    GLuint color_texture;
+    GLuint depth_texture;
+};
 //render target struct
 struct render_target{
     FBO bufer_object;

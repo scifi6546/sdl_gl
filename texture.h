@@ -13,6 +13,7 @@ void bindTexture(unsigned int unit);//decrepitated do not use!
 void bindTexture(const unsigned int texture_unit,
     const render_target buffer,
     const std::string image_sampler_name);
-void delTexture();
 
+void delTexture();
+Texture genTexture(std::string filename);
 #endif

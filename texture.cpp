@@ -53,7 +53,48 @@ void genTexture(std::vector<std::string> filename)
         }
     }
 }
+Texture genTexture(std::string filename){
+    Texture out;
+    glError = glGetError();
+    printf("num_textures = %i\n", num_textures);
+    int width, height, numcomponents;
+    // /printf("texture_new: %i \n",temp_texture);
+    texture = (GLuint *)calloc(1, sizeof(GLuint));
+    glGenTextures(1,&out.color_texture);
+    /*
+    for (int i = 0; i < num_textures; i++)
+    {
+        glGenTextures(1, &texture[i]);
+        printf("texture[%i] = %i\n", i, texture[i]);
+    }*/
+    
+    unsigned char *imagedata = stbi_load(filename.c_str(), &width,
+                                         &height, &numcomponents, 4);
+    if (imagedata == NULL)
+    {
+        printf("can not find texture %s", filename.c_str());
+    }
+    glBindTexture(GL_TEXTURE_2D, out.color_texture);
+    glError = glGetError();
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+                 GL_UNSIGNED_BYTE, imagedata);
+    glError = glGetError();
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    stbi_image_free(imagedata);
+    glError= glGetError();
+    if (glError != 0)
+    {
+        printf("glError %i\n", glError);
+    }
 
+    return out;
+    
+}
 void delTexture()
 {
     for (int i = 0; i < num_textures; i++)
@@ -79,23 +120,11 @@ void bindTexture(unsigned int unit)
 void bindTexture(const unsigned int texture,
     const render_target buffer,
     const std::string image_sampler_name){
+        GLuint location = glGetUniformLocation(buffer.program,
+            image_sampler_name.c_str());
+        glActiveTexture(GL_TEXTURE0+location);
+
         //binds texture
         glBindTexture(GL_TEXTURE_2D,texture);
         glError = glGetError();
-
-        //next getting texture unit
-        int unit;
-        glGetIntegerv(GL_ACTIVE_TEXTURE,&unit);
-        //Activating the texture
-        glActiveTexture(GL_TEXTURE0+unit);
-        glError = glGetError();
-        
-        //getting uniform location
-        GLuint location = glGetUniformLocation(buffer.program,
-            image_sampler_name.c_str());
-        glError = glGetError();
-        //sending texture to uniform
-        glUniform1i(location,unit);
-        glError = glGetError();
-        //need to setup glActivateTexture
     }
