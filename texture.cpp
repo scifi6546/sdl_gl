@@ -91,9 +91,29 @@ Texture genTexture(std::string filename){
     {
         printf("glError %i\n", glError);
     }
-
+    free(imagedata);
     return out;
     
+}
+Texture genTextureEmp(){
+    Texture out;
+
+    glGenTextures(1,&out.color_texture);
+    glBindTexture(GL_TEXTURE_2D,out.color_texture);
+    glError = glGetError();
+    //Creating Color Map
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+
+    //depth map
+    glGenTextures(1,&out.depth_texture);
+    glBindTexture(GL_TEXTURE_2D,out.depth_texture);
+
+    glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH24_STENCIL8,800,600,0,GL_DEPTH_STENCIL,GL_UNSIGNED_INT_24_8,NULL);
+    glBindTexture(GL_TEXTURE_2D,0);
+    glError = glGetError();
+    return out;
 }
 void delTexture()
 {
@@ -127,4 +147,17 @@ void bindTexture(const unsigned int texture,
         //binds texture
         glBindTexture(GL_TEXTURE_2D,texture);
         glError = glGetError();
-    }
+}
+
+void bindTexture(const Texture to_bind,
+    const render_target buffer,
+    const std::string sampler_name){
+
+        GLuint location = glGetUniformLocation(buffer.program,
+            sampler_name.c_str());
+        glActiveTexture(GL_TEXTURE0+location);
+
+        //binds texture
+        glBindTexture(GL_TEXTURE_2D,to_bind.color_texture);
+        glError = glGetError();
+}

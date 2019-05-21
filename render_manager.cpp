@@ -25,7 +25,9 @@ void rManager::makeFBO(render_target &in){
     glGenFramebuffers(1,&in.bufer_object.FBO_OJECT);
     printf("in_fbo_object: %i",in.bufer_object.FBO_OJECT);
     glBindFramebuffer(GL_FRAMEBUFFER,in.bufer_object.FBO_OJECT);
+    in.bufer_object.attTexture=genTextureEmp();
     error = glGetError();
+    /*
     glGenTextures(1,&in.bufer_object.COLOR_MAP);
     glBindTexture(GL_TEXTURE_2D,in.bufer_object.COLOR_MAP);
     error = glGetError();
@@ -33,21 +35,26 @@ void rManager::makeFBO(render_target &in){
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+    */
+    //glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
+    //    GL_TEXTURE_2D,in.bufer_object.COLOR_MAP,0);
+
     glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
-        GL_TEXTURE_2D,in.bufer_object.COLOR_MAP,0);
-
+        GL_TEXTURE_2D,in.bufer_object.attTexture.color_texture,0);
     error = glGetError();
+
     //creating depth map
-    glGenTextures(1,&in.bufer_object.DEPTH_MAP);
-    glBindTexture(GL_TEXTURE_2D,in.bufer_object.DEPTH_MAP);
+    //glGenTextures(1,&in.bufer_object.DEPTH_MAP);
+    //glBindTexture(GL_TEXTURE_2D,in.bufer_object.DEPTH_MAP);
 
-    glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH24_STENCIL8,800,600,0,GL_DEPTH_STENCIL,GL_UNSIGNED_INT_24_8,NULL);
-    error = glGetError();
-    
+    //glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH24_STENCIL8,800,600,0,GL_DEPTH_STENCIL,GL_UNSIGNED_INT_24_8,NULL);
+    //error = glGetError();
     glFramebufferTexture2D(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,
-        GL_TEXTURE_2D,in.bufer_object.DEPTH_MAP,0);
+        GL_TEXTURE_2D,in.bufer_object.attTexture.depth_texture,0);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,
+    //    GL_TEXTURE_2D,in.bufer_object.DEPTH_MAP,0);
     
-    glBindTexture(GL_TEXTURE_2D,0);
+    //glBindTexture(GL_TEXTURE_2D,0);
     error = glGetError();
 
     glBindFramebuffer(GL_FRAMEBUFFER,0);
@@ -114,7 +121,8 @@ void drawFrame(){
     //useBufferShader();
     useFrameCam();
     //bindTexture(0,gameWorld,"diffuse");
-    bindTexture(gameWorld.bufer_object.COLOR_MAP,gameWorld,"diffuse");
+    bindTexture(gameWorld.bufer_object.attTexture,gameWorld,"diffuse");
+    //bindTexture(gameWorld.bufer_object.COLOR_MAP,gameWorld,"diffuse");
     //bindTexture(gameWorld.bufer_object.COLOR_MAP);
     drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
     resetMouse(getWidth(),getHeight());

@@ -4,16 +4,22 @@
 #include <GL/glew.h>
 #include <vector>
 #include "render_target.h"
-void genTexture(std::vector<std::string> filename);
+void genTexture(std::vector<std::string> filename);//decripitated
 void bindTexture(unsigned int unit);//decrepitated do not use!
 /*
-    NOT TESTED
-    binds the texture  to the buffer
+Not tested
+binds the texture to the sampler specified
 */
-void bindTexture(const unsigned int texture_unit,
-    const render_target buffer,
-    const std::string image_sampler_name);
-
+void bindTexture(const Texture to_bind,const render_target buffer,const std::string sampler_name);
 void delTexture();
+/*
+Generates a texture from given Filename
+*/
 Texture genTexture(std::string filename);
+/*
+Not Tested
+Generates a empty texture
+*/
+Texture genTextureEmp();
+
 #endif
