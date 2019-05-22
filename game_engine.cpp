@@ -25,8 +25,6 @@ float walk_speed = 1.0f;
 SDL_Thread* input;
 float mouse_move_speed = 0.005f;
 std::vector<char> keys_pressed;
-
-int glError=0;
 glm::vec3 player_pos;
 World *GameWorld;
 int lastTime = 0;
@@ -44,39 +42,39 @@ int init(){
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);
     gameCam.setPos(player_pos);
-    glError=glGetError();
+    getError();
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
     genTexture(textures);
-    glError=glGetError();
+    getError();
     clearDisplay(0.0,.1,.6,1.0);
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos);
-    glError=glGetError();
+    getError();
     entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld));
     entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld));
     entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld));
     entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld));
     
     player = Player(player_pos,GameWorld);
-    glError=glGetError();
+    getError();
     printf("worked??\n");
     sendAmbientInfo(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     sun_color);
     //error on this line
     //sendAmbient(ambient_color,ambient_intensity,sun_pos,sun_intensity,
     //sun_color);
-    glError = glGetError();
+    getError();
     //drawMeshCopies(cube_pos);
 
     // game loop
     lastTime=SDL_GetTicks();//glError right here ?? does not make any sense
-    glError=glGetError();
+    getError();
     while(!isclosed()){
-        glError=glGetError();
+        getError();
         eventPacket frameEvent=event();
         int current_time = SDL_GetTicks();
         float deltaT = current_time - lastTime;
@@ -86,7 +84,7 @@ int init(){
         }
         lastTime=current_time;
 
-        glError=glGetError();
+        getError();
         player_pos=player.tick(deltaT,frameEvent);
         gameCam.setPos(player_pos);
         GameWorld->tick(frameEvent,deltaT,player_pos);
@@ -95,7 +93,7 @@ int init(){
         }
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         drawFrame();
-        glError = glGetError();
+        getError();
         printf("at end??\n");
     }
     delDisplay();
@@ -104,7 +102,7 @@ int init(){
 void draw(){
     gameCam.sendToRender();
 
-    glError = glGetError();
+    getError();
     
     for(int i =0;i<entitys.size();i++){
     entitys[i].draw();
@@ -112,11 +110,7 @@ void draw(){
    
     GameWorld->draw();
     
-    glError=glGetError();
-    
-    if(glError!=0){
-        printf("Error %i\n",glError);
-    }
+    getError();
     
     //temp_chunk.draw();
        

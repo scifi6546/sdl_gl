@@ -65,7 +65,7 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
         glGenVertexArrays(1,&vertex_array_object);
         //modelnum.push_back(vertex_array_object);
         glBindVertexArray(vertex_array_object);
-        glError=glGetError();
+        getError();
 
         GLuint vertex_array_buffer[numBuffers];
         glGenBuffers(numBuffers,vertex_array_buffer);
@@ -79,7 +79,7 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
 
-        glError=glGetError();
+        getError();
         //buffering Texture coordinates
         glBindBuffer(GL_ARRAY_BUFFER,vertex_array_buffer[TEXCOORD]);
         glBufferData(GL_ARRAY_BUFFER,
@@ -105,15 +105,12 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
         glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,0,0);
         
 
-        glError=glGetError();
-        if(glError!=0){
-            printf("error: %i\n\n\n",glError);
-        }
+        getError();
         runmodels.push_back(RunTimeModel(vertex_array_object,i,numindicies,vertex_array_buffer));
 
         
     }
-    glError=glGetError();
+    getError();
     return runmodels;
     
      
@@ -122,25 +119,25 @@ void drawMesh(RunTimeModel model,glm::vec3 position){
 
     //std::cout<<model.printString();
     glBindVertexArray(model.meshNum);
-    glError=glGetError();//gl invalid operation
+    getError();//gl invalid operation
     glm::mat4 trans = glm::mat4(1.0f);
     
     sendTranslate(glm::translate(trans,position));
-    glError=glGetError();
+    getError();
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);
 //Error Line
-    glError=glGetError();
+    getError();
 }
 void drawMeshBuffer(RunTimeModel model,glm::vec3 position){
     glBindVertexArray(model.meshNum);
-    glError=glGetError();//gl invalid operation
+    getError();//gl invalid operation
     glm::mat4 trans = glm::mat4(1.0f);
     
     //sendTranslate(glm::translate(trans,position));
-    glError=glGetError();
+    getError();
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);
 //Error Line
-    glError=glGetError();
+    getError();
 }
 void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update){
     if(to_update.size()!=models.size()){
@@ -165,7 +162,7 @@ void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update){
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
 
-        glError=glGetError();
+        getError();
 
         
 

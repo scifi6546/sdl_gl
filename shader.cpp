@@ -3,7 +3,7 @@
 #include "error.h"
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-const GLsizei uni_name_size=16;
+const GLsizei uni_name_size=32;//max name size
 namespace gameShader{
     static const unsigned int NUM_SHADERS=2;
     GLuint program;
@@ -37,52 +37,52 @@ GLuint createShader(std::string &text,GLenum shaderType);
 
 void createShaderT(std::vector<std::string> file_names,render_target &target){
     std::vector<GLuint> shaders;
-    glError=glGetError();
+    getError();
     target.program=glCreateProgram();
     for(int i =0;i<file_names.size();i++){
         std::string shader_text=loadFile(file_names[i]);
         GLuint temp_shader;
         if(i==VERTEX_SHADER){
             temp_shader=createShader(shader_text,GL_VERTEX_SHADER);
-            glError=glGetError();
+            getError();
         }else if(i==FRAGMENT_SHADER){
             temp_shader=createShader(shader_text,GL_FRAGMENT_SHADER);
-            glError=glGetError();
+            getError();
         }
         glAttachShader(target.program,temp_shader);
-        glError=glGetError();
+        getError();
 
         
     }
-    glError=glGetError();  
+    getError();  
     glLinkProgram(target.program);
-glError=glGetError(); 
+getError(); 
     glValidateProgram(target.program);
-    glError=glGetError(); 
+    getError(); 
     int status = checkShaderError(target.program,GL_VALIDATE_STATUS,true,"program failed to validate");
 
     //getting attributes
     GLchar name[uni_name_size];
     GLint num_attrs=0;
     glGetProgramiv(target.program,GL_ACTIVE_ATTRIBUTES,&num_attrs);
-    glError=glGetError();  
+    getError();  
     
     for(int i=0;i<num_attrs;i++){
         GLsizei name_length;//length of name
         GLint size;//size of variable
         GLenum type;//type of variable
-        glError=glGetError();  
+        getError();  
         glGetActiveAttrib(target.program,(GLuint) i,uni_name_size,&name_length,&size,&type,name);
         struct attribute attr_temp;
         attr_temp.name = std::string(name,name_length);
-        glError=glGetError();  
+        getError();  
         attr_temp.location=glGetAttribLocation(target.program,attr_temp.name.c_str());
         attr_temp.type=type;
         target.Attributes.push_back(attr_temp);
-        glError=glGetError();  
+        getError();  
     }
 
-    glError=glGetError();  
+    getError();  
     GLint num_unis=0;
     //getting uniforms
     glGetProgramiv(target.program,GL_ACTIVE_UNIFORMS,&num_unis);
@@ -97,31 +97,34 @@ glError=glGetError();
         uni_temp.type=type;
         target.Unis.push_back(uni_temp);
     }
-    glError = glGetError();
+    getError();
 }
 void useShader(render_target target){
     glUseProgram(target.program);
 }
 void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
     for(int i =0;i<program.Unis.size();i++){
-        if(name.compare(program.Unis[i].name)){
+        if(name==program.Unis[i].name){
             glUniformMatrix4fv(program.Unis[i].location,1,GL_FALSE,glm::value_ptr(mat_in));
         }
     }
 }
 void sendVec3(const std::string name,const glm::vec3 vec3_in,const render_target program){
-    glError=glGetError();
+    getError();
+
+    int a = 1;//temp delete now
     for(int i =0;i<program.Unis.size();i++){
-        if(name.compare(program.Unis[i].name)){
+        if(name==program.Unis[i].name){
             glUniform3f(program.Unis[i].location,vec3_in.x,vec3_in.y,vec3_in.z);
-            glError=glGetError();
+            getError();
         }
     }
 }
 void sendGLfloat(const std::string name,const GLfloat float_in,const render_target program){
     for(int i =0;i<program.Unis.size();i++){
-        if(name.compare(program.Unis[i].name)){
+        if(name==program.Unis[i].name){
             glUniform1f(program.Unis[i].location,float_in);
+            getError();
         }
     }
 }
@@ -133,7 +136,7 @@ int shaderInit(){
 int initGameShader(){
     std::string filename = "./shaders/shader";
     gameShader::program=glCreateProgram();
-    glError = glGetError();
+    getError();
     std::string file = loadFile(filename + ".vs");
     gameShader::shaders[0] = createShader(file,GL_VERTEX_SHADER);
     file = loadFile(filename + ".fs");
@@ -154,7 +157,7 @@ int initGameShader(){
     if(status!=0)
         return status;
     deleteGameShader();
-    glError=glGetError();  
+    getError();  
     //setting uniforms
     gameShader::camera_uni_pos =  glGetUniformLocation(gameShader::program,"camera");
     gameShader::translate_uni_pos =  glGetUniformLocation(gameShader::program,"translate");
@@ -166,7 +169,7 @@ int initGameShader(){
     gameShader::sun_pos_pos = glGetUniformLocation(gameShader::program,"sun_pos");
     gameShader::sun_c_pos = glGetUniformLocation(gameShader::program,"sun_color");
 
-    glError=glGetError();
+    getError();
     printf("camera_uni_pos = %i\n",gameShader::camera_uni_pos);
     printf("translate_uni_pos = %i\n",gameShader::translate_uni_pos);
     printf("look_uni_pos = %i\n",gameShader::look_uni_pos);
@@ -175,12 +178,12 @@ int initGameShader(){
 int initBufferShader(){
     std::string filename = "./shaders/buffer_shader";
     bufferShader::program=glCreateProgram();
-    glError = glGetError();
+    getError();
     std::string file = loadFile(filename + ".vs");
     bufferShader::shaders[0] = createShader(file,GL_VERTEX_SHADER);
     file = loadFile(filename + ".fs");
     bufferShader::shaders[1] = createShader(file,GL_FRAGMENT_SHADER);
-    glError=glGetError();  
+    getError();  
     for(unsigned int i=0;i<bufferShader::NUM_SHADERS;i++){
         glAttachShader(bufferShader::program,bufferShader::shaders[i]);
     }
@@ -197,11 +200,11 @@ int initBufferShader(){
     if(status!=0)
         return status;
     deleteBufferShader();
-    glError=glGetError();  
+    getError();  
     //setting uniforms
     bufferShader::cameraMat_pos=glGetUniformLocation(bufferShader::program,"camera");
 
-    glError=glGetError();
+    getError();
     printf("program:%i\n",gameShader::shaders[0]);
 }
 void useGameShader(){
@@ -272,10 +275,7 @@ void sendCamMatBuffer(glm::mat4 in){
 void setTexture(int unit){
     //printf("unit = %i\n",unit);
     glUniform1i(gameShader::image_uni_pos,unit);
-    glError = glGetError();
-    if(glError!=0){
-        printf("error %i\n",glError);
-    }
+    getError();
 }
 void deleteBufferShader(){
     for(unsigned int i=0;i<bufferShader::NUM_SHADERS;i++){

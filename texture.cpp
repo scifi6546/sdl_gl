@@ -11,7 +11,7 @@ GLuint *texture;
 int num_textures;
 void genTexture(std::vector<std::string> filename)
 {
-    glError = glGetError();
+    getError();
     num_textures = filename.size();
     printf("num_textures = %i\n", num_textures);
     int width, height, numcomponents;
@@ -34,10 +34,10 @@ void genTexture(std::vector<std::string> filename)
         }
 
         glBindTexture(GL_TEXTURE_2D, texture[i]);
-        glError = glGetError();
+        getError();
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
                      GL_UNSIGNED_BYTE, imagedata);
-        glError = glGetError();
+        getError();
         glGenerateMipmap(GL_TEXTURE_2D);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -46,16 +46,12 @@ void genTexture(std::vector<std::string> filename)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         stbi_image_free(imagedata);
-       glError= glGetError();
-        if (glError != 0)
-        {
-            printf("glError %i\n", glError);
-        }
+        getError();
     }
 }
 Texture genTexture(std::string filename){
     Texture out;
-    glError = glGetError();
+    getError();
     printf("num_textures = %i\n", num_textures);
     int width, height, numcomponents;
     // /printf("texture_new: %i \n",temp_texture);
@@ -75,10 +71,10 @@ Texture genTexture(std::string filename){
         printf("can not find texture %s", filename.c_str());
     }
     glBindTexture(GL_TEXTURE_2D, out.color_texture);
-    glError = glGetError();
+    getError();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
                  GL_UNSIGNED_BYTE, imagedata);
-    glError = glGetError();
+    getError();
     glGenerateMipmap(GL_TEXTURE_2D);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -86,11 +82,7 @@ Texture genTexture(std::string filename){
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     stbi_image_free(imagedata);
-    glError= glGetError();
-    if (glError != 0)
-    {
-        printf("glError %i\n", glError);
-    }
+    getError();
     free(imagedata);
     return out;
     
@@ -100,7 +92,7 @@ Texture genTextureEmp(){
 
     glGenTextures(1,&out.color_texture);
     glBindTexture(GL_TEXTURE_2D,out.color_texture);
-    glError = glGetError();
+    getError();
     //Creating Color Map
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -112,7 +104,7 @@ Texture genTextureEmp(){
 
     glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH24_STENCIL8,800,600,0,GL_DEPTH_STENCIL,GL_UNSIGNED_INT_24_8,NULL);
     glBindTexture(GL_TEXTURE_2D,0);
-    glError = glGetError();
+    getError();
     return out;
 }
 void delTexture()
@@ -127,15 +119,11 @@ void bindTexture(unsigned int unit)
     //printf("unit = %i",unit);
     //assert(unit >= 0 && unit <= 31);
     glActiveTexture(GL_TEXTURE0);
-    glError= glGetError();
+    getError();
     glBindTexture(GL_TEXTURE_2D, unit);
-    glError= glGetError();
+    getError();
     setTexture(unit);
-    glError= glGetError();
-    if (glError != 0)
-    {
-        printf("glError %i\n", glError);
-    }
+    getError();
 }
 void bindTexture(const Texture to_bind,
     const render_target buffer,
@@ -147,5 +135,5 @@ void bindTexture(const Texture to_bind,
 
         //binds texture
         glBindTexture(GL_TEXTURE_2D,to_bind.color_texture);
-        glError = glGetError();
+        getError();
 }

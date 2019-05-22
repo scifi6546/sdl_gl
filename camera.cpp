@@ -5,6 +5,7 @@
 #include "shader.h"
 #include <string>
 #include <math.h>
+#include "error.h"
 GLint camera_loc;
 glm::mat4 translate;
 glm::mat4 projection;
@@ -37,6 +38,7 @@ std::string makeString(glm::mat4 in){
 }
 
 void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat far){
+    getError();
     game_cam_fov=fov;
     game_cam_width=width;
     game_cam_height=height;
@@ -49,7 +51,9 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     look_at=glm::mat4(1.0f);
     cam_pos = glm::vec3(0.0f,0.0f,0.0f);
     printf("fov = %f , width = %f, height = %f, near = %f, far = %f\n",fov,width,height,near,far);
-    useGameCam();
+    getError();
+    //useGameCam();
+    getError();
     /*
     projection=glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(fov),width/height,near,far);
