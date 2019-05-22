@@ -33,6 +33,5 @@ void Camera::sendToRender(){
     this->position.x,this->position.y,this->position.z);
 
     printf("look_x: %f look_y %f\n",this->thetax,this->thetay);
-    sendCameraPos(this->position);
-    sendCameraLook(this->thetax,this->thetay);
+    sendCamera(this->position,this->thetax,this->thetay);
 }

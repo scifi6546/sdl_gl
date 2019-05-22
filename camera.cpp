@@ -11,8 +11,8 @@ glm::mat4 translate;
 glm::mat4 projection;
 glm::mat4 look_at;
 glm::vec3 cam_pos;
-float thetax;
-float thetay;
+//float thetax;
+//float thetay;
 float PI=3.14159265358979323846264338327;
 
 //camera constants
@@ -45,6 +45,8 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     game_cam_near=near;
     game_cam_far=far;
 
+//not needed anymore
+/*
     thetax=0.0f;
     thetay=PI/2.0;
     translate=glm::mat4(1.0f);
@@ -54,6 +56,7 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     getError();
     //useGameCam();
     getError();
+    */
     /*
     projection=glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(fov),width/height,near,far);
@@ -95,12 +98,8 @@ void rotate_cam(float x_rot, float y_rot){
     }
     INT_look();*/
 }
-void translateCam(glm::vec3 trans){
+void translateCam(glm::vec3 trans,float thetax, float thetay){
 
-    cam_pos=trans;
-    INT_look();
-}
-void INT_look(){
     glm::vec3 direction;
     direction.x = -cos(thetay);
     direction.y = -sin(thetax);
@@ -113,34 +112,8 @@ void INT_look(){
     
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
-    look_at=glm::lookAt(cam_pos,cam_pos+direction,glm::vec3(0.0f,1.0f,0.0f));
+    look_at=glm::lookAt(trans,trans+direction,glm::vec3(0.0f,1.0f,0.0f));
     getError();
     sendLook(look_at);
     getError();
-}
-float getThetaX(){
-    return thetax;
-}
-float getThetaY(){
-    return thetay;
-}
-void useGameCam(){
-      projection=glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(game_cam_fov),
-        game_cam_width/game_cam_height,game_cam_near,game_cam_far);
-
-    printf("projection \n%s",makeString(projection).c_str());
-    sendCamera(projection);
-    translate = glm::translate(translate,glm::vec3(0.0f,0.0f,0.0f));
-    printf("translate \n%s",makeString(translate).c_str());
-    sendTranslate(translate);
-
-    INT_look();
-    printf("look at = \n%s",makeString(look_at).c_str());
-}
-void useFrameCam(){
-    glm::mat4 projection = glm::mat4(1.0f);
-
-    projection = glm::ortho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    sendCamMatBuffer(projection);
 }

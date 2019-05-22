@@ -18,26 +18,22 @@ void initRender();
 void drawFrame();
 /*
 NOT TESTED
-sends the camera position (world coordinates) to the rendering engine 
+sends the camera position (world coordinates) and rotation to the rendering engine 
 */
-void sendCameraPos(glm::vec3 position);
+void sendCamera(glm::vec3 position,float thetax,float thetay);
 
-/*
-NOT TESTED
-Sends the camera look to the rendering engine
-*/
-void sendCameraLook(float thetax,float thetay);
 /*
 NOT IMPLEMENTED OR TESTED
 Sends world color data to the gpu
 */
+void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
+    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
 /*
 TO ONLY BE USED BY RENDERING CODE
 gets pointer to currently bound shader
 */
 render_target *getBoundShader();
-void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
-    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
+
 //private functions
 namespace rManager{
     const unsigned int shadow_width = 1024, shadow_height=1024;

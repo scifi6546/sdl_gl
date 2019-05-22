@@ -9,7 +9,11 @@ void rotate_cam(float x_rot, float y_rot);
 void translateCam(glm::vec3 trans);
 float getThetaX();
 float getThetaY();
-
+/*
+Not Tested
+sets up matricies for transform
+*/
+void translateCam(glm::vec3 trans,float thetax, float thetay);
 
 void useGameCam();//use game world camera
 

@@ -34,17 +34,6 @@ void rManager::makeFBO(render_target &in){
     glBindFramebuffer(GL_FRAMEBUFFER,in.bufer_object.FBO_OJECT);
     in.bufer_object.attTexture=genTextureEmp();
     getError();
-    /*
-    glGenTextures(1,&in.bufer_object.COLOR_MAP);
-    glBindTexture(GL_TEXTURE_2D,in.bufer_object.COLOR_MAP);
-    getError();
-    //Creating Color Map
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-    */
-    //glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
-    //    GL_TEXTURE_2D,in.bufer_object.COLOR_MAP,0);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,
         GL_TEXTURE_2D,in.bufer_object.attTexture.color_texture,0);
@@ -160,13 +149,8 @@ void drawFrame(){
     updateDisplay();
     error=glGetError();
 }
-void sendCameraPos(glm::vec3 position){
+void sendCamera(glm::vec3 position,float thetax,float thetay){
     getError();
-    translateCam(position);
-    getError();
-}
-void sendCameraLook(float thetax,float thetay){
-    getError();
-    rotate_cam(thetax,thetay);
+    translateCam(position,thetax,thetay);
     getError();
 }

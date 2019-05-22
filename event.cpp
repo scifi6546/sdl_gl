@@ -43,8 +43,8 @@ eventPacket event(){
             }
         }
     }
-    out.thetaX=getThetaX();
-    out.thetaY=getThetaY();
+    //out.thetaX=getThetaX();
+    //out.thetaY=getThetaY();
     return out;
 }
 bool isclosed(){

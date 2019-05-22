@@ -1,6 +1,7 @@
 #include "shader.h"
 #include "loadfile.h"
 #include "error.h"
+#include "render_manager.h"
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 const GLsizei uni_name_size=32;//max name size
@@ -259,8 +260,10 @@ void sendTranslate(glm::mat4 trans){
 
 void sendLook(glm::mat4 look){
     //finding uniform in shaderinit()
-    
-    glUniformMatrix4fv(gameShader::look_uni_pos,1,GL_FALSE,glm::value_ptr(look));
+    sendMat4("camera",look,*getBoundShader());
+    getError();
+    //glUniformMatrix4fv(gameShader::look_uni_pos,1,GL_FALSE,glm::value_ptr(look));
+    getError();
 }
 void sendAmbient(glm::vec3 color,GLfloat intensity,glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color){
     glUniform3f(gameShader::ambient_c_pos,color.x,color.y,color.z);
