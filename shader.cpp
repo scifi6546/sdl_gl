@@ -33,44 +33,56 @@ int initBufferShader();
 void deleteGameShader();
 void deleteBufferShader();
 enum SHADER_TYPE{VERTEX_SHADER,FRAGMENT_SHADER};
+GLuint createShader(std::string &text,GLenum shaderType);
+
 void createShaderT(std::vector<std::string> file_names,render_target &target){
     std::vector<GLuint> shaders;
+    glError=glGetError();
     target.program=glCreateProgram();
     for(int i =0;i<file_names.size();i++){
         std::string shader_text=loadFile(file_names[i]);
         GLuint temp_shader;
         if(i==VERTEX_SHADER){
             temp_shader=createShader(shader_text,GL_VERTEX_SHADER);
+            glError=glGetError();
         }else if(i==FRAGMENT_SHADER){
             temp_shader=createShader(shader_text,GL_FRAGMENT_SHADER);
+            glError=glGetError();
         }
         glAttachShader(target.program,temp_shader);
+        glError=glGetError();
 
         
     }
-
+    glError=glGetError();  
     glLinkProgram(target.program);
-
-    glValidateProgram(gameShader::program);
-    
-    int status = checkShaderError(gameShader::program,GL_VALIDATE_STATUS,true,"program failed to validate");
+glError=glGetError(); 
+    glValidateProgram(target.program);
+    glError=glGetError(); 
+    int status = checkShaderError(target.program,GL_VALIDATE_STATUS,true,"program failed to validate");
 
     //getting attributes
     GLchar name[uni_name_size];
     GLint num_attrs=0;
     glGetProgramiv(target.program,GL_ACTIVE_ATTRIBUTES,&num_attrs);
+    glError=glGetError();  
+    
     for(int i=0;i<num_attrs;i++){
         GLsizei name_length;//length of name
         GLint size;//size of variable
         GLenum type;//type of variable
+        glError=glGetError();  
         glGetActiveAttrib(target.program,(GLuint) i,uni_name_size,&name_length,&size,&type,name);
         struct attribute attr_temp;
         attr_temp.name = std::string(name,name_length);
+        glError=glGetError();  
         attr_temp.location=glGetAttribLocation(target.program,attr_temp.name.c_str());
         attr_temp.type=type;
         target.Attributes.push_back(attr_temp);
+        glError=glGetError();  
     }
 
+    glError=glGetError();  
     GLint num_unis=0;
     //getting uniforms
     glGetProgramiv(target.program,GL_ACTIVE_UNIFORMS,&num_unis);
@@ -85,6 +97,7 @@ void createShaderT(std::vector<std::string> file_names,render_target &target){
         uni_temp.type=type;
         target.Unis.push_back(uni_temp);
     }
+    glError = glGetError();
 }
 void useShader(render_target target){
     glUseProgram(target.program);
@@ -97,9 +110,11 @@ void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
     }
 }
 void sendVec3(const std::string name,const glm::vec3 vec3_in,const render_target program){
+    glError=glGetError();
     for(int i =0;i<program.Unis.size();i++){
         if(name.compare(program.Unis[i].name)){
             glUniform3f(program.Unis[i].location,vec3_in.x,vec3_in.y,vec3_in.z);
+            glError=glGetError();
         }
     }
 }
@@ -165,6 +180,7 @@ int initBufferShader(){
     bufferShader::shaders[0] = createShader(file,GL_VERTEX_SHADER);
     file = loadFile(filename + ".fs");
     bufferShader::shaders[1] = createShader(file,GL_FRAGMENT_SHADER);
+    glError=glGetError();  
     for(unsigned int i=0;i<bufferShader::NUM_SHADERS;i++){
         glAttachShader(bufferShader::program,bufferShader::shaders[i]);
     }

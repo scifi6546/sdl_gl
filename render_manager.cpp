@@ -6,9 +6,12 @@
 #include "texture.h"
 #include "camera.h"
 #include "shader.h"
+#include "error.h"
 unsigned int frameBufferFBO;
 unsigned int frameBufferTex;//depth map texture
 unsigned int mainBufferFBO;
+
+render_target *gameWorld_ptr;
 GLenum error;
 
 Model buffer=Model(
@@ -61,7 +64,21 @@ void rManager::makeFBO(render_target &in){
     error = glGetError();
     
 }
-
+//todo check if gameWorld is active
+void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
+    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color){
+        glError = glGetError();
+        sendVec3("ambient_color",color,*gameWorld_ptr);
+        glError = glGetError();
+        sendGLfloat("ambient_intensity",intensity,*gameWorld_ptr);
+        glError = glGetError();
+        sendVec3("sun_pos",sun_pos,*gameWorld_ptr);
+        glError = glGetError();
+        sendGLfloat("sun_intensity",sun_intensity,*gameWorld_ptr);
+        glError = glGetError();
+        sendVec3("sun_color",sun_color,*gameWorld_ptr);
+        glError = glGetError();
+}
 void rManager::bindFBO(render_target in){
 
     error = glGetError();
@@ -83,15 +100,19 @@ render_target bufferWorld;//Buffer shader
 void initRender(){
     //unsigned int *inFBO = new unsigned int[2];
     //glGenFramebuffers(2,inFBO);
+    error = glGetError();
     initDisplay(display_width,display_height,"temp_title");
-
+    gameWorld_ptr=&gameWorld;
     
 
-    shaderInit();
-    initCam(60.0,display_width,display_height,.01,500);
+    //shaderInit();
     
+    error = glGetError();
     createShaderT({"shaders/shader.vs","shaders/shader.fs"},gameWorld);
     createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},bufferWorld);
+
+    useShader(gameWorld);
+    initCam(60.0,display_width,display_height,.01,500);
     rManager::makeFBO(gameWorld);
     std::vector<RunTimeModel> in = initMesh({buffer});
     buffer_model=in[0];

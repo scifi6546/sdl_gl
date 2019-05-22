@@ -7,9 +7,8 @@
 
 #include "render_target.h"
 
-int shaderInit(); 
+//int shaderInit(); 
 int checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage);
-GLuint createShader(std::string &text,GLenum shaderType);
 
 /*
 NOT TESTED
