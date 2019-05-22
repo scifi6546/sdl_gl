@@ -114,7 +114,9 @@ void INT_look(){
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
     look_at=glm::lookAt(cam_pos,cam_pos+direction,glm::vec3(0.0f,1.0f,0.0f));
+    getError();
     sendLook(look_at);
+    getError();
 }
 float getThetaX(){
     return thetax;

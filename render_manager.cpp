@@ -10,8 +10,8 @@
 unsigned int frameBufferFBO;
 unsigned int frameBufferTex;//depth map texture
 unsigned int mainBufferFBO;
-
-render_target *gameWorld_ptr;
+render_target *bound_shader;//currently bound shader
+//render_target *gameWorld_ptr;
 GLenum error;
 
 Model buffer=Model(
@@ -22,6 +22,10 @@ Model buffer=Model(
     {glm::vec3(0.0,0.0,-1.0),glm::vec3(0.0,0.0,-1.0),
         glm::vec3(0.0,0.0,-1.0),glm::vec3(0.0,0.0,-1.0)});
 RunTimeModel buffer_model;
+
+render_target *getBoundShader(){
+    return bound_shader;
+}
 void rManager::makeFBO(render_target &in){
     
     getError();
@@ -67,17 +71,23 @@ void rManager::makeFBO(render_target &in){
 //todo check if gameWorld is active
 void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
     glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color){
+        render_target * temp = getBoundShader();
+        printf("render_target ptr: %p\n",temp);
         getError();
-        sendVec3("ambient_color",color,*gameWorld_ptr);
+        sendVec3("ambient_color",color,*getBoundShader());
         getError();
-        sendGLfloat("ambient_intensity",intensity,*gameWorld_ptr);
+        sendGLfloat("ambient_intensity",intensity,*getBoundShader());
         getError();
-        sendVec3("sun_pos",sun_pos,*gameWorld_ptr);
+        sendVec3("sun_pos",sun_pos,*getBoundShader());
         getError();
-        sendGLfloat("sun_intensity",sun_intensity,*gameWorld_ptr);
+        sendGLfloat("sun_intensity",sun_intensity,*getBoundShader());
         getError();
-        sendVec3("sun_color",sun_color,*gameWorld_ptr);
+        sendVec3("sun_color",sun_color,*getBoundShader());
         getError();
+}
+void rManager::RuseShader(render_target &in){
+    useShader(in);
+    bound_shader=&in;
 }
 void rManager::bindFBO(render_target in){
 
@@ -102,7 +112,7 @@ void initRender(){
     //glGenFramebuffers(2,inFBO);
     getError();
     initDisplay(display_width,display_height,"temp_title");
-    gameWorld_ptr=&gameWorld;
+    //gameWorld_ptr=&gameWorld;
     
 
     //shaderInit();
@@ -111,7 +121,7 @@ void initRender(){
     createShaderT({"shaders/shader.vs","shaders/shader.fs"},gameWorld);
     createShaderT({"shaders/buffer_shader.vs","shaders/buffer_shader.fs"},bufferWorld);
     getError();
-    useShader(gameWorld);
+    rManager::RuseShader(gameWorld);
     getError();
     initCam(60.0,display_width,display_height,.01,500);
     getError();
@@ -119,6 +129,7 @@ void initRender(){
     std::vector<RunTimeModel> in = initMesh({buffer});
     buffer_model=in[0];
     getError();
+    rManager::RuseShader(gameWorld);
     
 }
 void drawFrame(){
@@ -127,7 +138,7 @@ void drawFrame(){
     //useGameShader();
     getError();
   
-    useShader(gameWorld);
+    rManager::RuseShader(gameWorld);
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
@@ -150,8 +161,12 @@ void drawFrame(){
     error=glGetError();
 }
 void sendCameraPos(glm::vec3 position){
+    getError();
     translateCam(position);
+    getError();
 }
 void sendCameraLook(float thetax,float thetay){
+    getError();
     rotate_cam(thetax,thetay);
+    getError();
 }

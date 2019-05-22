@@ -259,6 +259,7 @@ void sendTranslate(glm::mat4 trans){
 
 void sendLook(glm::mat4 look){
     //finding uniform in shaderinit()
+    
     glUniformMatrix4fv(gameShader::look_uni_pos,1,GL_FALSE,glm::value_ptr(look));
 }
 void sendAmbient(glm::vec3 color,GLfloat intensity,glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color){

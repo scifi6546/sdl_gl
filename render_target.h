@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 struct Texture{
-    GLuint color_texture;
-    GLuint depth_texture;
+    GLuint color_texture=0;
+    GLuint depth_texture=0;
 };
 
 /*
@@ -20,20 +20,20 @@ struct FBO{
 struct uniform{
     std::string name="";//name of uniform
     GLuint location=0;//location of uniform
-    GLenum type;//type of inuform (float vec3 etc)
+    GLenum type=0;//type of inuform (float vec3 etc)
 };
 struct attribute{
     std::string name="";//name of uniform
     GLuint location=0;//location of uniform
-    GLenum type;//type of inuform (float vec3 etc)
+    GLenum type=0;//type of inuform (float vec3 etc)
 };
 
 //render target struct
 struct render_target{
     FBO bufer_object;
-    GLuint program;
-    std::vector<uniform> Unis;
-    std::vector<attribute> Attributes;
+    GLuint program=0;
+    std::vector<uniform> Unis={};
+    std::vector<attribute> Attributes={};
 
 
 };

@@ -31,6 +31,11 @@ void sendCameraLook(float thetax,float thetay);
 NOT IMPLEMENTED OR TESTED
 Sends world color data to the gpu
 */
+/*
+TO ONLY BE USED BY RENDERING CODE
+gets pointer to currently bound shader
+*/
+render_target *getBoundShader();
 void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
     glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
 //private functions
@@ -40,5 +45,6 @@ namespace rManager{
     void makeFBO(render_target &in);
     //binds a frame buffer object struct
     void bindFBO(render_target in);
+    void RuseShader(render_target &in);
 }
 #endif
