@@ -5,6 +5,12 @@
 #include "render_target.h"
 const int display_height = 800;
 const int display_width = 1000;
+/*
+This will be used to render a model
+*/
+struct rModel{
+    unsigned int ModelNum;
+};
 //public functions
 //initilizes render manager
 void initRender();

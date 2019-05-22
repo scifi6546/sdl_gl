@@ -99,8 +99,8 @@ void initRender(){
     
 }
 void drawFrame(){
-    
-    rManager::bindFBO(gameWorld);
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    //rManager::bindFBO(gameWorld);
     //useGameShader();
     error = glGetError();
   
@@ -117,14 +117,11 @@ void drawFrame(){
         printf("ERROR!\n\n\n");
     
     glBindFramebuffer(GL_FRAMEBUFFER,0);
-    useShader(bufferWorld);
-    //useBufferShader();
-    useFrameCam();
-    //bindTexture(0,gameWorld,"diffuse");
-    bindTexture(gameWorld.bufer_object.attTexture,gameWorld,"diffuse");
-    //bindTexture(gameWorld.bufer_object.COLOR_MAP,gameWorld,"diffuse");
-    //bindTexture(gameWorld.bufer_object.COLOR_MAP);
-    drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
+    //useShader(bufferWorld);
+    //useFrameCam();
+    //bindTexture(gameWorld.bufer_object.attTexture,gameWorld,"diffuse");
+    
+    //drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
     resetMouse(getWidth(),getHeight());
     updateDisplay();
     error=glGetError();
