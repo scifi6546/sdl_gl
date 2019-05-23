@@ -7,7 +7,7 @@
 this contains the public interface for rendering info
 */
 struct Text{
-    unsigned int id=0;
+    unsigned int id=-1;
 };
 /*
 This contains polygonial data to be sent to rendering engine
@@ -42,7 +42,7 @@ Simple struct for telling what to draw
 */
 class Mesh{
     public:
-    unsigned int id=0;//id for refrencing mesh items
+        int id=-1;//id for refrencing mesh items
         glm::vec3 pos;//position to draw the mesh at
         Text texture_use;//what texture to use when drawing the mesh
         Mesh();
@@ -64,7 +64,18 @@ Text genTextureP(std::string file_name);
 Not Tested
 generates the mesh from the model
 */
-Mesh genMesh(Model in,Text texture);
+Mesh genMesh(Model in,Text texture,glm::vec3 pos);
+
+/*
+Not Texted or implemented
+updates a sekected mesh and changes it
+*/
+void updateMesh(Model in, Mesh &toUpdate);
+
+/*
+checks if mesh is actually valid
+*/
+bool isMeshValid(Mesh in);
 /*
 Not Tested
 quits rendring engine
@@ -74,6 +85,10 @@ void quitRender();
 Not Tested
 draws mesh (eventually)
 */
-void draw(Mesh in);
-
+void drawMeshP(Mesh in);
+/*
+Not tested or implemented 
+Deletes mesh specified
+*/
+void deleteMeshP(Mesh &in);
 #endif

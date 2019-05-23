@@ -73,6 +73,12 @@ Mesh genMesh(Model in,Text texture,glm::vec3 pos){
     out.pos=pos;
     return out;
 }
+bool isMeshValid(Mesh in){
+    if(in.id<0){
+        return false;
+    }
+    return true;
+}
 void draw(Mesh in){
     drawMesh(getModel(in),in.pos);
 }

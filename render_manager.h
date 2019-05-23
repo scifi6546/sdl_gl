@@ -8,6 +8,7 @@ const int display_width = 1000;
 //public functions
 //initilizes render manager
 void initRender();
+//quits rendering
 void quitRender_INT();
 //draws frame called every frame draw
 void drawFrame();

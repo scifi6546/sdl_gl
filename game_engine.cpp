@@ -6,7 +6,7 @@
 #include "shader.h"
 #include "display.h"
 #include "mesh.h"
-#include "texture.h"
+//#include "texture.h"
 #include "camera.h"
 #include "event.h"
 #include "block.h"
@@ -30,6 +30,8 @@ World *GameWorld;
 int lastTime = 0;
 Player player;
 std::vector<Entity> entitys;
+
+std::vector<Text> generated_textures;
 Camera gameCam=Camera(glm::vec3(0.0,0.0,0.0),0.0,0.0);
 int getHeight(){
     return display_height;
@@ -46,7 +48,10 @@ int init(){
     std::vector<std::string> textures;
     textures.push_back("./textures/total.png");
     textures.push_back("./textures/water.png");
-    genTexture(textures);
+    generated_textures.push_back(genTextureP("./textures/total.png"));
+    generated_textures.push_back(genTextureP("./textures/water.png"));
+
+    //genTexture(textures);
     getError();
     clearDisplay(0.0,.1,.6,1.0);
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);

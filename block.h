@@ -3,7 +3,6 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <vector>
-#include "mesh.h"
 #include "event.h"
 #include "int_vec.h"
 
@@ -25,7 +24,7 @@ class Block{
 class renderChunk{
     public:
         Model blocksMesh;//contains mesh for entire renderchunk
-        RunTimeModel chunkModel;
+        Mesh chunkModel;
         glm::vec3 root_pos;
         renderChunk(std::vector<BLOCK_TYPES> *blocks,int x_start,
             int y_start,int z_start,glm::vec3 root_pos);
@@ -34,7 +33,7 @@ class renderChunk{
         ~renderChunk();
 };
 extern BlockMesh blockmesh; //mesh containing all faces of block
-extern std::vector<RunTimeModel>models;
+extern std::vector<Mesh>models;
 const int chunkSize=32;
 const int renderChunkSize = chunkSize;//renderChunkSize has to equal chunk size I do not know why
 const int CHUNK_RENDER_DIST=2;
@@ -78,7 +77,7 @@ class World{
         std::vector<Chunk> testChunk;
         void draw();
         void drawWater();
-        World(glm::vec3 pos_in);
+        World(glm::vec3 pos_in,Text block_texture,Text water_texture);
         void tick(eventPacket eventin,float delta_time,glm::vec3 player_pos);//delta time measured in seconds
         void shiftXp();//shifts chunk towards positive x
         void shiftXm();//shifts x towards negative x

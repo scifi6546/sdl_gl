@@ -1,12 +1,12 @@
 #include "block.h"
-#include "texture.h"
 #include "physics.h"
 #include "world_gen.h"
 #include <stdlib.h> 
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
-
-std::vector<RunTimeModel>models;
+Text BLOCK_TEXTURE;//Texture that game world will be rendered with
+Text WATER_TEXTURE;
+std::vector<Mesh>models;
 BlockMesh blockmesh;
 BlockMesh::BlockMesh(){
     model.reserve(1);
@@ -144,7 +144,7 @@ Chunk::Chunk(std::vector<BLOCK_TYPES> &blocks,glm::vec3 root_pos){
     for(int i=0;i<blocks.size();i++){
         this->isBlock+=(int) blocks[i];
     }
-    models = initMesh(blockmesh.getModel());
+    //models = initMesh(blockmesh.getModel()); IS THIS REQUIRED I DO NOT THINK SO
     this->setMeshes();
 }
 
@@ -323,27 +323,25 @@ void renderChunk::updateChunk(std::vector<BLOCK_TYPES> *blocks,int x_start,int y
             }
         }
     }
-    if(!this->chunkModel.exists){
-        std::vector<Model> temp_model={blocksMesh};
-        std::vector<RunTimeModel> tempRun;
-        tempRun=initMesh(temp_model);
-        this->chunkModel=tempRun[0];
+    if(!isMeshValid(this->chunkModel)){
+        this->chunkModel=genMesh(blocksMesh,BLOCK_TEXTURE,glm::vec3(0.0,0.0,0.0));
     } else{
         std::vector<Model> temp_model={blocksMesh};
         std::vector<RunTimeModel> tempRun;
-        updateMesh(temp_model,tempRun);
-        this->chunkModel=tempRun[0];
+        updateMesh(blocksMesh,this->chunkModel);
     }
 }
 void renderChunk::draw(){
-    drawMesh(this->chunkModel,glm::vec3(0,0,0));
+    drawMeshP(this->chunkModel);
+    //drawMesh(this->chunkModel,glm::vec3(0,0,0));
 }
 renderChunk::~renderChunk(){
     printf("Render Chunk Deleted!\n");
-    std::vector<RunTimeModel> temp = {this->chunkModel};
-    deleteMesh(temp);
+    deleteMeshP(this->chunkModel);
 }
-World::World(glm::vec3 player_pos){
+World::World(glm::vec3 player_pos,Text block_texture,Text water_texture){
+    BLOCK_TEXTURE=block_texture;
+    WATER_TEXTURE=water_texture;
     this->player_pos=player_pos;
     this->loadedChunk.reserve(numVertChunks);
     for(int i=0;i<numVertChunks;i++){//y
@@ -365,7 +363,9 @@ World::World(glm::vec3 player_pos){
 }
 void World::draw(){
     //printf("drawn!!\n");
-    bindTexture(0);
+    
+
+    //bindTexture(0);
     for(int i=0;i<loadedChunk.size();i++){
         for(int j =0;j<this->loadedChunk[i].size();j++){
             //printf("i: %i, j: %i\n",i,j);
@@ -377,7 +377,7 @@ void World::draw(){
     
 }
 void World::drawWater(){
-    bindTexture(1);
+    //bindTexture(1);
     Model waterModel;
     waterModel.pos=std::vector<glm::vec3>(4);
     waterModel.pos[0]=glm::vec3(-1.0f*CHUNK_RENDER_DIST*chunkSize+this->rootx,
@@ -397,10 +397,11 @@ void World::drawWater(){
     waterModel.indices={0,1,2,0,3,2};
     waterModel.texCoord={glm::vec2(-1.0f,-1.0f),glm::vec2(1.0f,-1.0f),glm::vec2(1.0f,1.0f),glm::vec2(-1.0f,1.0f)};
     waterModel.normal={glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f),glm::vec3(0.0f,1.0f,1.0f)};
-    std::vector<Model> temp={waterModel};
-    std::vector<RunTimeModel> tempRun = initMesh(temp);
-    drawMesh(tempRun[0],glm::vec3(0.0,0.0,0.0));
-   
+    Mesh temp = genMesh(waterModel,WATER_TEXTURE,glm::vec3(0.0,0.0,0.0));
+    //std::vector<Model> temp={waterModel};
+    //std::vector<RunTimeModel> tempRun = initMesh(temp);
+    //drawMesh(tempRun[0],glm::vec3(0.0,0.0,0.0));
+    drawMeshP(temp);
 }
 void World::tick(eventPacket eventin, float delta_time,glm::vec3 player_pos){
     this->player_pos=player_pos;

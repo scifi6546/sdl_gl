@@ -154,3 +154,6 @@ void sendCamera(glm::vec3 position,float thetax,float thetay){
     translateCam(position,thetax,thetay);
     getError();
 }
+void quitRender_INT(){
+    delDisplay();
+}
