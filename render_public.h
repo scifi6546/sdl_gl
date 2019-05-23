@@ -40,34 +40,38 @@ class Model{
 /*
 Simple struct for telling what to draw
 */
-struct Mesh{
+class Mesh{
+    public:
     unsigned int id=0;//id for refrencing mesh items
-    glm::vec3 pos;//position to draw the mesh at
-    Text texture_use;//what texture to use when drawing the mesh
+        glm::vec3 pos;//position to draw the mesh at
+        Text texture_use;//what texture to use when drawing the mesh
+        Mesh();
+
+
 };
 
 /*
 Not Implemented or tested
 initizes rendering engine
 */
-void initRender();
+void initRenderP();
 /*
-Not Implemented or tested
+Not Tested
 makes texture will get rid of p conflists with genTexture from texture.cpp
 */
 Text genTextureP(std::string file_name);
 /*
-Not Implemented or Texted
+Not Tested
 generates the mesh from the model
 */
 Mesh genMesh(Model in,Text texture);
 /*
-Not implemented or tested
+Not Tested
 quits rendring engine
 */
 void quitRender();
 /*
-Not Implemented or tested
+Not Tested
 draws mesh (eventually)
 */
 void draw(Mesh in);
