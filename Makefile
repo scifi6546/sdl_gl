@@ -13,6 +13,7 @@ main: main.cpp game_engine.cpp
 	$(MAKE) player
 	$(MAKE) camera_out
 	$(MAKE) error
+	$(MAKE) model
 	$(CC) -c $(CFLAGS) display.cpp -o display.o
 	$(CC) -c $(CFLAGS) texture.cpp -o texture.o
 	$(CC) -c $(CFLAGS) mesh.cpp -o mesh.o
@@ -20,7 +21,7 @@ main: main.cpp game_engine.cpp
 	$(CC) -c $(CFLAGS) camera.cpp -o camera.o
 	$(CC) -c $(CFLAGS) event.cpp -o event.o
 	$(CC) -c $(CFLAGS) block.cpp -o block.o
-	$(CC) $(CFLAGS) main.o game_engine.o shader.o entity.o camera_out.o loadfile.o display.o mesh.o error.o texture.o stb_image.o camera.o event.o block.o world_gen.o render_manager.o physics.o player.o -o out $(LIBS)
+	$(CC) $(CFLAGS) main.o game_engine.o shader.o entity.o camera_out.o loadfile.o display.o model.o mesh.o error.o texture.o stb_image.o camera.o event.o block.o world_gen.o render_manager.o physics.o player.o -o out $(LIBS)
 run:
 	$(MAKE) main
 	./out
@@ -29,6 +30,9 @@ gpu:
 	optirun ./out
 game_engine: game_engine.cpp
 	$(CC) -c $(CFLAGS) game_engine.cpp -o game_engine.o
+
+model: model.cpp
+	$(CC) -c $(CFLAGS) model.cpp -o model.o
 shader: shader.cpp
 	$(CC) -c $(CFLAGS) shader.cpp -o shader.o
 camera_out: camera_out.cpp

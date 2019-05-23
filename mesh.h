@@ -2,34 +2,11 @@
 #define MESH_H
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include "render_public.h"
 #include <vector>
 const int numBuffers=4;
 enum Buffers{POSITION,TEXCOORD,INDEX,NORMAL};
-class Model{
-    
-    public:
-        std::vector<glm::vec3> pos;//position
-        std::vector<glm::vec2> texCoord;//texture chordinates
-        std::vector<unsigned int> indices;
-        std::vector<glm::vec3> normal;
-             
-        Model(std::vector<glm::vec3> pos,//position
-            std::vector<glm::vec2> texCoord,//texture chordinates
-            std::vector<unsigned int> indices,std::vector<glm::vec3> normal){
-                this->pos = pos;
-                this->texCoord=texCoord;
-                this->indices=indices;
-                this->normal=normal;
-                
-                
-        }
-        Model(std::string in);
-        void add(Model to_add,glm::vec3 pos);
-        Model(){
 
-        }
-    private:
-};
 class RunTimeModel{
     public:
         GLuint meshNum;

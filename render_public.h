@@ -53,9 +53,9 @@ initizes rendering engine
 void initRender();
 /*
 Not Implemented or tested
-makes texture
+makes texture will get rid of p conflists with genTexture from texture.cpp
 */
-Text genTexture(std::string file_name);
+Text genTextureP(std::string file_name);
 /*
 Not Implemented or Texted
 generates the mesh from the model
