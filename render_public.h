@@ -70,6 +70,11 @@ Not Tested
 generates the mesh from the model
 */
 Mesh genMesh(Model in,Text texture,glm::vec3 pos);
+/*
+Not Tested or Implemented
+generates the mesh from .obj at filename
+*/
+Mesh genMesh(std::string file_name,Text texture,glm::vec3 pos);
 
 /*
 Not Tested
