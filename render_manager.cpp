@@ -92,6 +92,11 @@ void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
         sendVec3("sun_color",sun_color,*getBoundShader());
         getError();
 }
+void sendPos(glm::vec3 pos){
+    getError();
+    sendVec3("position",pos,*getBoundShader());
+    getError();
+}
 void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture){
     Draw_Calls.push_back(triplet<RunTimeModel,glm::vec3,Texture>(Model,pos,texture));
 }
@@ -152,6 +157,7 @@ void drawFrame(){
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
+    printf("DrawCalls Size: %i\n",Draw_Calls.size());
     for(int i =0;i<Draw_Calls.size();i++){
         bindTexture(Draw_Calls[i].c(),gameWorld,"diffuse");
         drawMesh(Draw_Calls[i].a(),Draw_Calls[i].b());
@@ -161,10 +167,8 @@ void drawFrame(){
     //printf("bound buffer (after rendering): %i\n",in);
     
     getError();
-    if(error)
-        printf("ERROR!\n\n\n");
     
-    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    //glBindFramebuffer(GL_FRAMEBUFFER,0);
     //useShader(bufferWorld);
     //useFrameCam();
     //bindTexture(gameWorld.bufer_object.attTexture,gameWorld,"diffuse");

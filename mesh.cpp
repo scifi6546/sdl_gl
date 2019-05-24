@@ -4,10 +4,10 @@
 #include <vector>
 #include <iostream>
 #include "mesh.h"
-#include "shader.h"
-#include "texture.h"
+//#include "shader.h"
+//#include "texture.h"
 #include "error.h"
-
+#include "render_manager.h"
 std::vector<unsigned int> numIndicies;
 std::vector<RunTimeModel> initMesh(std::vector<Model> models){
 
@@ -85,12 +85,13 @@ void drawMesh(RunTimeModel model,glm::vec3 position){
     getError();//gl invalid operation
     glm::mat4 trans = glm::mat4(1.0f);
     
-    sendTranslate(glm::translate(trans,position));
+    sendPos(position);
     getError();
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);
 //Error Line
     getError();
 }
+/* 
 void drawMeshBuffer(RunTimeModel model,glm::vec3 position){
     glBindVertexArray(model.meshNum);
     getError();//gl invalid operation
@@ -102,6 +103,7 @@ void drawMeshBuffer(RunTimeModel model,glm::vec3 position){
 //Error Line
     getError();
 }
+*/
 void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update){
     if(to_update.size()!=models.size()){
         std::cout<<"to_update.size()!=models.size()\n";

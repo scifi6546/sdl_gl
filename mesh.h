@@ -37,7 +37,7 @@ class RunTimeModel{
 extern std::vector<unsigned int> numIndicies;
 std::vector<RunTimeModel> initMesh(std::vector<Model> models);//inits mesh
 void drawMesh(RunTimeModel model,glm::vec3 position);//draws a model specified by meshNum at position
-void drawMeshBuffer(RunTimeModel model,glm::vec3 position);//draws mesh at buffer, need to delete soon
+//void drawMeshBuffer(RunTimeModel model,glm::vec3 position);//draws mesh at buffer, need to delete soon
 void updateMesh(std::vector<Model> models,std::vector<RunTimeModel> &to_update);
 void deleteMesh(std::vector<RunTimeModel> &models);
 #endif

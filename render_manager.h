@@ -31,6 +31,11 @@ Sends world color data to the gpu
 void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
     glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
 /*
+Not Tested
+Sends position data to the gpu
+*/
+void sendPos(glm::vec3 pos);
+/*
 TO ONLY BE USED BY RENDERING CODE
 gets pointer to currently bound shader
 */
