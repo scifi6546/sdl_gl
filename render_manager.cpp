@@ -13,7 +13,25 @@ unsigned int mainBufferFBO;
 render_target *bound_shader;//currently bound shader
 //render_target *gameWorld_ptr;
 GLenum error;
-
+template<typename T1, typename T2,typename T3>
+class triplet{
+    public:
+        triplet(T1 first,T2 second,T3 third){
+            _a=first;
+            _b=second;
+            _c=third;};
+        T1 a(){return _a;};
+        T2 b(){return _b;};
+        T3 c(){return _c;};
+    private:
+        T1 _a;
+        T2 _b;
+        T3 _c;
+};
+/*
+Contains all draw calls to be drawn in frame
+*/
+std::vector<triplet<RunTimeModel,glm::vec3,Texture>> Draw_Calls;
 Model buffer=Model(
     {glm::vec3(-1.0,-1.0,0.0),glm::vec3(1.0,-1.0,0.0),
         glm::vec3(1.0,1.0,0.0),glm::vec3(1.0,-1.0,1.0)},
@@ -74,6 +92,9 @@ void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
         sendVec3("sun_color",sun_color,*getBoundShader());
         getError();
 }
+void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture){
+    Draw_Calls.push_back(triplet<RunTimeModel,glm::vec3,Texture>(Model,pos,texture));
+}
 void rManager::RuseShader(render_target &in){
     useShader(in);
     bound_shader=&in;
@@ -131,7 +152,11 @@ void drawFrame(){
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
-    draw();
+    for(int i =0;i<Draw_Calls.size();i++){
+        bindTexture(Draw_Calls[i].c(),gameWorld,"diffuse");
+        drawMesh(Draw_Calls[i].a(),Draw_Calls[i].b());
+    }
+    Draw_Calls.clear();
     //glGetIntegerv(GL_FRAMEBUFFER_BINDING,&in);
     //printf("bound buffer (after rendering): %i\n",in);
     

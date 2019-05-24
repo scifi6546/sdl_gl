@@ -81,9 +81,9 @@ Texture genTexture(std::string filename){
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    stbi_image_free(imagedata);
+    //stbi_image_free(imagedata);
     getError();
-    free(imagedata);
+    stbi_image_free(imagedata);
     return out;
     
 }

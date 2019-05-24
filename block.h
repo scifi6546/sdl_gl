@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "event.h"
+#include "render_public.h"
 #include "int_vec.h"
 
 const bool DEBUG=false;

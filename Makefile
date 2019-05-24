@@ -13,6 +13,7 @@ main: main.cpp game_engine.cpp
 	$(MAKE) player
 	$(MAKE) camera_out
 	$(MAKE) error
+	$(MAKE) render_public
 	$(MAKE) model
 	$(CC) -c $(CFLAGS) display.cpp -o display.o
 	$(CC) -c $(CFLAGS) texture.cpp -o texture.o
@@ -21,7 +22,7 @@ main: main.cpp game_engine.cpp
 	$(CC) -c $(CFLAGS) camera.cpp -o camera.o
 	$(CC) -c $(CFLAGS) event.cpp -o event.o
 	$(CC) -c $(CFLAGS) block.cpp -o block.o
-	$(CC) $(CFLAGS) main.o game_engine.o shader.o entity.o camera_out.o loadfile.o display.o model.o mesh.o error.o texture.o stb_image.o camera.o event.o block.o world_gen.o render_manager.o physics.o player.o -o out $(LIBS)
+	$(CC) $(CFLAGS) main.o game_engine.o shader.o entity.o camera_out.o loadfile.o display.o model.o mesh.o error.o texture.o stb_image.o camera.o render_public.o event.o block.o world_gen.o render_manager.o physics.o player.o -o out $(LIBS)
 run:
 	$(MAKE) main
 	./out
@@ -51,6 +52,8 @@ player:
 	$(CC) -c $(CFLAGS) player.cpp -o player.o
 error:
 	$(CC) -c $(CFLAGS) error.cpp -o error.o
+render_public:
+	$(CC) -c $(CFLAGS) render_public.cpp -o render_public.o
 debug:
 	$(MAKE) main
 	gdb out

@@ -326,9 +326,9 @@ void renderChunk::updateChunk(std::vector<BLOCK_TYPES> *blocks,int x_start,int y
     if(!isMeshValid(this->chunkModel)){
         this->chunkModel=genMesh(blocksMesh,BLOCK_TEXTURE,glm::vec3(0.0,0.0,0.0));
     } else{
-        std::vector<Model> temp_model={blocksMesh};
-        std::vector<RunTimeModel> tempRun;
-        updateMesh(blocksMesh,this->chunkModel);
+        //std::vector<Model> temp_model={blocksMesh};
+        //std::vector<RunTimeModel> tempRun;
+        updateMeshP(blocksMesh,this->chunkModel);
     }
 }
 void renderChunk::draw(){

@@ -45,7 +45,7 @@ class Mesh{
         int id=-1;//id for refrencing mesh items
         glm::vec3 pos;//position to draw the mesh at
         Text texture_use;//what texture to use when drawing the mesh
-        Mesh();
+        //Mesh();
 
 
 };
@@ -61,16 +61,21 @@ makes texture will get rid of p conflists with genTexture from texture.cpp
 */
 Text genTextureP(std::string file_name);
 /*
+NOT IMPLEMENTED OR TESTED
+Draws all draw calls asked for
+*/
+void drawRender();
+/*
 Not Tested
 generates the mesh from the model
 */
 Mesh genMesh(Model in,Text texture,glm::vec3 pos);
 
 /*
-Not Texted or implemented
+Not Tested
 updates a sekected mesh and changes it
 */
-void updateMesh(Model in, Mesh &toUpdate);
+void updateMeshP(Model in, Mesh &toUpdate);
 
 /*
 checks if mesh is actually valid

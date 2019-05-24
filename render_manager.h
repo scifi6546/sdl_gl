@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "render_target.h"
+#include "mesh.h"
 const int display_height = 800;
 const int display_width = 1000;
 //public functions
@@ -12,6 +13,11 @@ void initRender();
 void quitRender_INT();
 //draws frame called every frame draw
 void drawFrame();
+/*
+Not Implemented or Tested
+Buffer Draw Calls
+*/
+void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture);
 /*
 NOT TESTED
 sends the camera position (world coordinates) and rotation to the rendering engine 

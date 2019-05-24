@@ -57,7 +57,7 @@ int init(){
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
-    GameWorld = new World(player_pos);
+    GameWorld = new World(player_pos,generated_textures[0],generated_textures[1]);
     getError();
     entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld));
     entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld));
@@ -96,8 +96,9 @@ int init(){
         for(int i =0;i<entitys.size();i++){
             entitys[i].tick(deltaT);
         }
+        drawRender();
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
-        drawFrame();
+        //drawFrame();
         getError();
         printf("at end??\n");
     }

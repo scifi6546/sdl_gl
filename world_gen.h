@@ -4,7 +4,6 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "block.h"
-#include "mesh.h"
 namespace world_gen{
     const int WATER_LEVEL=130;
     const int SNOW_LEVEL=160;
