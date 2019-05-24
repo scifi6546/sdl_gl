@@ -1,5 +1,5 @@
 #include "entity.h"
-
+#include "render_public.h"
 #include <stdio.h>
 Entity::Entity(){
     printf("wrong constructor used\n");

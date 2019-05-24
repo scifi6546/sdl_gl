@@ -96,11 +96,11 @@ int init(){
         for(int i =0;i<entitys.size();i++){
             entitys[i].tick(deltaT);
         }
+        draw();
         drawRender();
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         //drawFrame();
         getError();
-        printf("at end??\n");
     }
     delDisplay();
     return 0;
