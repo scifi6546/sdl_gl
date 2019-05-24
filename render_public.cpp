@@ -94,6 +94,13 @@ Mesh genMesh(Model in,Text texture,glm::vec3 pos){
     out.pos=pos;
     return out;
 }
+Mesh genMesh(std::string file_name,Text texture,glm::vec3 pos){
+    RunTimeModel temp = initMesh({Model(file_name)})[0];
+    Mesh out = insertMesh(temp);
+    out.texture_use=texture;
+    out.pos=pos;
+    return out;
+}
 bool isMeshValid(Mesh in){
     if(in.id<0){
         return false;
