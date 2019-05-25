@@ -59,10 +59,10 @@ int init(){
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos,generated_textures[0],generated_textures[1]);
     getError();
-    entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
+    //entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
+    //entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
+    //entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
+    //entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
     
     player = Player(player_pos,GameWorld);
     getError();

@@ -115,7 +115,7 @@ void translateCam(glm::vec3 trans,float thetax, float thetay){
     float z = -sin(thetay);
     */
    glm::mat4 translate = glm::mat4(1.0f);
-   translate = glm::translate(translate,trans);
+   translate = glm::translate(translate,glm::vec3(0.0f,0.0f,0.0f));
     glm::mat4 look_at = glm::mat4(1.0f);
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
