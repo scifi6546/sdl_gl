@@ -6,10 +6,10 @@
 #include <string>
 #include <math.h>
 #include "error.h"
+#include "render_manager.h"
 GLint camera_loc;
 glm::mat4 translate;
 glm::mat4 projection;
-glm::mat4 look_at;
 glm::vec3 cam_pos;
 //float thetax;
 //float thetay;
@@ -44,6 +44,9 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     game_cam_height=height;
     game_cam_near=near;
     game_cam_far=far;
+    glm::mat4 camera_mat=glm::mat4(1.0f);
+    camera_mat = glm::perspective(glm::radians(fov),width/height,near,far);
+    sendMat4("camera",camera_mat,*getBoundShader());
 
 //not needed anymore
 /*
@@ -71,16 +74,17 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     printf("look at = \n%s",makeString(look_at).c_str());
     */
 }
+/*
 void rotate_cam(float x_rot, float y_rot){
     glm::vec3 direction;
     direction.x = -cos(y_rot);
     direction.y = -sin(x_rot);
     direction.z = -sin(y_rot);
-    /*
+    
     float x = -cos(thetay);
     float y = -sin(thetax);
     float z = -sin(thetay);
-    */
+    
     
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
@@ -96,8 +100,9 @@ void rotate_cam(float x_rot, float y_rot){
     }if(thetax<=-PI/2){
         thetax=-PI/2;
     }
-    INT_look();*/
+    INT_look();
 }
+*/
 void translateCam(glm::vec3 trans,float thetax, float thetay){
 
     glm::vec3 direction;
@@ -109,11 +114,16 @@ void translateCam(glm::vec3 trans,float thetax, float thetay){
     float y = -sin(thetax);
     float z = -sin(thetay);
     */
-    
+   glm::mat4 translate = glm::mat4(1.0f);
+   translate = glm::translate(translate,trans);
+    glm::mat4 look_at = glm::mat4(1.0f);
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
     look_at=glm::lookAt(trans,trans+direction,glm::vec3(0.0f,1.0f,0.0f));
     getError();
-    sendLook(look_at);
+    
+    sendMat4("look",look_at,*getBoundShader());
+    sendMat4("translate",translate,*getBoundShader());
+    //sendLook(look_at);
     getError();
 }

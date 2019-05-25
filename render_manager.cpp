@@ -140,7 +140,7 @@ void initRender(){
     getError();
     initCam(60.0,display_width,display_height,.01,500);
     getError();
-    rManager::makeFBO(gameWorld);
+    //rManager::makeFBO(gameWorld);
     std::vector<RunTimeModel> in = initMesh({buffer});
     buffer_model=in[0];
     getError();
@@ -148,7 +148,7 @@ void initRender(){
     
 }
 void drawFrame(){
-    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    //glBindFramebuffer(GL_FRAMEBUFFER,0);
     //rManager::bindFBO(gameWorld);
     //useGameShader();
     getError();

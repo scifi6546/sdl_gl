@@ -101,7 +101,9 @@ getError();
     getError();
 }
 void useShader(render_target target){
+    getError();
     glUseProgram(target.program);
+    getError();
 }
 void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
     for(int i =0;i<program.Unis.size();i++){

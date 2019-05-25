@@ -114,6 +114,7 @@ void delTexture()
         glDeleteTextures(1, &texture[i]);
     }
 }
+/*
 void bindTexture(unsigned int unit)
 {
     //printf("unit = %i",unit);
@@ -124,7 +125,7 @@ void bindTexture(unsigned int unit)
     getError();
     setTexture(unit);
     getError();
-}
+}*/
 void bindTexture(const Texture to_bind,
     const render_target buffer,
     const std::string sampler_name){

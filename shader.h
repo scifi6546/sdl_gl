@@ -38,19 +38,19 @@ sends GLfloat to uniform specified by name. uses program in render_target
 void sendGLfloat(const std::string name,const GLfloat float_in,
     const render_target in);
 void bind();
-void sendCamera(glm::mat4 cam);
-void sendTranslate(glm::mat4 trans);
-void sendLook(glm::mat4 look);
-void setTexture(int unit);
-void sendAmbient(glm::vec3 color,GLfloat intensity,
-    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
-void sendCamMatBuffer(glm::mat4 in);
+//void sendCamera(glm::mat4 cam);
+//void sendTranslate(glm::mat4 trans);
+//void sendLook(glm::mat4 look);
+//void setTexture(int unit);
+//void sendAmbient(glm::vec3 color,GLfloat intensity,
+//    glm::vec3 sun_pos,GLfloat sun_intensity,glm::vec3 sun_color);
+//void sendCamMatBuffer(glm::mat4 in);
 
 //void useGameShader();//uses the game world shaders
 void useBufferShader();//activates the frame buffer shaders
 
 //NOT TESTED!!!!!
 void useShader(render_target target);//uses shader specified in render_target
-void bindGameShader();
-void bindBufferShader();
+//void bindGameShader();
+//void bindBufferShader();
 #endif

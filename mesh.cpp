@@ -79,11 +79,12 @@ std::vector<RunTimeModel> initMesh(std::vector<Model> models){
      
 }
 void drawMesh(RunTimeModel model,glm::vec3 position){
+    
 
     //std::cout<<model.printString();
     glBindVertexArray(model.meshNum);
     getError();//gl invalid operation
-    glm::mat4 trans = glm::mat4(1.0f);
+    //glm::mat4 trans = glm::mat4(1.0f);
     
     sendPos(position);
     getError();
