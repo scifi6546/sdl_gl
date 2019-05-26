@@ -46,10 +46,10 @@ int init(){
     gameCam.setPos(player_pos);
     getError();
     std::vector<std::string> textures;
-    textures.push_back("./textures/total.png");
-    textures.push_back("./textures/water.png");
     generated_textures.push_back(genTextureP("./textures/total.png"));
     generated_textures.push_back(genTextureP("./textures/water.png"));
+    genTextureP("./textures/water.png");
+    //printf("hello world!\n");
 
     //genTexture(textures);
     getError();
@@ -151,5 +151,5 @@ glm::vec3 engineKeyboardEvent(char key,bool is_down){
 }
 
 void engineMouseEvent(int x_rel, int y_rel){
-    gameCam.moveCam(x_rel,y_rel);
+    gameCam.moveCam(x_rel*0.03f,y_rel*0.03f);
 }

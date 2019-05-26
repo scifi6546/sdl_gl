@@ -14,8 +14,8 @@ glm::vec3 Camera::getPos(){
     return this->position;
 }
 void Camera::moveCam(float deltax,float deltay){
-    this->thetax+=deltax;
-    this->thetay+=deltay;
+    this->thetax+=deltay;
+    this->thetay+=deltax;
 
     if(thetay>=2.0*PIt){
         thetay-=2.0*PIt;

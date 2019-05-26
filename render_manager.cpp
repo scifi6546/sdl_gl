@@ -174,8 +174,9 @@ void drawFrame(){
     //bindTexture(gameWorld.bufer_object.attTexture,gameWorld,"diffuse");
     
     //drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
-    resetMouse(getWidth(),getHeight());
     updateDisplay();
+    resetMouse(getWidth(),getHeight());
+    
     error=glGetError();
 }
 void sendCamera(glm::vec3 position,float thetax,float thetay){

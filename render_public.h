@@ -7,7 +7,7 @@
 this contains the public interface for rendering info
 */
 struct Text{
-    unsigned int id=-1;
+    int id=-1;
 };
 /*
 This contains polygonial data to be sent to rendering engine
