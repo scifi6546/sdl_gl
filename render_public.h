@@ -101,4 +101,8 @@ Not tested or implemented
 Deletes mesh specified
 */
 void deleteMeshP(Mesh &in);
+/*
+Draws the mesh for the gui
+*/
+void drawMeshGui(Mesh in);
 #endif

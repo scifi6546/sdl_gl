@@ -15,11 +15,12 @@
 #include "physics.h"
 #include "entity.h"
 #include "player.h"
-#include "render_manager.h"
 #include "camera_out.h"
 #include <unistd.h>
 #include <vector>
+#include "gui_element.h"
 #include <glm/gtc/matrix_transform.hpp>
+
 glm::vec3 temp_trans;
 float walk_speed = 1.0f;
 SDL_Thread* input;
@@ -48,7 +49,8 @@ int init(){
     std::vector<std::string> textures;
     generated_textures.push_back(genTextureP("./textures/total.png"));
     generated_textures.push_back(genTextureP("./textures/water.png"));
-    genTextureP("./textures/water.png");
+    GuiElement test_button = GuiElement(genTextureP("./textures/button"),glm::vec2(0.5f,0.5f),0.0f,0.1f,0.1f);
+    ///genTextureP("./textures/water.png");
     //printf("hello world!\n");
 
     //genTexture(textures);
@@ -97,6 +99,7 @@ int init(){
             entitys[i].tick(deltaT);
         }
         draw();
+        test_button.draw();
         drawRender();
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         //drawFrame();
