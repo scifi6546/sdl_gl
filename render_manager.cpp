@@ -33,8 +33,9 @@ Contains all draw calls to be drawn in frame
 */
 std::vector<triplet<RunTimeModel,glm::vec3,Texture>> Draw_Calls;
 Model buffer=Model(
-    {glm::vec3(-1.0,-1.0,0.0),glm::vec3(1.0,-1.0,0.0),
-        glm::vec3(1.0,1.0,0.0),glm::vec3(1.0,-1.0,1.0)},
+    {glm::vec3(-1.0,-1.0,0.1),glm::vec3(1.0,-1.0,0.1),
+     glm::vec3(1.0,1.0,0.1),glm::vec3(1.0,-1.0,0.1)},
+        
     {glm::vec2(-1.0,-1.0),glm::vec2(1.0,-1.0),
         glm::vec2(1.0,1.0),glm::vec2(1.0,-1.0)},{0,1,2,0,3,2},
     {glm::vec3(0.0,0.0,-1.0),glm::vec3(0.0,0.0,-1.0),
@@ -140,7 +141,7 @@ void initRender(){
     getError();
     initCam(60.0,display_width,display_height,.01,500);
     getError();
-    //rManager::makeFBO(gameWorld);
+    rManager::makeFBO(gameWorld);
     std::vector<RunTimeModel> in = initMesh({buffer});
     buffer_model=in[0];
     getError();
@@ -152,8 +153,12 @@ void drawFrame(){
     //rManager::bindFBO(gameWorld);
     //useGameShader();
     getError();
-  
+    rManager::bindFBO(gameWorld);
     rManager::RuseShader(gameWorld);
+    sendShader();
+    getError();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    getError();
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
@@ -163,6 +168,12 @@ void drawFrame(){
         drawMesh(Draw_Calls[i].a(),Draw_Calls[i].b());
     }
     Draw_Calls.clear();
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    //rManager::bindFBO(bufferWorld);
+    
+    rManager::RuseShader(bufferWorld);
+    bindTexture(gameWorld.bufer_object.attTexture,bufferWorld,"diffuse");
+    drawMesh(buffer_model,glm::vec3(0.0f,0.0f,0.5f));
     //glGetIntegerv(GL_FRAMEBUFFER_BINDING,&in);
     //printf("bound buffer (after rendering): %i\n",in);
     

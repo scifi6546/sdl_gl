@@ -11,6 +11,8 @@ GLint camera_loc;
 glm::mat4 translate;
 glm::mat4 projection;
 glm::vec3 cam_pos;
+glm::mat4 camera_mat;
+glm::mat4 look_at;
 //float thetax;
 //float thetay;
 float PI=3.14159265358979323846264338327;
@@ -36,7 +38,11 @@ std::string makeString(glm::mat4 in){
     }
     return out;
 }
-
+void sendShader(){
+    sendMat4("camera",camera_mat,*getBoundShader());
+    sendMat4("look",look_at,*getBoundShader());
+    sendMat4("translate",translate,*getBoundShader());
+}
 void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat far){
     getError();
     game_cam_fov=fov;
@@ -44,7 +50,7 @@ void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat fa
     game_cam_height=height;
     game_cam_near=near;
     game_cam_far=far;
-    glm::mat4 camera_mat=glm::mat4(1.0f);
+    camera_mat=glm::mat4(1.0f);
     camera_mat = glm::perspective(glm::radians(fov),width/height,near,far);
     sendMat4("camera",camera_mat,*getBoundShader());
 
@@ -114,9 +120,9 @@ void translateCam(glm::vec3 trans,float thetax, float thetay){
     float y = -sin(thetax);
     float z = -sin(thetay);
     */
-   glm::mat4 translate = glm::mat4(1.0f);
+    translate = glm::mat4(1.0f);
    translate = glm::translate(translate,glm::vec3(0.0f,0.0f,0.0f));
-    glm::mat4 look_at = glm::mat4(1.0f);
+        look_at = glm::mat4(1.0f);
     //printf("pos.x = %f pos.y = %f pos.z = %f\n",cam_pos.x,cam_pos.y,cam_pos.z);
     //printf("thetax = %f thetay = %f \n x look = %f y look = %f z look = %f\n",thetax,thetay,x,y,z);
     look_at=glm::lookAt(trans,trans+direction,glm::vec3(0.0f,1.0f,0.0f));
