@@ -33,13 +33,13 @@ Contains all draw calls to be drawn in frame
 */
 std::vector<triplet<RunTimeModel,glm::vec3,Texture>> Draw_Calls;
 Model buffer=Model(
-    {glm::vec3(-1.0,-1.0,0.1),glm::vec3(1.0,-1.0,0.1),
-     glm::vec3(1.0,1.0,0.1),glm::vec3(1.0,-1.0,0.1)},
+    {glm::vec3(1.0,1.0,0.1),glm::vec3(1.0,-1.0,0.1),
+     glm::vec3(-1.0,-1.0,0.1),glm::vec3(-1.0,1.0,0.1)},
         
-    {glm::vec2(-1.0,-1.0),glm::vec2(1.0,-1.0),
-        glm::vec2(1.0,1.0),glm::vec2(1.0,-1.0)},{0,1,2,0,3,2},
-    {glm::vec3(0.0,0.0,-1.0),glm::vec3(0.0,0.0,-1.0),
-        glm::vec3(0.0,0.0,-1.0),glm::vec3(0.0,0.0,-1.0)});
+    {glm::vec2(1.0f,1.0f),glm::vec2(1.0,0.0f),
+        glm::vec2(0.0f,0.0f),glm::vec2(0.0f,1.0)},{0,1,3,1,2,3},
+    {glm::vec3(0.0,0.0,1.0),glm::vec3(0.0,0.0,1.0),
+        glm::vec3(0.0,0.0,1.0),glm::vec3(0.0,0.0,1.0)});
 RunTimeModel buffer_model;
 
 render_target *getBoundShader(){

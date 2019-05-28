@@ -8,7 +8,6 @@ out vec3 Normal;
 out vec3 Pos;
 void main(){
     gl_Position=vec4(position,1.0);
-    Pos = position;
     texcoord0=texcoord;
     Normal=aNormal;
 
