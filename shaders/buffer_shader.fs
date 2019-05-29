@@ -6,7 +6,7 @@ out vec4 color;
 uniform mat4 camera;
 //out vec4 color;
 void main(){
-    float n_temp = dot(Normal,glm::vec3(1.0f,1.0f,1.0f));
+    float n_temp = dot(Normal,vec3(1.0f,1.0f,1.0f));
     color=texture(diffuse,texcoord0)*n_temp;
    // color=texture(diffuse,texcoord0);
 }
