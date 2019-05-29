@@ -32,6 +32,7 @@ class triplet{
 Contains all draw calls to be drawn in frame
 */
 std::vector<triplet<RunTimeModel,glm::vec3,Texture>> Draw_Calls;
+std::vector<triplet<RunTimeModel,glm::vec3,Texture>> Draw_Calls_Gui;
 Model buffer=Model(
     {glm::vec3(1.0,1.0,0.1),glm::vec3(1.0,-1.0,0.1),
      glm::vec3(-1.0,-1.0,0.1),glm::vec3(-1.0,1.0,0.1)},
@@ -100,6 +101,9 @@ void sendPos(glm::vec3 pos){
 }
 void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture){
     Draw_Calls.push_back(triplet<RunTimeModel,glm::vec3,Texture>(Model,pos,texture));
+}
+void bufferDrawCallsGui(RunTimeModel Model,glm::vec3 pos,Texture texture){
+    Draw_Calls_Gui.push_back(triplet<RunTimeModel,glm::vec3,Texture>(Model,pos,texture));
 }
 void rManager::RuseShader(render_target &in){
     useShader(in);
@@ -174,6 +178,11 @@ void drawFrame(){
     rManager::RuseShader(bufferWorld);
     bindTexture(gameWorld.bufer_object.attTexture,bufferWorld,"diffuse");
     drawMesh(buffer_model,glm::vec3(0.0f,0.0f,0.5f));
+    for(int i =0;i<Draw_Calls_Gui.size();i++){
+        bindTexture(Draw_Calls_Gui[i].c(),bufferWorld,"diffuse");
+        drawMesh(Draw_Calls_Gui[i].a(),Draw_Calls_Gui[i].b());
+    }
+    Draw_Calls_Gui.clear();
     //glGetIntegerv(GL_FRAMEBUFFER_BINDING,&in);
     //printf("bound buffer (after rendering): %i\n",in);
     

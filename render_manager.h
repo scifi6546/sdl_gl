@@ -14,10 +14,13 @@ void quitRender_INT();
 //draws frame called every frame draw
 void drawFrame();
 /*
-Not Implemented or Tested
 Buffer Draw Calls
 */
 void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture);
+/*
+Buffer Draw Calls for Gui Layer
+*/
+void bufferDrawCallsGui(RunTimeModel Model,glm::vec3 pos,Texture texture);
 /*
 NOT TESTED
 sends the camera position (world coordinates) and rotation to the rendering engine 

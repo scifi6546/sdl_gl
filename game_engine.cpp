@@ -49,7 +49,7 @@ int init(){
     std::vector<std::string> textures;
     generated_textures.push_back(genTextureP("./textures/total.png"));
     generated_textures.push_back(genTextureP("./textures/water.png"));
-    GuiElement test_button = GuiElement(genTextureP("./textures/button"),glm::vec2(0.5f,0.5f),0.0f,0.1f,0.1f);
+    GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.3f,0.3f);
     ///genTextureP("./textures/water.png");
     //printf("hello world!\n");
 

@@ -114,9 +114,6 @@ bool isMeshValid(Mesh in){
 }
 void drawMeshP(Mesh in){
     Texture temp = getTexture(in.texture_use);
-    if(temp.color_texture!=1)
-        printf("temp.color_texture != 1\n");
-
     bufferDrawCalls(getModel(in),in.pos,temp);
 }
 void updateMeshP(Model in, Mesh &toUpdate){
@@ -129,4 +126,8 @@ void deleteMeshP(Mesh &in){
     temp.push_back(getModel(in));
     deleteMesh(temp);
     in.id=-1;
+}
+void drawMeshGui(Mesh in){
+    Texture temp = getTexture(in.texture_use);
+    bufferDrawCallsGui(getModel(in),in.pos,temp);
 }
