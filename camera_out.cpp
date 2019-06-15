@@ -29,9 +29,9 @@ void Camera::moveCam(float deltax,float deltay){
     }
 }
 void Camera::sendToRender(){
-    printf("positon.x: %f, position.y: %f, position.z: %f\n",
-    this->position.x,this->position.y,this->position.z);
+    //printf("positon.x: %f, position.y: %f, position.z: %f\n",
+    //this->position.x,this->position.y,this->position.z);
 
-    printf("look_x: %f look_y %f\n",this->thetax,this->thetay);
+    //printf("look_x: %f look_y %f\n",this->thetax,this->thetay);
     sendCamera(this->position,this->thetax,this->thetay);
 }

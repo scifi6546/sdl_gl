@@ -530,6 +530,8 @@ BLOCK_TYPES World::getBlock(int x, int y, int z){
     float tempz = z-rootz;
     int z_index = floor((tempz)/tempCSize)+CHUNK_RENDER_DIST;
 
+    if(y_index>=this->loadedChunk.size() || x_index+z_index>=this->loadedChunk[0].size())
+        return AIR;
     Chunk* needed = 
         this->loadedChunk[y_index][x_index+z_index];
     return needed->getBlock(x,y,z);

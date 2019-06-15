@@ -61,11 +61,18 @@ int init(){
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
     GameWorld = new World(player_pos,generated_textures[0],generated_textures[1]);
     getError();
-    //entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    //entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    //entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    //entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld,generated_textures[1]));
-    
+    entitys.push_back(Entity(glm::vec3(2.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
+    entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
+    entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
+    entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
+    for(int i =0;i<1000;i++){
+        int temp_ix=rand()%100;
+        int temp_iy=rand()%100;
+        float tempx=temp_ix;
+        float tempz=temp_iy;
+        entitys.push_back(Entity(glm::vec3(tempx,200.0f,tempz),GameWorld,generated_textures[0]));
+
+    }
     player = Player(player_pos,GameWorld);
     getError();
     printf("worked??\n");

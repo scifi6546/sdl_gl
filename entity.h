@@ -11,7 +11,7 @@ class Entity{
         void tick(float deltaT);
         void draw();
     protected:
-        std::string file_name="models/base.obj";
+        std::string file_name="models/test.obj";
         glm::vec3 position;
         Mesh model;
         Text texture;

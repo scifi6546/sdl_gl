@@ -40,8 +40,8 @@ Text insertTexture(Texture in){
     return out;
 }
 Texture getTexture(Text in){
-    if(in.id!=0)
-        printf("in.id: %i\n",in.id);
+    //if(in.id!=0)
+    //    printf("in.id: %i\n",in.id);
     return Textures[in.id].b();
 }
 /*
@@ -100,7 +100,9 @@ Mesh genMesh(Model in,Text texture,glm::vec3 pos){
     return out;
 }
 Mesh genMesh(std::string file_name,Text texture,glm::vec3 pos){
-    RunTimeModel temp = initMesh({Model(file_name)})[0];
+    Model temp_model = Model(file_name);
+    //printf("temp_model num poly's %i\n",temp_model.indices.size());
+    RunTimeModel temp = initMesh({temp_model})[0];
     Mesh out = insertMesh(temp);
     out.texture_use=texture;
     out.pos=pos;
@@ -114,6 +116,7 @@ bool isMeshValid(Mesh in){
 }
 void drawMeshP(Mesh in){
     Texture temp = getTexture(in.texture_use);
+    printf("pos: x: %f, y: %f, z: %f\n",in.pos.x,in.pos.y,in.pos.z);
     bufferDrawCalls(getModel(in),in.pos,temp);
 }
 void updateMeshP(Model in, Mesh &toUpdate){
