@@ -116,7 +116,6 @@ bool isMeshValid(Mesh in){
 }
 void drawMeshP(Mesh in){
     Texture temp = getTexture(in.texture_use);
-    printf("pos: x: %f, y: %f, z: %f\n",in.pos.x,in.pos.y,in.pos.z);
     bufferDrawCalls(getModel(in),in.pos,temp);
 }
 void updateMeshP(Model in, Mesh &toUpdate){

@@ -96,7 +96,7 @@ void sendAmbientInfo(glm::vec3 color,GLfloat intensity,
 }
 void sendPos(glm::vec3 pos){
     getError();
-    sendVec3("position",pos,*getBoundShader());
+    sendVec3("pos_global",pos,*getBoundShader());
     getError();
 }
 void bufferDrawCalls(RunTimeModel Model,glm::vec3 pos,Texture texture){
@@ -206,4 +206,7 @@ void sendCamera(glm::vec3 position,float thetax,float thetay){
 }
 void quitRender_INT(){
     delDisplay();
+}
+void printUnis(){
+
 }

@@ -85,7 +85,6 @@ void drawMesh(RunTimeModel model,glm::vec3 position){
     glBindVertexArray(model.meshNum);
     getError();//gl invalid operation
     //glm::mat4 trans = glm::mat4(1.0f);
-    
     sendPos(position);
     getError();
     glDrawElements(GL_TRIANGLES,model.numIndicies,GL_UNSIGNED_INT,0);

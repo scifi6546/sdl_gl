@@ -11,14 +11,18 @@ uniform mat4 translate;
 uniform mat4 camera;
 uniform mat4 move;
 uniform mat4 look;
+uniform vec3 pos_global;
+//uniform vec3 pos_translate
 
 void main(){
-    gl_Position=camera*look*translate*vec4(position,1.0);
+    vec3 temp = pos_global+position;
+    gl_Position=camera*look*translate*vec4(temp,1.0);
     z_depth=gl_Position.z;
     //gl_Position= camera * vec4(position,1.0);
     //gl_Position=vec4(position,1.0);
     Pos = position;
     texcoord0=texcoord;
     Normal=aNormal;
+    //gl_Position=camera*translate*vec4(position,1.0f)
 
 }

@@ -68,10 +68,12 @@ int init(){
     for(int i =0;i<1000;i++){
         int temp_ix=rand()%100;
         int temp_iy=rand()%100;
-        float tempx=temp_ix;
-        float tempz=temp_iy;
-        entitys.push_back(Entity(glm::vec3(tempx,200.0f,tempz),GameWorld,generated_textures[0]));
-
+        float tempx=(float) temp_ix;
+        float tempz=(float) temp_iy;
+        glm::vec3 temp = glm::vec3(tempx,180.0f,tempz);
+        //glm::vec3 temp = glm::vec3(0.0f,0.0f,0.0f);
+        entitys.push_back(Entity(temp,GameWorld,generated_textures[1]));
+        printf("pos: x: %f y: %f z: %f",temp.x,temp.y,temp.z);
     }
     player = Player(player_pos,GameWorld);
     getError();
@@ -97,13 +99,18 @@ int init(){
             printf("frame rate: %f FPS\n",1.0f/deltaT);
         }
         lastTime=current_time;
-
+        std::vector<entity_small> ent;
+        ent.reserve(entitys.size()+1);
+        for(int i=0;i<entitys.size();i++){
+            ent.push_back(entitys[i].getSmallEnt());
+        }
+        ent.push_back(player.getSmallEnt());
         getError();
-        player_pos=player.tick(deltaT,frameEvent);
+        player_pos=player.tick(deltaT,frameEvent,&ent);
         gameCam.setPos(player_pos);
         GameWorld->tick(frameEvent,deltaT,player_pos);
         for(int i =0;i<entitys.size();i++){
-            entitys[i].tick(deltaT);
+            entitys[i].tick(deltaT,&ent);
         }
         draw();
         test_button.draw();
@@ -119,12 +126,12 @@ void draw(){
     gameCam.sendToRender();
 
     getError();
-    
+    GameWorld->draw();
     for(int i =0;i<entitys.size();i++){
-    entitys[i].draw();
+        entitys[i].draw();
     }
    
-    GameWorld->draw();
+    
     
     getError();
     

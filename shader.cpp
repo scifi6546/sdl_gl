@@ -115,11 +115,12 @@ void sendMat4(std::string name, glm::mat4 mat_in,render_target program){
 void sendVec3(const std::string name,const glm::vec3 vec3_in,const render_target program){
     getError();
 
-    int a = 1;//temp delete now
+    bool set = false;
     for(int i =0;i<program.Unis.size();i++){
         if(name==program.Unis[i].name){
             glUniform3f(program.Unis[i].location,vec3_in.x,vec3_in.y,vec3_in.z);
             getError();
+            set=true;
         }
     }
 }
