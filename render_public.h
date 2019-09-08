@@ -64,7 +64,7 @@ Text genTextureP(std::string file_name);
 NOT IMPLEMENTED OR TESTED
 Draws all draw calls asked for
 */
-void drawRender();
+void drawRender(bool reset_mouse);
 /*
 Not Tested
 generates the mesh from the model

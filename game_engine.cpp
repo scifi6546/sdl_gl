@@ -33,6 +33,9 @@ Player player;
 std::vector<Entity> entitys;
 
 std::vector<Text> generated_textures;
+
+
+
 Camera gameCam=Camera(glm::vec3(0.0,0.0,0.0),0.0,0.0);
 int getHeight(){
     return display_height;
@@ -40,6 +43,14 @@ int getHeight(){
 int getWidth(){
     return display_width;
 }
+
+
+enum MenueActionEnum{MENUE_QUIT,MENUE_START_GAME};
+struct MenueAction{
+    MenueActionEnum action;
+};
+
+MenueAction init_main_menue();
 int init(){
     initRender();
     float dist = 10.0f;
@@ -49,6 +60,10 @@ int init(){
     std::vector<std::string> textures;
     generated_textures.push_back(genTextureP("./textures/total.png"));
     generated_textures.push_back(genTextureP("./textures/water.png"));
+    generated_textures.push_back(genTextureP("./textures/start_game.png"));
+    MenueAction out = init_main_menue();
+    if(out.action==MENUE_QUIT)
+        return 0;
     GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.3f,0.3f);
     ///genTextureP("./textures/water.png");
     //printf("hello world!\n");
@@ -114,7 +129,7 @@ int init(){
         }
         draw();
         test_button.draw();
-        drawRender();
+        drawRender(true);
         //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
         //drawFrame();
         getError();
@@ -166,7 +181,18 @@ glm::vec3 engineKeyboardEvent(char key,bool is_down){
     return temp_trans;
     //temp_trans.x*SDL_GetTicks()/1000;
 }
-
+MenueAction init_main_menue(){
+    GuiElement start_button = GuiElement(generated_textures[2],glm::vec2(0.5f,0.5f),0.0f,0.3f,0.3f);
+    while(!isclosed()){
+        event();
+        start_button.draw();
+        drawRender(false);
+        printf("doing menue stuff\n");
+    }
+    MenueAction out;
+    out.action=MENUE_QUIT;
+    return out;
+}
 void engineMouseEvent(int x_rel, int y_rel){
     gameCam.moveCam(x_rel*0.03f,y_rel*0.03f);
 }

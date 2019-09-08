@@ -28,7 +28,11 @@ eventPacket event(){
         }
         if(e.type==SDL_MOUSEMOTION){
             out.mouseMx=e.motion.xrel;
-            out.mouseMy=e.motion.yrel;            
+            out.mouseMy=e.motion.yrel;   
+            float mouse_pos_x=(float) e.motion.x/ (float) getWidth();  
+            float mouse_pos_y=(float) e.motion.y/ (float) getHeight();   
+            out.mousePosScreen=glm::vec2(mouse_pos_x,mouse_pos_y);   
+
             engineMouseEvent(out.mouseMx,out.mouseMy);
         }
         if(e.type==SDL_MOUSEBUTTONDOWN){
@@ -56,6 +60,7 @@ void stopGame(){
     }
     INT_closed=true;
 }
+
 void resetMouse(int x, int y){
     SDL_WarpMouseInWindow(NULL,x/2,y/2);
     SDL_PeepEvents(&e,1,SDL_PEEKEVENT,SDL_FIRSTEVENT,SDL_LASTEVENT);

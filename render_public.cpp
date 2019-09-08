@@ -78,8 +78,8 @@ RunTimeModel getModel(Mesh in){
 void initRenderP(){
     initRender();
 }
-void drawRender(){
-    drawFrame();
+void drawRender(bool reset_mouse){
+    drawFrame(reset_mouse);
 }
 void quitRender(){
     quitRender_INT();
