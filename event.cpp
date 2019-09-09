@@ -29,9 +29,10 @@ eventPacket event(){
         if(e.type==SDL_MOUSEMOTION){
             out.mouseMx=e.motion.xrel;
             out.mouseMy=e.motion.yrel;   
-            float mouse_pos_x=(float) e.motion.x/ (float) getWidth();  
-            float mouse_pos_y=(float) e.motion.y/ (float) getHeight();   
+            float mouse_pos_x=((float) e.motion.x/ (float) getWidth());  
+            float mouse_pos_y=((float) e.motion.y/ (float) getHeight());
             out.mousePosScreen=glm::vec2(mouse_pos_x,mouse_pos_y);   
+            printf("x: %f y%f\n",mouse_pos_x,mouse_pos_y);
 
             engineMouseEvent(out.mouseMx,out.mouseMy);
         }

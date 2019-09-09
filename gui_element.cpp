@@ -1,8 +1,15 @@
 #include "gui_element.h"
-GuiElement::GuiElement(Text textureIn,glm::vec2 pos_on_screen,float z_depth,float x_size,float y_size){
+GuiElement::GuiElement(Text textureIn,glm::vec2 pos_on_screen,float z_depth,float size){
     this->texture_to_use=textureIn;
-    _box={glm::vec2(pos_on_screen.x-x_size/2.0f,pos_on_screen.y+y_size/2.0f),
-        glm::vec2(pos_on_screen.x+x_size/2.0f,pos_on_screen.y-y_size/2.0f)};
+    //setting size so that only one scale factor is needed
+    //and aspect ratio is preserved
+    float x_size = (float) textureIn.width;
+    x_size/=textureIn.height;
+    x_size*=size;
+    float y_size=size;
+    
+    _box=glm::vec2(x_size,y_size);
+    _boxCenter=pos_on_screen;
 
     /*
     Model temp = Model({glm::vec3(x_size,y_size,z_depth),glm::vec3(x_size,0.0f,z_depth),
@@ -23,13 +30,12 @@ GuiElement::~GuiElement(){
 
 }
 void GuiElement::_boxToMesh(float z_depth){
-    assert(_box.size()==2);
     Model temp = Model(
         {
-            glm::vec3(_box[0].x,_box[0].y,z_depth),
-            glm::vec3(_box[1].x,_box[0].y,z_depth),
-            glm::vec3(_box[1].x,_box[1].y,z_depth),
-            glm::vec3(_box[0].x,_box[1].y,z_depth),
+            glm::vec3(-_box.x/2.0f,_box.y/2.0f,z_depth),
+            glm::vec3(_box.x/2.0f,_box.y/2.0f,z_depth),
+            glm::vec3(_box.x/2.0f,-_box.y/2.0f,z_depth),
+            glm::vec3(-_box.x/2.0f,-_box.y/2.0f,z_depth),
         },
         {
             glm::vec2(0.0f,0.0f),
@@ -48,8 +54,24 @@ void GuiElement::_boxToMesh(float z_depth){
         }
             
     );
-    render_model = genMesh(temp,texture_to_use,glm::vec3(0.0f,0.0f,0.0f));
+    render_model = genMesh(temp,texture_to_use,glm::vec3(_boxCenter.x,_boxCenter.y,0.0f));
+}
+bool GuiElement::_mouseInBox(eventPacket e){
+    printf("boxCenter x: %f y: %f\n",_boxCenter.x,_boxCenter.y);
+    if(e.mousePosScreen.x< (_boxCenter.x+_box.x/4.0f) &&
+        e.mousePosScreen.x>(_boxCenter.x-_box.x/4.0f)&&
+        e.mousePosScreen.y<(_boxCenter.y+_box.y/4.0f)&&
+        e.mousePosScreen.y>(_boxCenter.y-_box.y/4.0f)
+    ){
+        printf("mouse in box\n");
+        return true;
+    }
+    return false;
 }
 GUI_ACTION GuiElement::tick(eventPacket e){
-
+    printf("x_size: %f y_size: %f\n",_box.x,_box.y);
+    if(_mouseInBox(e)&&e.mouse==RIGHT){
+        return GUI_CLICKED;
+    }
+    return GUI_NONE;
 }

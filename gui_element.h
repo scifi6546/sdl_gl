@@ -14,14 +14,16 @@ a size of 1.0 takes up 1/2 of the screen
 class GuiElement{
     public:
         GuiElement(Text textureIn,glm::vec2 pos_on_screen,float z_depth,
-            float x_size,float y_size);
+            float size);
         GUI_ACTION tick(eventPacket e);
         void draw();
         ~GuiElement();
     private:
-        //vector of length 2 with upper left corner and lower right corner
-        std::vector<glm::vec2> _box;
+        //vector contains width and height of box
+        glm::vec2 _box;
         void _boxToMesh(float z_depth);
+        bool _mouseInBox(eventPacket e);
+        glm::vec2 _boxCenter;
         Text texture_to_use;
         Mesh render_model;
 

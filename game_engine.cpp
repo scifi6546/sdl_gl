@@ -64,7 +64,7 @@ int init(){
     MenueAction out = init_main_menue();
     if(out.action==MENUE_QUIT)
         return 0;
-    GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.3f,0.3f);
+    GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.3f);
     ///genTextureP("./textures/water.png");
     //printf("hello world!\n");
 
@@ -182,9 +182,16 @@ glm::vec3 engineKeyboardEvent(char key,bool is_down){
     //temp_trans.x*SDL_GetTicks()/1000;
 }
 MenueAction init_main_menue(){
-    GuiElement start_button = GuiElement(generated_textures[2],glm::vec2(0.5f,0.5f),0.0f,0.3f,0.3f);
+    GuiElement start_button = GuiElement(generated_textures[2],glm::vec2(0.5f,0.5f),0.0f,0.3f);
     while(!isclosed()){
-        event();
+        eventPacket e = event();
+        GUI_ACTION action = start_button.tick(e);
+        if(action==GUI_CLICKED){
+            MenueAction out;
+            out.action=MENUE_START_GAME;
+            printf("started game\n");
+            return out;
+        }
         start_button.draw();
         drawRender(false);
         printf("doing menue stuff\n");
