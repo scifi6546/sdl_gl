@@ -31,4 +31,5 @@ entity_small Entity::getSmallEnt(){
     entity_small ret;
     ret.pos=this->position;
     ret.team=ENEMY;
+	return ret;
 }

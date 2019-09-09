@@ -1,6 +1,5 @@
 #ifndef camera_H
 #define camera_H
-
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>

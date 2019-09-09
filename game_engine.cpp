@@ -16,7 +16,6 @@
 #include "entity.h"
 #include "player.h"
 #include "camera_out.h"
-#include <unistd.h>
 #include <vector>
 #include "gui_element.h"
 #include <glm/gtc/matrix_transform.hpp>
@@ -41,6 +40,7 @@ int getWidth(){
     return display_width;
 }
 int init(){
+	SDL_SetMainReady();
     initRender();
     float dist = 10.0f;
     player_pos=glm::vec3(0.1f,150.0f,0.1f);

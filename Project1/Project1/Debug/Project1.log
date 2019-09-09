@@ -1,0 +1,42 @@
+﻿  block.cpp
+c:\users\nick\programming\sdl_gl\block.h(4): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  camera.cpp
+c:\users\nick\programming\sdl_gl\camera.h(4): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+  camera_out.cpp
+c:\users\nick\programming\sdl_gl\camera_out.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  display.cpp
+c:\users\nick\programming\sdl_gl\display.cpp(1): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+  entity.cpp
+c:\users\nick\programming\sdl_gl\entity.h(4): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  error.cpp
+c:\users\nick\programming\sdl_gl\error.cpp(3): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  event.cpp
+c:\users\nick\programming\sdl_gl\event.h(1): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  game_engine.cpp
+c:\users\nick\programming\sdl_gl\game_engine.h(4): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+  gui_element.cpp
+c:\users\nick\programming\sdl_gl\render_public.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  loadfile.cpp
+c:\users\nick\programming\sdl_gl\loadfile.cpp(6): error C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.18362.0\ucrt\stdio.h(208): note: see declaration of 'fopen'
+  main.cpp
+c:\users\nick\programming\sdl_gl\game_engine.h(4): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+  mesh.cpp
+c:\users\nick\programming\sdl_gl\mesh.cpp(1): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  model.cpp
+c:\users\nick\programming\sdl_gl\render_public.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  physics.cpp
+c:\users\nick\programming\sdl_gl\physics.h(1): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  player.cpp
+c:\users\nick\programming\sdl_gl\block.h(4): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  render_manager.cpp
+c:\users\nick\programming\sdl_gl\game_engine.h(4): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+  render_public.cpp
+c:\users\nick\programming\sdl_gl\render_public.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  shader.cpp
+c:\users\nick\programming\sdl_gl\shader.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  texture.cpp
+c:\users\nick\programming\sdl_gl\texture.h(4): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  world_gen.cpp
+c:\users\nick\programming\sdl_gl\world_gen.h(4): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Generating Code...
