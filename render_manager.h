@@ -12,7 +12,8 @@ void initRender();
 //quits rendering
 void quitRender_INT();
 //draws frame called every frame draw
-void drawFrame();
+//reset_mouse tells whether to move mouse to center
+void drawFrame(bool reset_mouse);
 /*
 Buffer Draw Calls
 */

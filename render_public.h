@@ -8,6 +8,8 @@ this contains the public interface for rendering info
 */
 struct Text{
     int id=-1;
+    int width = 0;
+    int height = 0;
 };
 /*
 This contains polygonial data to be sent to rendering engine
@@ -64,7 +66,7 @@ Text genTextureP(std::string file_name);
 NOT IMPLEMENTED OR TESTED
 Draws all draw calls asked for
 */
-void drawRender();
+void drawRender(bool reset_mouse);
 /*
 Not Tested
 generates the mesh from the model

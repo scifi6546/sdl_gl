@@ -152,7 +152,7 @@ void initRender(){
     rManager::RuseShader(gameWorld);
     
 }
-void drawFrame(){
+void drawFrame(bool reset_mouse){
     //glBindFramebuffer(GL_FRAMEBUFFER,0);
     //rManager::bindFBO(gameWorld);
     //useGameShader();
@@ -195,7 +195,8 @@ void drawFrame(){
     
     //drawMeshBuffer(buffer_model,glm::vec3(1.0,100.0,0.0));
     updateDisplay();
-    resetMouse(getWidth(),getHeight());
+    if(reset_mouse)
+        resetMouse(getWidth(),getHeight());
     
     error=glGetError();
 }

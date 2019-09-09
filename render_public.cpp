@@ -78,8 +78,8 @@ RunTimeModel getModel(Mesh in){
 void initRenderP(){
     initRender();
 }
-void drawRender(){
-    drawFrame();
+void drawRender(bool reset_mouse){
+    drawFrame(reset_mouse);
 }
 void quitRender(){
     quitRender_INT();
@@ -89,6 +89,9 @@ Text genTextureP(std::string filename){
     printf("\ntemp.texture: %i ",temp.color_texture);
     Text out = insertTexture(temp);
     printf("temp.id: %i \n",out.id);
+    out.height=temp.height;
+    out.width=temp.width;
+
     return out;
 }
 

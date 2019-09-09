@@ -8,6 +8,14 @@ struct eventPacket{
     int mouseMy;//how much the mouse moved along the y axis
     float thetaY;//the current player rotation
     float thetaX;//the current player rotation
+    //pos from 0 to 1 on screen:
+    //  (0,1)
+    // /\ 
+    // |
+    // |
+    // |
+    // *------>(1,0)
+    glm::vec2 mousePosScreen;
     MOUSE_CICK mouse;
 };
 eventPacket event();
