@@ -16,7 +16,6 @@ glm::vec3 Player::tick(float deltaT,eventPacket e,std::vector<entity_small> *ent
     temp_move.z*=0.2f;
     this->pos=physObj.tick(temp_move,deltaT);
     this->handleMouse(e);
-    printf("pos: x: %f y: %f z: %f",pos.x,pos.y,pos.z);
     return this->pos;
 }
 entity_small Player::getSmallEnt(){

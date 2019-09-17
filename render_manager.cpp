@@ -130,7 +130,7 @@ render_target bufferWorld;//Buffer shader
 void initRender(){
     //unsigned int *inFBO = new unsigned int[2];
     //glGenFramebuffers(2,inFBO);
-    getError();
+    //getError();
     initDisplay(display_width,display_height,"temp_title");
     //gameWorld_ptr=&gameWorld;
     
@@ -166,7 +166,6 @@ void drawFrame(bool reset_mouse){
     //clearDisplay(0.0,.1,.6,1.0);
     
     //drawMesh(buffer_model,glm::vec3(1.0,100.0,0.0));
-    printf("DrawCalls Size: %i\n",Draw_Calls.size());
     for(int i =0;i<Draw_Calls.size();i++){
         bindTexture(Draw_Calls[i].c(),gameWorld,"diffuse");
         drawMesh(Draw_Calls[i].a(),Draw_Calls[i].b());

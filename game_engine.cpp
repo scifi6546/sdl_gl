@@ -80,7 +80,7 @@ int init(){
     entitys.push_back(Entity(glm::vec3(3.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
     entitys.push_back(Entity(glm::vec3(6.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
     entitys.push_back(Entity(glm::vec3(-12.1f,120.0f,0.1f),GameWorld,generated_textures[0]));
-    for(int i =0;i<1000;i++){
+    for(int i =0;i<10;i++){
         int temp_ix=rand()%100;
         int temp_iy=rand()%100;
         float tempx=(float) temp_ix;

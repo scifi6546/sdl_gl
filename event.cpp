@@ -4,6 +4,8 @@
 bool INT_closed;
 SDL_Event e;
 
+eventPacket last_pkt;//the packat returned by the last frame
+					 //used to keep track of the mouse position;
 eventPacket event(){
     char key_down;
     INT_closed = false;
@@ -13,6 +15,7 @@ eventPacket event(){
     eventPacket out;
     out.mouse=NONE;
     out.player_move = glm::vec3(0.0f,0.0f,0.0f);
+	bool set_mouse_pos=false;
     while(SDL_PollEvent(&e)){
         if(e.type==SDL_KEYDOWN){
             key_down=e.key.keysym.sym;
@@ -35,6 +38,7 @@ eventPacket event(){
             printf("x: %f y%f\n",mouse_pos_x,mouse_pos_y);
 
             engineMouseEvent(out.mouseMx,out.mouseMy);
+			set_mouse_pos = true;
         }
         if(e.type==SDL_MOUSEBUTTONDOWN){
             if(e.button.button==SDL_BUTTON_LEFT){
@@ -48,6 +52,10 @@ eventPacket event(){
             }
         }
     }
+	if (!set_mouse_pos) {
+		out.mousePosScreen = last_pkt.mousePosScreen;
+	}
+	last_pkt = out;
     //out.thetaX=getThetaX();
     //out.thetaY=getThetaY();
     return out;

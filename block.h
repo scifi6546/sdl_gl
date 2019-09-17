@@ -37,8 +37,8 @@ extern BlockMesh blockmesh; //mesh containing all faces of block
 extern std::vector<Mesh>models;
 const int chunkSize=32;
 const int renderChunkSize = chunkSize;//renderChunkSize has to equal chunk size I do not know why
-const int CHUNK_RENDER_DIST=3;
-const int numVertChunks = 6;//height of vertical chunks
+const int CHUNK_RENDER_DIST=2;
+const int numVertChunks = 3;//height of vertical chunks
 class Chunk{
     public:
         Chunk(std::vector<BLOCK_TYPES> &blocks,glm::vec3 root_pos);//heights 2 by 2 grid  x cols z rows

@@ -10,16 +10,6 @@ GuiElement::GuiElement(Text textureIn,glm::vec2 pos_on_screen,float z_depth,floa
     
     _box=glm::vec2(x_size,y_size);
     _boxCenter=pos_on_screen;
-
-    /*
-    Model temp = Model({glm::vec3(x_size,y_size,z_depth),glm::vec3(x_size,0.0f,z_depth),
-     glm::vec3(0.0f,0.0f,z_depth),glm::vec3(0.0f,y_size,z_depth)},
-    {glm::vec2(1.0f,1.0f),glm::vec2(1.0,0.0f),
-        glm::vec2(0.0f,0.0f),glm::vec2(0.0f,1.0)},{0,1,3,1,2,3},
-    {glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f),
-        glm::vec3(1.0f,1.0f,1.0f),glm::vec3(1.0f,1.0f,1.0f)});
-    this->render_model=genMesh(temp,this->texture_to_use,glm::vec3(pos_on_screen.x,pos_on_screen.y,z_depth));
-    */
    _boxToMesh(z_depth);
 }
 void GuiElement::draw(){
@@ -70,7 +60,8 @@ bool GuiElement::_mouseInBox(eventPacket e){
 }
 GUI_ACTION GuiElement::tick(eventPacket e){
     printf("x_size: %f y_size: %f\n",_box.x,_box.y);
-    if(_mouseInBox(e)&&e.mouse==RIGHT){
+    if(_mouseInBox(e)&&e.mouse==LEFT){
+		printf("box clicked\n");
         return GUI_CLICKED;
     }
     return GUI_NONE;

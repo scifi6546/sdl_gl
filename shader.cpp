@@ -239,6 +239,7 @@ int checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string err
 }
 GLuint createShader(std::string &text,GLenum shaderType){
     GLuint shader = glCreateShader(shaderType);
+	getError();
     if(shader==0){
         printf("shader creation failed");
     }
