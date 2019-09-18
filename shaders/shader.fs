@@ -20,9 +20,8 @@ void main(){
     vec3 diffuse_light=diff*sun_color*sun_intensity;
     
     //vec3 color_light = ambient_color*ambient_intensity + diffuse_light;
-     //vec3 color_light = ambient_color+ diffuse_light;
+     vec3 color_light = ambient_color+ diffuse_light;
     //vec3 color_light =ambient_color;
-    vec3 color_light=ambient_color;
     //color=vec4(1.0,1.0,1.0,1.0);
     color=texture(diffuse,texcoord0)*vec4(color_light,1.0);
     //color=texture(diffuse,texcoord0)*vec4(color_light,1.0)*min(50/(z_depth),1)*vec4(sky_color,1.0);

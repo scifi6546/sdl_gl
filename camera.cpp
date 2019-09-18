@@ -7,6 +7,7 @@
 #include <math.h>
 #include "error.h"
 #include "render_manager.h"
+#include "game_const.h"
 GLint camera_loc;
 glm::mat4 translate;
 glm::mat4 projection;
@@ -42,6 +43,9 @@ void sendShader(){
     sendMat4("camera",camera_mat,*getBoundShader());
     sendMat4("look",look_at,*getBoundShader());
     sendMat4("translate",translate,*getBoundShader());
+	sendVec3("ambient_color", ambient_color, *getBoundShader());
+	sendVec3("sun_color", sun_color, *getBoundShader());
+	sendGLfloat("sun_intensity", sun_intensity, *getBoundShader());
 }
 void initCam(GLfloat fov,GLfloat width, GLfloat height, GLfloat near, GLfloat far){
     getError();
