@@ -91,12 +91,6 @@ void bindTexture(unsigned int unit)
 void bindTexture(const Texture to_bind,
     const render_target buffer,
     const std::string sampler_name){
-        //printf("to_bind texture %i\n",to_bind.color_texture);
-        //GLuint location = glGetUniformLocation(buffer.program,
-        //    sampler_name.c_str());
-        //printf("location: %i\n",location);
-        //printf("sampler_name: %s\n",sampler_name.c_str());
-        //glActiveTexture(GL_TEXTURE0+location);
         glActiveTexture(GL_TEXTURE0);
         //binds texture
         

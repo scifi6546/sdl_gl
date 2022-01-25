@@ -61,16 +61,25 @@ int init(){
     generated_textures.push_back(genTextureP("./textures/total.png"));
     generated_textures.push_back(genTextureP("./textures/water.png"));
     generated_textures.push_back(genTextureP("./textures/start_game.png"));
+	generated_textures.push_back(genTextureP("./textures/green_bar.png"));
+	generated_textures.push_back(genTextureP("./textures/grey_bar.png"));
+	clearDisplay(0.0, .1, .6, 1.0);
+
     MenueAction out = init_main_menue();
     if(out.action==MENUE_QUIT)
         return 0;
-    GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.3f);
-    ///genTextureP("./textures/water.png");
+    GuiElement test_button = GuiElement(genTextureP("./textures/button.png"),glm::vec2(0.5f,0.5f),0.0f,0.1f);
+	
+	Bar temp_bar = Bar(genTextureP("./textures/button.png"), genTextureP("./textures/grey_bar.png"),glm::vec2(0.5f, 0.5f),
+			0.0f, 1.0f);
+    
+	
+	///genTextureP("./textures/water.png");
     //printf("hello world!\n");
 
     //genTexture(textures);
     getError();
-    clearDisplay(0.0,.1,.6,1.0);
+   
     temp_trans = glm::vec3(0.0f,0.0f,0.0f);
     //temp_mesh.push_back(Mesh_OBJ(0,glm::vec3(1.0f,0.0f,0.0f)));
     //Chunk temp_chunk = Chunk(glm::vec3(-10,-10,-10));
@@ -127,11 +136,13 @@ int init(){
         for(int i =0;i<entitys.size();i++){
             entitys[i].tick(deltaT,&ent);
         }
+
+		temp_bar.draw();
         draw();
-        test_button.draw();
-        drawRender(true);
-        //GameWorld->setBlock(rand()/100,rand()/200,rand()/100,AIR);
-        //drawFrame();
+		//test_button.draw();
+		
+		drawRender(false);
+
         getError();
     }
     delDisplay();
@@ -183,6 +194,7 @@ glm::vec3 engineKeyboardEvent(char key,bool is_down){
 }
 MenueAction init_main_menue(){
     GuiElement start_button = GuiElement(generated_textures[2],glm::vec2(0.5f,0.5f),0.0f,0.3f);
+	//Bar temp_bar = Bar(glm::vec2(0.2, 0.2), 0.0f, 0.3f, genTextureP("./textures/green_bar.png"), genTextureP("./textures/grey_bar.png"));
     while(!isclosed()){
         eventPacket e = event();
         GUI_ACTION action = start_button.tick(e);
@@ -193,6 +205,7 @@ MenueAction init_main_menue(){
             return out;
         }
         start_button.draw();
+		//temp_bar.draw();
         drawRender(false);
         printf("doing menue stuff\n");
     }

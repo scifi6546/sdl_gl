@@ -73,6 +73,7 @@ Mesh insertMesh(RunTimeModel in){
 This gets a model from the Models vector
 */
 RunTimeModel getModel(Mesh in){
+	assert(in.id < Models.size());
     return Models[in.id].b();
 }
 void initRenderP(){
@@ -100,6 +101,7 @@ Mesh genMesh(Model in,Text texture,glm::vec3 pos){
     Mesh out = insertMesh(temp);
     out.texture_use=texture;
     out.pos=pos;
+	printf("Mesh out id: %i\n", out.id);
     return out;
 }
 Mesh genMesh(std::string file_name,Text texture,glm::vec3 pos){

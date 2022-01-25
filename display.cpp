@@ -27,7 +27,6 @@ int initDisplay(int width, int height,std::string title){
     }
     getError();
     glEnable(GL_DEPTH_TEST);  
-
     return 0;
 }
 void updateDisplay(){

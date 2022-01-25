@@ -177,8 +177,10 @@ void drawFrame(bool reset_mouse){
     rManager::RuseShader(bufferWorld);
     bindTexture(gameWorld.bufer_object.attTexture,bufferWorld,"diffuse");
     drawMesh(buffer_model,glm::vec3(0.0f,0.0f,0.5f));
+	printf("gui draw calls size: %i\n", Draw_Calls_Gui.size());
     for(int i =0;i<Draw_Calls_Gui.size();i++){
         bindTexture(Draw_Calls_Gui[i].c(),bufferWorld,"diffuse");
+		printf("Draw calls model index:%i\n", Draw_Calls_Gui[i].a().index);
         drawMesh(Draw_Calls_Gui[i].a(),Draw_Calls_Gui[i].b());
     }
     Draw_Calls_Gui.clear();
